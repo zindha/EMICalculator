@@ -17,19 +17,18 @@ rootProject.layout.buildDirectory.value(newBuildDir)
 subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
+
+    // Force compileSdk on all Android subprojects (including Flutter plugin modules)
+    // to avoid AAR metadata mismatches when plugins are compiled against older SDKs.
+    plugins.withId("com.android.application") {
+        extensions.findByType<ApplicationExtension>()?.compileSdk = 36
+    }
+    plugins.withId("com.android.library") {
+        extensions.findByType<LibraryExtension>()?.compileSdk = 36
+    }
 }
 subprojects {
     project.evaluationDependsOn(":app")
-}
-subprojects {
-    afterEvaluate {
-        extensions.findByType<ApplicationExtension>()?.let {
-            it.compileSdk = 36
-        }
-        extensions.findByType<LibraryExtension>()?.let {
-            it.compileSdk = 36
-        }
-    }
 }
 
 tasks.register<Delete>("clean") {
