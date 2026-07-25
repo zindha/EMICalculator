@@ -38,7 +38,8 @@ class ComparisonRepository {
     try {
       final map = jsonDecode(json) as Map<String, dynamic>;
       return ComparisonSession.fromJson(map);
-    } catch (_) {
+    } catch (e) {
+      print('Failed to parse comparison session JSON: $e');
       return null;
     }
   }

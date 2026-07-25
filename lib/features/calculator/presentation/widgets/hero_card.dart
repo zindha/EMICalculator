@@ -43,7 +43,10 @@ class HeroCard extends ConsumerWidget {
           if (result != null)
             TweenAnimationBuilder<double>(
               tween: Tween<double>(begin: 0, end: result.emi),
-              duration: const Duration(milliseconds: 500),
+              duration: Duration(
+                milliseconds:
+                    MediaQuery.of(context).disableAnimations ? 0 : 500,
+              ),
               curve: Curves.easeOutCubic,
               builder: (context, value, child) {
                 final formatter = NumberFormat.currency(

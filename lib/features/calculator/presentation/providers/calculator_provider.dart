@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../domain/engines/emi_calculator_service.dart';
@@ -139,6 +140,7 @@ class EmiResultNotifier extends _$EmiResultNotifier {
         healthScore: healthScore,
       );
     } catch (e) {
+      debugPrint('EMI calculation error: $e');
       return null;
     }
   }

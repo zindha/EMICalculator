@@ -1,36 +1,14 @@
-import 'dart:io';
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
+
 
 import '../../../export/services/export_service.dart';
 import '../../../history/presentation/providers/history_provider.dart';
+import '../../../../shared/widgets/image_export_service.dart';
 import '../../domain/models/amortization_month.dart';
 import '../../domain/models/emi_calculation.dart';
 import '../providers/calculator_provider.dart';
-
-/// Captures the widget rendered inside [boundary] as a PNG image, saves it
-/// to a temporary file, and returns the file path.
-Future<String> captureAndSaveImage(RenderRepaintBoundary boundary) async {
-  final image = await boundary.toImage(pixelRatio: 3.0);
-  final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-  final bytes = byteData?.buffer.asUint8List();
-
-  if (bytes == null) {
-    throw const ExportException('Failed to capture image.');
-  }
-
-  final directory = await getTemporaryDirectory();
-  final filePath = '${directory.path}/emi_calculation.png';
-  final file = File(filePath);
-  await file.writeAsBytes(bytes);
-  return filePath;
-}
 
 /// Saves the current calculation to history.
 Future<void> saveCalculationToHistory(
@@ -140,17 +118,14 @@ void showCalculatorExportOptions({
 
 Future<void> _shareScreenshot(BuildContext context, GlobalKey captureKey) async {
   try {
-    final boundary = captureKey.currentContext?.findRenderObject()
-        as RenderRepaintBoundary?;
-    if (boundary == null) {
-      _showError(context, 'Unable to capture screenshot.');
-      return;
-    }
-    final filePath = await captureAndSaveImage(boundary);
-    await Share.shareXFiles(
-      [XFile(filePath)],
-      subject: 'EMI Calculation',
+    final result = await ImageExportService.captureAndShare(
+      captureKey: captureKey,
+      fileName: 'emi_calculation',
+      shareSubject: 'EMI Calculation',
     );
+    if (result == null && context.mounted) {
+      _showError(context, 'Unable to capture screenshot.');
+    }
   } catch (e) {
     if (context.mounted) {
       _showError(context, 'Image export failed: $e');

@@ -87,7 +87,8 @@ class HistoryRepository {
         isFavorite: (map['isFavorite'] as bool?) ?? false,
         title: map['title'] as String?,
       );
-    } catch (_) {
+    } catch (e) {
+      print('Failed to parse history entry JSON: $e');
       return null;
     }
   }

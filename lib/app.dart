@@ -33,10 +33,10 @@ class _EmiCalculatorAppState extends ConsumerState<EmiCalculatorApp> {
 
       // Dynamic theme based on user preference.
       theme: AppTheme.buildLightTheme(themeState.accentSeedColor),
-      darkTheme: themeState.themeMode == ThemeMode.system
+      darkTheme: themeState.isAmoled
           ? AppTheme.buildAmoledTheme(themeState.accentSeedColor)
           : AppTheme.buildDarkTheme(themeState.accentSeedColor),
-      themeMode: themeState.themeMode == ThemeMode.system
+      themeMode: themeState.isAmoled
           ? ThemeMode.dark
           : themeState.themeMode,
 

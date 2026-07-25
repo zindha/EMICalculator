@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../domain/models/comparison_result.dart';
 import '../../domain/models/loan_offer.dart';
+import '../../../../../core/theme/app_colors.dart';
 
 /// Widget that displays comparison charts for a list of loan offers.
 ///
@@ -138,59 +139,63 @@ class _GroupedBarChart extends StatelessWidget {
             .reduce((a, b) => a > b ? a : b))
         .fold(0.0, (prev, curr) => curr > prev ? curr : prev);
 
-    return BarChart(
-      BarChartData(
-        maxY: maxValue * 1.2,
-        barGroups: metrics.asMap().entries.map((entry) {
-          final index = entry.key;
-          final m = entry.value;
-          return BarChartGroupData(
-            x: index,
-            barsSpace: 4,
-            barRods: [
-              BarChartRodData(
-                toY: m.emi,
-                color: const Color(0xFF6C63FF),
-                width: 12,
+    return Semantics(
+      label: 'Cost comparison bar chart showing EMI, interest, '
+          'and total payment for each loan',
+      child: BarChart(
+        BarChartData(
+          maxY: maxValue * 1.2,
+          barGroups: metrics.asMap().entries.map((entry) {
+            final index = entry.key;
+            final m = entry.value;
+            return BarChartGroupData(
+              x: index,
+              barsSpace: 4,
+              barRods: [
+                BarChartRodData(
+                  toY: m.emi,
+                  color: AppColors.primary,
+                  width: 12,
+                ),
+                BarChartRodData(
+                  toY: m.totalInterest,
+                  color: AppColors.danger,
+                  width: 12,
+                ),
+                BarChartRodData(
+                  toY: m.totalPayment,
+                  color: AppColors.tertiary,
+                  width: 12,
+                ),
+              ],
+            );
+          }).toList(),
+          gridData: const FlGridData(show: false),
+          titlesData: FlTitlesData(
+            leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (value, meta) {
+                  final index = value.toInt();
+                  if (index < 0 || index >= offers.length) {
+                    return const SizedBox.shrink();
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      offers[index].name,
+                      style: GoogleFonts.inter(fontSize: 10),
+                    ),
+                  );
+                },
               ),
-              BarChartRodData(
-                toY: m.totalInterest,
-                color: const Color(0xFFE74C3C),
-                width: 12,
-              ),
-              BarChartRodData(
-                toY: m.totalPayment,
-                color: const Color(0xFF00C9A7),
-                width: 12,
-              ),
-            ],
-          );
-        }).toList(),
-        gridData: const FlGridData(show: false),
-        titlesData: FlTitlesData(
-          leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                final index = value.toInt();
-                if (index < 0 || index >= offers.length) {
-                  return const SizedBox.shrink();
-                }
-                return Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Text(
-                    offers[index].name,
-                    style: GoogleFonts.inter(fontSize: 10),
-                  ),
-                );
-              },
             ),
           ),
+          borderData: FlBorderData(show: false),
         ),
-        borderData: FlBorderData(show: false),
       ),
     );
   }
@@ -213,54 +218,57 @@ class _PrincipalInterestChart extends StatelessWidget {
         .map((m) => m.effectiveLoanAmount + m.totalInterest)
         .fold(0.0, (prev, curr) => curr > prev ? curr : prev);
 
-    return BarChart(
-      BarChartData(
-        maxY: maxValue * 1.2,
-        barGroups: metrics.asMap().entries.map((entry) {
-          final index = entry.key;
-          final m = entry.value;
-          return BarChartGroupData(
-            x: index,
-            barsSpace: 4,
-            barRods: [
-              BarChartRodData(
-                toY: m.effectiveLoanAmount,
-                color: const Color(0xFF6C63FF),
-                width: 24,
+    return Semantics(
+      label: 'Principal vs interest bar chart for each loan',
+      child: BarChart(
+        BarChartData(
+          maxY: maxValue * 1.2,
+          barGroups: metrics.asMap().entries.map((entry) {
+            final index = entry.key;
+            final m = entry.value;
+            return BarChartGroupData(
+              x: index,
+              barsSpace: 4,
+              barRods: [
+                BarChartRodData(
+                  toY: m.effectiveLoanAmount,
+                  color: AppColors.primary,
+                  width: 24,
+                ),
+                BarChartRodData(
+                  toY: m.totalInterest,
+                  color: AppColors.danger,
+                  width: 24,
+                ),
+              ],
+            );
+          }).toList(),
+          gridData: const FlGridData(show: false),
+          titlesData: FlTitlesData(
+            leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (value, meta) {
+                  final index = value.toInt();
+                  if (index < 0 || index >= offers.length) {
+                    return const SizedBox.shrink();
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      offers[index].name,
+                      style: GoogleFonts.inter(fontSize: 10),
+                    ),
+                  );
+                },
               ),
-              BarChartRodData(
-                toY: m.totalInterest,
-                color: const Color(0xFFE74C3C),
-                width: 24,
-              ),
-            ],
-          );
-        }).toList(),
-        gridData: const FlGridData(show: false),
-        titlesData: FlTitlesData(
-          leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                final index = value.toInt();
-                if (index < 0 || index >= offers.length) {
-                  return const SizedBox.shrink();
-                }
-                return Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Text(
-                    offers[index].name,
-                    style: GoogleFonts.inter(fontSize: 10),
-                  ),
-                );
-              },
             ),
           ),
+          borderData: FlBorderData(show: false),
         ),
-        borderData: FlBorderData(show: false),
       ),
     );
   }
@@ -307,7 +315,7 @@ class _PaymentBreakdownPieChart extends StatelessWidget {
       PieChartSectionData(
         value: principal,
         title: '${_percentage(principal, total)}%',
-        color: const Color(0xFF6C63FF),
+        color: AppColors.primary,
         radius: 80,
         titleStyle: GoogleFonts.inter(
           fontSize: 12,
@@ -316,13 +324,13 @@ class _PaymentBreakdownPieChart extends StatelessWidget {
         ),
       ),
     );
-    legendItems.add(_PieLegendItem('Principal', const Color(0xFF6C63FF), principal));
+    legendItems.add(_PieLegendItem('Principal', AppColors.primary, principal));
 
     sections.add(
       PieChartSectionData(
         value: interest,
         title: '${_percentage(interest, total)}%',
-        color: const Color(0xFFE74C3C),
+        color: AppColors.danger,
         radius: 80,
         titleStyle: GoogleFonts.inter(
           fontSize: 12,
@@ -331,66 +339,69 @@ class _PaymentBreakdownPieChart extends StatelessWidget {
         ),
       ),
     );
-    legendItems.add(_PieLegendItem('Interest', const Color(0xFFE74C3C), interest));
+    legendItems.add(_PieLegendItem('Interest', AppColors.danger, interest));
 
-    return Row(
-      children: [
-        Expanded(
-          child: PieChart(
-            PieChartData(
-              sections: sections,
-              centerSpaceRadius: 40,
-              sectionsSpace: 2,
+    return Semantics(
+      label: 'Payment breakdown pie chart for ${offer.name}',
+      child: Row(
+        children: [
+          Expanded(
+            child: PieChart(
+              PieChartData(
+                sections: sections,
+                centerSpaceRadius: 40,
+                sectionsSpace: 2,
+              ),
             ),
           ),
-        ),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: legendItems.map((item) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 12,
-                      height: 12,
-                      decoration: BoxDecoration(
-                        color: item.color,
-                        borderRadius: BorderRadius.circular(3),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: legendItems.map((item) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: item.color,
+                          borderRadius: BorderRadius.circular(3),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item.label,
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: theme.colorScheme.onSurface,
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.label,
+                              style: GoogleFonts.inter(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: theme.colorScheme.onSurface,
+                              ),
                             ),
-                          ),
-                          Text(
-                            '₹${_formatCompact(item.value)}',
-                            style: GoogleFonts.inter(
-                              fontSize: 11,
-                              color: theme.colorScheme.onSurfaceVariant,
+                            Text(
+                              '₹${_formatCompact(item.value)}',
+                              style: GoogleFonts.inter(
+                                fontSize: 11,
+                                color: theme.colorScheme.onSurfaceVariant,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -436,51 +447,55 @@ class _SavingsChart extends StatelessWidget {
         .map((m) => m.totalPayment)
         .fold(0.0, (prev, curr) => curr > prev ? curr : prev);
 
-    return BarChart(
-      BarChartData(
-        maxY: maxPayment * 1.1,
-        barGroups: metrics.asMap().entries.map((entry) {
-          final index = entry.key;
-          final m = entry.value;
-          final savings = maxPayment - m.totalPayment;
-          return BarChartGroupData(
-            x: index,
-            barRods: [
-              BarChartRodData(
-                toY: savings,
-                color: savings == 0
-                    ? Colors.grey
-                    : const Color(0xFF2ECC71),
-                width: 28,
+    return Semantics(
+      label: 'Savings comparison bar chart showing savings '
+          'relative to the most expensive loan',
+      child: BarChart(
+        BarChartData(
+          maxY: maxPayment * 1.1,
+          barGroups: metrics.asMap().entries.map((entry) {
+            final index = entry.key;
+            final m = entry.value;
+            final savings = maxPayment - m.totalPayment;
+            return BarChartGroupData(
+              x: index,
+              barRods: [
+                BarChartRodData(
+                  toY: savings,
+                  color: savings == 0
+                      ? Colors.grey
+                      : AppColors.positive,
+                  width: 28,
+                ),
+              ],
+            );
+          }).toList(),
+          gridData: const FlGridData(show: false),
+          titlesData: FlTitlesData(
+            leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (value, meta) {
+                  final index = value.toInt();
+                  if (index < 0 || index >= offers.length) {
+                    return const SizedBox.shrink();
+                  }
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(
+                      offers[index].name,
+                      style: GoogleFonts.inter(fontSize: 10),
+                    ),
+                  );
+                },
               ),
-            ],
-          );
-        }).toList(),
-        gridData: const FlGridData(show: false),
-        titlesData: FlTitlesData(
-          leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                final index = value.toInt();
-                if (index < 0 || index >= offers.length) {
-                  return const SizedBox.shrink();
-                }
-                return Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Text(
-                    offers[index].name,
-                    style: GoogleFonts.inter(fontSize: 10),
-                  ),
-                );
-              },
             ),
           ),
+          borderData: FlBorderData(show: false),
         ),
-        borderData: FlBorderData(show: false),
       ),
     );
   }

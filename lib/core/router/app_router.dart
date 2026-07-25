@@ -125,7 +125,10 @@ class _AppShell extends ConsumerWidget {
 
     return Scaffold(
       body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 250),
+        duration: Duration(
+          milliseconds:
+              MediaQuery.of(context).disableAnimations ? 0 : 250,
+        ),
         transitionBuilder: (child, animation) {
           return FadeTransition(
             opacity: CurvedAnimation(

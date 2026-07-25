@@ -101,4 +101,12 @@ class AppConstants {
 
   /// Large border radius for hero sections.
   static const double largeCardRadius = 24.0;
+
+  // ──────────────────────────────────────────────
+  // Legal
+  // ──────────────────────────────────────────────
+
+  /// URL for the app's privacy policy.
+  static const String privacyPolicyUrl =
+      'https://sites.google.com/view/emi-calculator-privacy';
 }

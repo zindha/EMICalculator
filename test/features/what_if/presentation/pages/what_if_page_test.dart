@@ -58,6 +58,8 @@ void main() {
 
       // Change the loan amount to a higher value.
       final loanAmountField = find.byType(TextField).first;
+      await tester.ensureVisible(loanAmountField);
+      await tester.pumpAndSettle();
       await tester.tap(loanAmountField);
       await tester.pump();
       await tester.enterText(loanAmountField, '1000000');

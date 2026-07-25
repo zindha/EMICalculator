@@ -9,6 +9,9 @@ void main() {
     await tester.pumpWidget(const ProviderScope(
       child: EmiCalculatorApp(),
     ));
+    // Pump past the splash screen animation to avoid pending timer errors.
+    await tester.pump(const Duration(seconds: 2));
+    await tester.pump(const Duration(seconds: 1));
     expect(find.byType(MaterialApp), findsOneWidget);
   });
 }

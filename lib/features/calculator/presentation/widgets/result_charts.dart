@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../providers/calculator_provider.dart';
+import '../../../../core/theme/app_colors.dart';
 
 /// Widget that displays two charts: a pie chart showing the principal vs.
 /// interest breakdown, and a line chart showing the loan balance over time.
@@ -87,62 +88,66 @@ class _PrincipalVsInterestPieChart extends StatelessWidget {
     final interestPercent =
         total > 0 ? (totalInterest / total * 100).toStringAsFixed(1) : '0';
 
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        PieChart(
-          PieChartData(
-            sectionsSpace: 4,
-            centerSpaceRadius: 50,
-            sections: [
-              PieChartSectionData(
-                color: const Color(0xFF6C63FF),
-                value: max(principal, 1),
-                title: '$principalPercent%',
-                titleStyle: GoogleFonts.inter(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+    return Semantics(
+      label: 'Principal vs interest pie chart: '
+          '$principalPercent% principal, $interestPercent% interest',
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          PieChart(
+            PieChartData(
+              sectionsSpace: 4,
+              centerSpaceRadius: 50,
+              sections: [
+                PieChartSectionData(
+                  color: AppColors.primary,
+                  value: max(principal, 1),
+                  title: '$principalPercent%',
+                  titleStyle: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                  radius: 35,
                 ),
-                radius: 35,
+                PieChartSectionData(
+                  color: AppColors.danger,
+                  value: max(totalInterest, 1),
+                  title: '$interestPercent%',
+                  titleStyle: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                  radius: 35,
+                ),
+              ],
+            ),
+          ),
+          // Center widget overlay
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Total',
+                style: GoogleFonts.inter(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
               ),
-              PieChartSectionData(
-                color: const Color(0xFFE74C3C),
-                value: max(totalInterest, 1),
-                title: '$interestPercent%',
-                titleStyle: GoogleFonts.inter(
+              Text(
+                formatter.format(total),
+                style: GoogleFonts.jetBrainsMono(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
-                radius: 35,
               ),
             ],
           ),
-        ),
-        // Center widget overlay
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Total',
-              style: GoogleFonts.inter(
-                fontSize: 10,
-                fontWeight: FontWeight.w400,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-            ),
-            Text(
-              formatter.format(total),
-              style: GoogleFonts.jetBrainsMono(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -193,117 +198,121 @@ class _BalanceLineChart extends StatelessWidget {
 
     final maxBalance = principal;
 
-    return LineChart(
-      LineChartData(
-        gridData: FlGridData(
-          show: true,
-          drawVerticalLine: false,
-          horizontalInterval: maxBalance / 4,
-          getDrawingHorizontalLine: (value) {
-            return FlLine(
-              color: theme.colorScheme.outlineVariant.withValues(alpha: 0.15),
-              strokeWidth: 1,
-            );
-          },
-        ),
-        titlesData: FlTitlesData(
-          topTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: false),
-          ),
-          rightTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: false),
-          ),
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              reservedSize: 28,
-              interval: (schedule.length / 4).ceilToDouble(),
-              getTitlesWidget: (value, meta) {
-                final month = value.toInt();
-                if (month < 0 || month >= schedule.length) {
-                  return const SizedBox.shrink();
-                }
-                final entry = schedule[month] as dynamic;
-                return Padding(
-                  padding: const EdgeInsets.only(top: 4),
-                  child: Text(
-                    'M${entry.monthNumber}',
-                    style: GoogleFonts.inter(
-                      fontSize: 10,
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          leftTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              reservedSize: 60,
-              getTitlesWidget: (value, meta) {
-                if (value == 0) return const SizedBox.shrink();
-                return Text(
-                  formatter.format(value),
-                  style: GoogleFonts.jetBrainsMono(
-                    fontSize: 9,
-                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-        borderData: FlBorderData(show: false),
-        minX: 0,
-        maxX: (schedule.length - 1).toDouble(),
-        minY: 0,
-        maxY: maxBalance * 1.1,
-        lineTouchData: LineTouchData(
-          enabled: true,
-          touchTooltipData: LineTouchTooltipData(
-            getTooltipItems: (touchedSpots) {
-              return touchedSpots.map((spot) {
-                final entry = schedule[spot.spotIndex] as dynamic;
-                return LineTooltipItem(
-                  'M${entry.monthNumber}: ${formatter.format(entry.closingBalance)}',
-                  GoogleFonts.interTextTheme().bodySmall!.copyWith(
-                        color: Colors.white,
-                        fontSize: 11,
-                      ),
-                );
-              }).toList();
+    return Semantics(
+      label: 'Loan balance line chart from '
+          '₹${principal.toStringAsFixed(0)} to ₹0',
+      child: LineChart(
+        LineChartData(
+          gridData: FlGridData(
+            show: true,
+            drawVerticalLine: false,
+            horizontalInterval: maxBalance / 4,
+            getDrawingHorizontalLine: (value) {
+              return FlLine(
+                color: theme.colorScheme.outlineVariant.withValues(alpha: 0.15),
+                strokeWidth: 1,
+              );
             },
           ),
-        ),
-        lineBarsData: [
-          LineChartBarData(
-            spots: sampledIndices.map((i) {
-              final entry = schedule[i] as dynamic;
-              return FlSpot(i.toDouble(), entry.closingBalance);
-            }).toList(),
-            isCurved: true,
-            preventCurveOverShooting: true,
-            color: theme.colorScheme.primary,
-            barWidth: 3,
-            isStrokeCapRound: true,
-            dotData: const FlDotData(
-              show: false,
+          titlesData: FlTitlesData(
+            topTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
             ),
-            belowBarData: BarAreaData(
-              show: true,
-              color: theme.colorScheme.primary.withValues(alpha: 0.08),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  theme.colorScheme.primary.withValues(alpha: 0.12),
-                  theme.colorScheme.primary.withValues(alpha: 0.01),
-                ],
+            rightTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 28,
+                interval: (schedule.length / 4).ceilToDouble(),
+                getTitlesWidget: (value, meta) {
+                  final month = value.toInt();
+                  if (month < 0 || month >= schedule.length) {
+                    return const SizedBox.shrink();
+                  }
+                  final entry = schedule[month] as dynamic;
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      'M${entry.monthNumber}',
+                      style: GoogleFonts.inter(
+                        fontSize: 10,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 60,
+                getTitlesWidget: (value, meta) {
+                  if (value == 0) return const SizedBox.shrink();
+                  return Text(
+                    formatter.format(value),
+                    style: GoogleFonts.jetBrainsMono(
+                      fontSize: 9,
+                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                    ),
+                  );
+                },
               ),
             ),
           ),
-        ],
+          borderData: FlBorderData(show: false),
+          minX: 0,
+          maxX: (schedule.length - 1).toDouble(),
+          minY: 0,
+          maxY: maxBalance * 1.1,
+          lineTouchData: LineTouchData(
+            enabled: true,
+            touchTooltipData: LineTouchTooltipData(
+              getTooltipItems: (touchedSpots) {
+                return touchedSpots.map((spot) {
+                  final entry = schedule[spot.spotIndex] as dynamic;
+                  return LineTooltipItem(
+                    'M${entry.monthNumber}: ${formatter.format(entry.closingBalance)}',
+                    GoogleFonts.interTextTheme().bodySmall!.copyWith(
+                          color: Colors.white,
+                          fontSize: 11,
+                        ),
+                  );
+                }).toList();
+              },
+            ),
+          ),
+          lineBarsData: [
+            LineChartBarData(
+              spots: sampledIndices.map((i) {
+                final entry = schedule[i] as dynamic;
+                return FlSpot(i.toDouble(), entry.closingBalance);
+              }).toList(),
+              isCurved: true,
+              preventCurveOverShooting: true,
+              color: theme.colorScheme.primary,
+              barWidth: 3,
+              isStrokeCapRound: true,
+              dotData: const FlDotData(
+                show: false,
+              ),
+              belowBarData: BarAreaData(
+                show: true,
+                color: theme.colorScheme.primary.withValues(alpha: 0.08),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    theme.colorScheme.primary.withValues(alpha: 0.12),
+                    theme.colorScheme.primary.withValues(alpha: 0.01),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -77,11 +77,12 @@ class ComparisonExportService {
             pw.Header(level: 0, text: session.title),
             pw.SizedBox(height: 16),
             pw.TableHelper.fromTextArray(
-              headerStyle: const pw.TextStyle(
+              headerStyle: pw.TextStyle(
                 fontWeight: pw.FontWeight.bold,
                 fontSize: 10,
               ),
-              cellStyle: const pw.TextStyle(fontSize: 9),
+              // ignore: prefer_const_constructors
+              cellStyle: pw.TextStyle(fontSize: 9),
               headers: [
                 'Loan',
                 'EMI',

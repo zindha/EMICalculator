@@ -1,17 +1,13 @@
-import 'dart:io';
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
+
 
 import '../../../../core/constants/app_constants.dart';
 import '../../../../shared/widgets/modern_glass_card.dart';
+import '../../../../shared/widgets/image_export_service.dart';
 import '../../../../shared/widgets/number_formatter.dart';
 import '../../../../shared/widgets/synced_slider_input.dart';
 import '../../domain/models/what_if_result.dart';
@@ -370,29 +366,15 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
 
   Future<void> _exportImage() async {
     try {
-      final boundary = _captureKey.currentContext?.findRenderObject()
-          as RenderRepaintBoundary?;
-      if (boundary == null) return;
-
-      final image = await boundary.toImage(pixelRatio: 3.0);
-      final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-      final bytes = byteData?.buffer.asUint8List();
-
-      if (bytes == null) return;
-
-      final directory = await getTemporaryDirectory();
-      final filePath = '${directory.path}/what_if_simulation.png';
-      final file = File(filePath);
-      await file.writeAsBytes(bytes);
-
-      await Share.shareXFiles(
-        [XFile(filePath)],
-        subject: 'What If Simulation',
+      await ImageExportService.captureAndShare(
+        captureKey: _captureKey,
+        fileName: 'what_if_simulation',
+        shareSubject: 'What If Simulation',
       );
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Image export failed: \$e')),
+          SnackBar(content: Text('Image export failed: $e')),
         );
       }
     }

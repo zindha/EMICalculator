@@ -370,8 +370,11 @@ class _AdvancedFieldsState extends ConsumerState<_AdvancedFields> {
               ],
             ),
           ),
-        ),
-        AnimatedCrossFade(
+        ),          AnimatedCrossFade(
+          duration: Duration(
+            milliseconds:
+                MediaQuery.of(context).disableAnimations ? 0 : 300,
+          ),
           firstChild: const SizedBox.shrink(),
           secondChild: Padding(
             padding: const EdgeInsets.only(top: 8),
@@ -414,7 +417,7 @@ class _AdvancedFieldsState extends ConsumerState<_AdvancedFields> {
           crossFadeState: _expanded
               ? CrossFadeState.showSecond
               : CrossFadeState.showFirst,
-          duration: const Duration(milliseconds: 300),
+
         ),
       ],
     );

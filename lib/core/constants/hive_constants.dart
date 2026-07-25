@@ -34,6 +34,9 @@ class HiveConstants {
   /// Key for the stored accent seed color as an integer (ARGB).
   static const String accentColorKey = 'accentColor';
 
+  /// Key for the stored AMOLED mode flag.
+  static const String isAmoledKey = 'isAmoled';
+
   // ──────────────────────────────────────────────
   // Type Adapter IDs
   // ──────────────────────────────────────────────

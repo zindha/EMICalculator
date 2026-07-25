@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../shared/widgets/modern_glass_card.dart';
 import '../../../../../shared/widgets/number_formatter.dart';
+import '../../../../../core/theme/app_colors.dart';
 import '../../domain/models/comparison_result.dart';
 import '../../domain/models/loan_offer.dart';
 
@@ -106,7 +107,7 @@ class ComparisonTable extends StatelessWidget with NumberFormatter {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: isHighlighted
-                  ? const Color(0xFF2ECC71).withValues(alpha: 0.15)
+                  ? AppColors.positive.withValues(alpha: 0.15)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(8),
             ),
@@ -119,7 +120,7 @@ class ComparisonTable extends StatelessWidget with NumberFormatter {
                     ? FontWeight.w600
                     : FontWeight.w400,
                 color: isHighlighted
-                    ? const Color(0xFF2ECC71)
+                    ? AppColors.positive
                     : theme.colorScheme.onSurface,
               ),
             ),

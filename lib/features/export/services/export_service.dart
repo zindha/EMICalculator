@@ -58,7 +58,7 @@ class ExportService {
             // ── Loan Summary ──────────────────────
             pw.Header(level: 1, text: 'Loan Summary'),
             pw.TableHelper.fromTextArray(
-              headerStyle: const pw.TextStyle(
+              headerStyle: pw.TextStyle(
                 fontWeight: pw.FontWeight.bold,
                 fontSize: 10,
               ),
@@ -77,11 +77,12 @@ class ExportService {
             // ── Amortization Table ────────────────
             pw.Header(level: 1, text: 'Month-by-Month Breakdown'),
             pw.TableHelper.fromTextArray(
-              headerStyle: const pw.TextStyle(
+              headerStyle: pw.TextStyle(
                 fontWeight: pw.FontWeight.bold,
                 fontSize: 8,
               ),
-              cellStyle: const pw.TextStyle(fontSize: 7),
+              // ignore: prefer_const_constructors
+              cellStyle: pw.TextStyle(fontSize: 7),
               headers: [
                 'Month',
                 'Opening',

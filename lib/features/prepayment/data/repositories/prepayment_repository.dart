@@ -78,7 +78,8 @@ class PrepaymentRepository {
         createdAt: DateTime.parse(map['createdAt'] as String),
         isFavorite: (map['isFavorite'] as bool?) ?? false,
       );
-    } catch (_) {
+    } catch (e) {
+      print('Failed to parse prepayment plan JSON: $e');
       return null;
     }
   }

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../shared/widgets/modern_glass_card.dart';
 import '../../calculator/domain/models/amortization_month.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../services/export_service.dart';
 
 /// Screen that displays the full amortization schedule in a beautifully
@@ -79,7 +80,7 @@ class AmortizationSchedulePage extends ConsumerWidget {
                   context,
                   label: 'Total Interest',
                   value: formatter.format(totalInterest),
-                  color: const Color(0xFFE74C3C),
+                  color: AppColors.danger,
                 ),
                 _buildSummaryItem(
                   context,
@@ -152,14 +153,14 @@ class AmortizationSchedulePage extends ConsumerWidget {
                           formatter.format(entry.principalPaid),
                           flex: 2,
                           isBold: false,
-                          color: const Color(0xFF2ECC71),
+                          color: AppColors.positive,
                         ),
                         _tableCell(
                           context,
                           formatter.format(entry.interestPaid),
                           flex: 2,
                           isBold: false,
-                          color: const Color(0xFFE74C3C),
+                          color: AppColors.danger,
                         ),
                         _tableCell(
                           context,

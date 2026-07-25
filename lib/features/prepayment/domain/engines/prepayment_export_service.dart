@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'dart:ui' as ui;
 
-import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -104,11 +102,12 @@ class PrepaymentExportService {
           pw.SizedBox(height: 24),
           pw.Header(level: 1, text: 'Original Loan'),
           pw.TableHelper.fromTextArray(
-            headerStyle: const pw.TextStyle(
+            headerStyle: pw.TextStyle(
               fontWeight: pw.FontWeight.bold,
               fontSize: 10,
             ),
-            cellStyle: const pw.TextStyle(fontSize: 9),
+            // ignore: prefer_const_constructors
+            cellStyle: pw.TextStyle(fontSize: 9),
             headers: ['Parameter', 'Value'],
             data: [
               ['Loan Amount', formatter.format(input.baseCalculation.loanAmount)],
@@ -122,11 +121,12 @@ class PrepaymentExportService {
           pw.SizedBox(height: 24),
           pw.Header(level: 1, text: 'Updated Loan'),
           pw.TableHelper.fromTextArray(
-            headerStyle: const pw.TextStyle(
+            headerStyle: pw.TextStyle(
               fontWeight: pw.FontWeight.bold,
               fontSize: 10,
             ),
-            cellStyle: const pw.TextStyle(fontSize: 9),
+            // ignore: prefer_const_constructors
+            cellStyle: pw.TextStyle(fontSize: 9),
             headers: ['Parameter', 'Value'],
             data: [
               ['EMI', formatter.format(result.updatedEmi)],
@@ -144,11 +144,12 @@ class PrepaymentExportService {
           pw.SizedBox(height: 24),
           pw.Header(level: 1, text: 'Amortization Schedule'),
           pw.TableHelper.fromTextArray(
-            headerStyle: const pw.TextStyle(
+            headerStyle: pw.TextStyle(
               fontWeight: pw.FontWeight.bold,
               fontSize: 8,
             ),
-            cellStyle: const pw.TextStyle(fontSize: 7),
+            // ignore: prefer_const_constructors
+            cellStyle: pw.TextStyle(fontSize: 7),
             headers: [
               'Month',
               'Opening',
@@ -202,31 +203,6 @@ class PrepaymentExportService {
     );
   }
 
-  /// Captures the widget rendered inside [boundary] as a PNG image, saves
-  /// it to a temporary file, and returns the file path.
-  Future<String> generateImage(RenderRepaintBoundary boundary) async {
-    final image = await boundary.toImage(pixelRatio: 3.0);
-    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-    final bytes = byteData?.buffer.asUint8List();
-
-    if (bytes == null) {
-      throw const ExportException('Failed to capture image.');
-    }
-
-    final directory = await getTemporaryDirectory();
-    final filePath = '${directory.path}/prepayment_plan.png';
-    final file = File(filePath);
-    await file.writeAsBytes(bytes);
-    return filePath;
-  }
-
-  /// Shares the image at [filePath] via the native share sheet.
-  Future<void> shareImage(String filePath) async {
-    await Share.shareXFiles(
-      [XFile(filePath)],
-      subject: 'Prepayment Plan',
-    );
-  }
 }
 
 /// Exception thrown when an export operation fails.

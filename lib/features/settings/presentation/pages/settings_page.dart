@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/theme_provider.dart';
 import '../../../../shared/widgets/modern_glass_card.dart';
@@ -64,7 +66,8 @@ class SettingsPage extends ConsumerWidget {
                     icon: Icons.dark_mode_rounded,
                     title: 'Dark Mode',
                     subtitle: 'Deep navy background',
-                    isSelected: themeState.themeMode == ThemeMode.dark,
+                    isSelected: themeState.themeMode == ThemeMode.dark &&
+                        !themeState.isAmoled,
                     onTap: () => ref
                         .read(themeNotifierProvider.notifier)
                         .setThemeMode(ThemeMode.dark),
@@ -74,10 +77,10 @@ class SettingsPage extends ConsumerWidget {
                     icon: Icons.contrast_rounded,
                     title: 'AMOLED Mode',
                     subtitle: 'Pure black — saves battery',
-                    isSelected: themeState.themeMode == ThemeMode.system,
+                    isSelected: themeState.isAmoled,
                     onTap: () => ref
                         .read(themeNotifierProvider.notifier)
-                        .setThemeMode(ThemeMode.system),
+                        .setAmoledMode(true),
                   ),
                 ],
               ),
@@ -105,8 +108,8 @@ class SettingsPage extends ConsumerWidget {
                     _AccentColorDot(
                       color: AppColors.primary,
                       label: 'Purple',
-                      isSelected: themeState.accentSeedColor.toARGB32() ==
-                          AppColors.primary.toARGB32(),
+                      isSelected: themeState.accentSeedColor==
+                          AppColors.primary,
                       onTap: () => ref
                           .read(themeNotifierProvider.notifier)
                           .setAccentColor(AppColors.primary),
@@ -114,8 +117,8 @@ class SettingsPage extends ConsumerWidget {
                     _AccentColorDot(
                       color: AppColors.secondary,
                       label: 'Coral',
-                      isSelected: themeState.accentSeedColor.toARGB32() ==
-                          AppColors.secondary.toARGB32(),
+                      isSelected: themeState.accentSeedColor==
+                          AppColors.secondary,
                       onTap: () => ref
                           .read(themeNotifierProvider.notifier)
                           .setAccentColor(AppColors.secondary),
@@ -123,8 +126,8 @@ class SettingsPage extends ConsumerWidget {
                     _AccentColorDot(
                       color: AppColors.tertiary,
                       label: 'Mint',
-                      isSelected: themeState.accentSeedColor.toARGB32() ==
-                          AppColors.tertiary.toARGB32(),
+                      isSelected: themeState.accentSeedColor==
+                          AppColors.tertiary,
                       onTap: () => ref
                           .read(themeNotifierProvider.notifier)
                           .setAccentColor(AppColors.tertiary),
@@ -132,8 +135,8 @@ class SettingsPage extends ConsumerWidget {
                     _AccentColorDot(
                       color: AppColors.info,
                       label: 'Blue',
-                      isSelected: themeState.accentSeedColor.toARGB32() ==
-                          AppColors.info.toARGB32(),
+                      isSelected: themeState.accentSeedColor==
+                          AppColors.info,
                       onTap: () => ref
                           .read(themeNotifierProvider.notifier)
                           .setAccentColor(AppColors.info),
@@ -141,8 +144,8 @@ class SettingsPage extends ConsumerWidget {
                     _AccentColorDot(
                       color: AppColors.danger,
                       label: 'Red',
-                      isSelected: themeState.accentSeedColor.toARGB32() ==
-                          AppColors.danger.toARGB32(),
+                      isSelected: themeState.accentSeedColor==
+                          AppColors.danger,
                       onTap: () => ref
                           .read(themeNotifierProvider.notifier)
                           .setAccentColor(AppColors.danger),
@@ -150,8 +153,8 @@ class SettingsPage extends ConsumerWidget {
                     _AccentColorDot(
                       color: AppColors.positive,
                       label: 'Green',
-                      isSelected: themeState.accentSeedColor.toARGB32() ==
-                          AppColors.positive.toARGB32(),
+                      isSelected: themeState.accentSeedColor==
+                          AppColors.positive,
                       onTap: () => ref
                           .read(themeNotifierProvider.notifier)
                           .setAccentColor(AppColors.positive),
@@ -205,11 +208,16 @@ class SettingsPage extends ConsumerWidget {
                   _SettingsActionTile(
                     icon: Icons.privacy_tip_outlined,
                     title: 'Privacy Policy',
-                    subtitle: 'How we handle your data',
+                    subtitle: AppConstants.privacyPolicyUrl,
                     onTap: () {
+                      Clipboard.setData(
+                        const ClipboardData(
+                          text: AppConstants.privacyPolicyUrl,
+                        ),
+                      );
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text('Privacy policy coming soon'),
+                          content: Text('Privacy policy URL copied to clipboard'),
                         ),
                       );
                     },
@@ -290,7 +298,7 @@ class SettingsPage extends ConsumerWidget {
                   const _SettingsInfoTile(
                     icon: Icons.info_outline,
                     title: 'Version',
-                    subtitle: '1.2.0',
+                    subtitle: '1.0.0',
                   ),
                   const Divider(height: 1),
                   const _SettingsInfoTile(
