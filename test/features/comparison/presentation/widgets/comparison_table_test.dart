@@ -9,7 +9,7 @@ import 'package:flutter_test/flutter_test.dart' hide ComparisonResult;
 void main() {
   group('ComparisonTable', () {
     final offers = [
-      LoanOffer(
+      const LoanOffer(
         id: 'a',
         name: 'Loan A',
         calculation: const EmiCalculation(
@@ -18,7 +18,7 @@ void main() {
           tenureMonths: 60,
         ),
       ),
-      LoanOffer(
+      const LoanOffer(
         id: 'b',
         name: 'Loan B',
         calculation: const EmiCalculation(

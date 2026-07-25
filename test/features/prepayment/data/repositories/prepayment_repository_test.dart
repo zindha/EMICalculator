@@ -29,7 +29,7 @@ void main() {
     });
 
     PrepaymentInput sampleInput() {
-      return PrepaymentInput(
+      return const PrepaymentInput(
         baseCalculation: const EmiCalculation(
           loanAmount: 500000,
           interestRate: 10.5,

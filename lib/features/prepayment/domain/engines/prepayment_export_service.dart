@@ -104,7 +104,7 @@ class PrepaymentExportService {
           pw.SizedBox(height: 24),
           pw.Header(level: 1, text: 'Original Loan'),
           pw.TableHelper.fromTextArray(
-            headerStyle: pw.TextStyle(
+            headerStyle: const pw.TextStyle(
               fontWeight: pw.FontWeight.bold,
               fontSize: 10,
             ),
@@ -122,7 +122,7 @@ class PrepaymentExportService {
           pw.SizedBox(height: 24),
           pw.Header(level: 1, text: 'Updated Loan'),
           pw.TableHelper.fromTextArray(
-            headerStyle: pw.TextStyle(
+            headerStyle: const pw.TextStyle(
               fontWeight: pw.FontWeight.bold,
               fontSize: 10,
             ),
@@ -144,7 +144,7 @@ class PrepaymentExportService {
           pw.SizedBox(height: 24),
           pw.Header(level: 1, text: 'Amortization Schedule'),
           pw.TableHelper.fromTextArray(
-            headerStyle: pw.TextStyle(
+            headerStyle: const pw.TextStyle(
               fontWeight: pw.FontWeight.bold,
               fontSize: 8,
             ),

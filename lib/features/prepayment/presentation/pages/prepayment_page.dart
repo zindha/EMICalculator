@@ -85,7 +85,7 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
             // ── What-if Sliders ────────────────────
             _buildSectionTitle(context, 'What-If Scenarios'),
             const SizedBox(height: 12),
-            Padding(
+            const Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: const PrepaymentWhatIfSliders(),
             ),
@@ -272,7 +272,7 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('PDF export failed: \$e')),
+          const SnackBar(content: const Text('PDF export failed: \$e')),
         );
       }
     }
@@ -299,7 +299,7 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Image export failed: \$e')),
+          const SnackBar(content: const Text('Image export failed: \$e')),
         );
       }
     }
@@ -382,8 +382,8 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
                           loading: () => const Center(
                             child: CircularProgressIndicator(),
                           ),
-                          error: (error, _) => Center(
-                            child: Text('Error: \$error'),
+                          error: (error, _) => const Center(
+                            child: const Text('Error: \$error'),
                           ),
                         ),
                       ),

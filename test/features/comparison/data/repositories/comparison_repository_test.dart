@@ -38,7 +38,7 @@ void main() {
         id: 'session_1',
         title: title,
         offers: [
-          LoanOffer(
+          const LoanOffer(
             id: 'offer_1',
             name: 'Loan A',
             calculation: const EmiCalculation(

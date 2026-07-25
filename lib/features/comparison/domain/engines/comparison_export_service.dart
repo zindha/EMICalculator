@@ -77,7 +77,7 @@ class ComparisonExportService {
             pw.Header(level: 0, text: session.title),
             pw.SizedBox(height: 16),
             pw.TableHelper.fromTextArray(
-              headerStyle: pw.TextStyle(
+              headerStyle: const pw.TextStyle(
                 fontWeight: pw.FontWeight.bold,
                 fontSize: 10,
               ),
