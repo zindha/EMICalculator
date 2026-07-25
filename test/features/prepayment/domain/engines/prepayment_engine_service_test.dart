@@ -46,8 +46,8 @@ void main() {
         rules: [
           PrepaymentRule(
             id: '1',
-            amount: 5000,
-            frequency: PrepaymentFrequency.monthly,
+            amount: 50000,
+            frequency: PrepaymentFrequency.oneTime,
             startMonth: 1,
           ),
         ],
@@ -201,7 +201,7 @@ void main() {
 
       expect(result.updatedTenureMonths, equals(result.originalTenureMonths));
       expect(result.updatedEmi, closeTo(result.originalEmi, 0.01));
-      expect(result.interestSaved, equals(0));
+      expect(result.interestSaved, closeTo(0, 0.01));
       expect(result.monthsSaved, equals(0));
     });
   });

@@ -61,7 +61,7 @@ void main() {
       await tester.tap(loanAmountField);
       await tester.pump();
       await tester.enterText(loanAmountField, '1000000');
-      tester.testTextInput.receiveAction(TextInputAction.done);
+      await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pumpAndSettle();
 
       expect(find.text('Extra Cost'), findsOneWidget);

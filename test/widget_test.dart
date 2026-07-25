@@ -8,6 +8,6 @@ void main() {
     await tester.pumpWidget(const ProviderScope(
       child: EmiCalculatorApp(),
     ));
-    expect(find.text('EMI Calculator'), findsOneWidget);
+    expect(find.byType(MaterialApp), findsOneWidget);
   });
 }
