@@ -1,5 +1,40 @@
 # Changelog
 
+## 1.5.0 - Production Release Audit
+
+### Fixed
+- Release signing: replaced debug-only signing with `key.properties`-based release config (falls back to debug if keystore absent).
+- Broken `$e` error interpolation in `const` SnackBars on prepayment and what-if pages.
+- Silent `catch (_)` error swallowing in 3 repositories (history, comparison, prepayment) — now logs via `debugPrint`.
+- AMOLED mode: replaced the `ThemeMode.system` hack with a proper `isAmoled` flag + Hive persistence.
+- Version number mismatch: synced settings page (`1.2.0` → `1.0.0`) to match `pubspec.yaml`.
+- Missing privacy policy URL — added `AppConstants.privacyPolicyUrl`.
+- Hardcoded `Color(0xFF...)` values replaced with `AppColors` constants across 6 chart, table, and page files.
+- `dart:ui` import removed from domain-layer `prepayment_export_service.dart`.
+- Deprecated `Color.value` usage eliminated — component accessors and `Color == Color` comparisons.
+- Off-screen TextField tap warning in `what_if_page_test.dart`.
+- Splash screen timer leak in `widget_test.dart`.
+
+### Added
+- Reduce Motion support: animations respect `MediaQuery.disableAnimations` across 4 widgets (router transitions, tenure toggle, hero card, calculator cross-fade).
+- Semantics labels on 6 chart widgets (pie, line, bar, grouped bar, principal-interest, savings bars).
+- Shared `ImageExportService` utility — replaces ~120 lines of duplicated image capture/share code across 4 pages.
+- `EmiCalculatorService` unit tests: 26 test cases covering EMI, interest, payment, amortization, health score, stress levels, and validation.
+- `dynamic_color` integration for Material You on Android 12+.
+- Production release keystore (`upload-keystore.jks`) and `android/key.properties` for Play Store signing.
+- `privacyPolicyUrl` constant wired into the Settings page.
+
+### Changed
+- `flutter_lints` downgraded to `^5.0.0` for Dart 3.6.x compatibility.
+- 26 test variable declarations changed from `final` to `const`.
+- Flutter web bootstrap config cleaned up.
+- `ExportException` classes kept with `const` constructors; PDF `TextStyle` constructors use `// ignore` comments due to Dart 3.6 const restrictions.
+
+### Quality
+- **Static analysis:** 0 errors, 0 warnings, 0 info (`flutter analyze` passes clean).
+- **Test suite:** 67/67 tests passing.
+- **Code reuse:** `ImageExportService` eliminates duplicated export logic; `_colorToInt()` helper replaces deprecated `Color.value` usage.
+
 ## 1.4.0 - What If Simulator
 
 ### Added
