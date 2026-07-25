@@ -91,23 +91,34 @@ class PrepaymentSummaryCard extends StatelessWidget with NumberFormatter {
   }) {
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: 13,
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
-          Text(
-            value,
-            style: GoogleFonts.jetBrainsMono(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: valueColor ?? theme.colorScheme.onSurface,
+          Container(
+            padding: valueColor != null
+                ? const EdgeInsets.symmetric(horizontal: 6, vertical: 2)
+                : null,
+            decoration: valueColor != null
+                ? BoxDecoration(
+                    color: valueColor.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(4),
+                  )
+                : null,
+            child: Text(
+              value,
+              style: GoogleFonts.jetBrainsMono(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: valueColor ?? theme.colorScheme.onSurface,
+              ),
             ),
           ),
         ],

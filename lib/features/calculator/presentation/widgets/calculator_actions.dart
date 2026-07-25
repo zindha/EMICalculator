@@ -4,6 +4,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -64,18 +65,23 @@ void showCalculatorExportOptions({
     builder: (context) {
       return SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 'Export Calculation',
-                style: Theme.of(context).textTheme.titleLarge,
+                style: GoogleFonts.spaceGrotesk(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: -0.3,
+                ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               ListTile(
                 leading: const Icon(Icons.picture_as_pdf_rounded),
                 title: const Text('Export PDF'),
+                subtitle: const Text('Professional document with summary'),
                 onTap: () async {
                   Navigator.pop(context);
                   try {
@@ -97,10 +103,10 @@ void showCalculatorExportOptions({
                   }
                 },
               ),
-              const Divider(),
               ListTile(
                 leading: const Icon(Icons.table_chart_rounded),
                 title: const Text('Export CSV'),
+                subtitle: const Text('Open in spreadsheet apps'),
                 onTap: () async {
                   Navigator.pop(context);
                   try {
@@ -115,10 +121,10 @@ void showCalculatorExportOptions({
                   }
                 },
               ),
-              const Divider(),
               ListTile(
                 leading: const Icon(Icons.image_rounded),
                 title: const Text('Share Image'),
+                subtitle: const Text('Share as a screenshot'),
                 onTap: () {
                   Navigator.pop(context);
                   _shareScreenshot(context, captureKey);

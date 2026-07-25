@@ -17,25 +17,38 @@ class PrepaymentStrategyToggle extends ConsumerWidget {
     final input = ref.watch(prepaymentInputNotifierProvider);
 
     return Container(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(12),
+        color: theme.colorScheme.surfaceContainerHighest
+            .withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         children: PrepaymentStrategy.values.map((strategy) {
           final isSelected = input.strategy == strategy;
           return Expanded(
-            child: InkWell(
+            child: GestureDetector(
               onTap: () => ref
                   .read(prepaymentInputNotifierProvider.notifier)
                   .setStrategy(strategy),
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeOutCubic,
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: isSelected ? theme.colorScheme.primary : Colors.transparent,
+                  color: isSelected
+                      ? theme.colorScheme.surface
+                      : Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
+                  boxShadow: isSelected
+                      ? [
+                          BoxShadow(
+                            color: theme.shadowColor.withValues(alpha: 0.08),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ]
+                      : null,
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -44,21 +57,22 @@ class PrepaymentStrategyToggle extends ConsumerWidget {
                       strategy.label,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.inter(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                         color: isSelected
-                            ? theme.colorScheme.onPrimary
-                            : theme.colorScheme.onSurface,
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
+                    const SizedBox(height: 2),
                     Text(
                       strategy.description,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.inter(
                         fontSize: 10,
                         color: isSelected
-                            ? theme.colorScheme.onPrimary.withValues(alpha: 0.8)
-                            : theme.colorScheme.onSurfaceVariant,
+                            ? theme.colorScheme.primary.withValues(alpha: 0.7)
+                            : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                       ),
                     ),
                   ],

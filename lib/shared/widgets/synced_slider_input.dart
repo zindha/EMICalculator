@@ -171,18 +171,29 @@ class _SyncedSliderInputState extends ConsumerState<SyncedSliderInput> {
                 Text(
                   widget.label,
                   style: GoogleFonts.inter(
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: FontWeight.w500,
-                    color: theme.colorScheme.onSurface,
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
                 if (widget.suffixText != null)
-                  Text(
-                    _formatValue(_currentValue),
-                    style: GoogleFonts.jetBrainsMono(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: theme.colorScheme.primary,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primaryContainer
+                          .withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      _formatValue(_currentValue),
+                      style: GoogleFonts.jetBrainsMono(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.primary,
+                      ),
                     ),
                   ),
               ],
@@ -191,7 +202,7 @@ class _SyncedSliderInputState extends ConsumerState<SyncedSliderInput> {
 
           // ── Text Field ─────────────────────────
           SizedBox(
-            height: 48,
+            height: 46,
             child: TextField(
               controller: _textController,
               keyboardType: TextInputType.numberWithOptions(
@@ -203,38 +214,46 @@ class _SyncedSliderInputState extends ConsumerState<SyncedSliderInput> {
                 ),
               ],
               style: GoogleFonts.jetBrainsMono(
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
                 color: theme.colorScheme.onSurface,
               ),
               decoration: InputDecoration(
                 prefixText: widget.prefixSymbol,
                 prefixStyle: GoogleFonts.inter(
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: FontWeight.w500,
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
                 suffixText: widget.suffixText,
                 suffixStyle: GoogleFonts.inter(
-                  fontSize: 14,
+                  fontSize: 13,
                   fontWeight: FontWeight.w400,
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
                 filled: true,
-                fillColor: theme.colorScheme.surfaceContainerHighest,
+                fillColor: theme.colorScheme.surfaceContainerHighest
+                    .withValues(alpha: 0.5),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
                 ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    color: theme.colorScheme.outlineVariant
+                        .withValues(alpha: 0.3),
+                  ),
+                ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide(
                     color: theme.colorScheme.primary,
-                    width: 2,
+                    width: 1.5,
                   ),
                 ),
                 contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
+                  horizontal: 14,
                   vertical: 12,
                 ),
               ),
@@ -253,12 +272,17 @@ class _SyncedSliderInputState extends ConsumerState<SyncedSliderInput> {
               data: theme.sliderTheme.copyWith(
                 activeTrackColor: theme.colorScheme.primary,
                 inactiveTrackColor:
-                    theme.colorScheme.surfaceContainerHighest,
+                    theme.colorScheme.surfaceContainerHighest
+                        .withValues(alpha: 0.4),
                 thumbColor: theme.colorScheme.primary,
                 overlayColor:
-                    theme.colorScheme.primary.withValues(alpha: 0.12),
-                trackHeight: 6,
+                    theme.colorScheme.primary.withValues(alpha: 0.08),
+                trackHeight: 4,
                 trackShape: const RoundedRectSliderTrackShape(),
+                thumbShape: const RoundSliderThumbShape(
+                  enabledThumbRadius: 7,
+                  elevation: 2,
+                ),
               ),
               child: Slider(
                 value: _currentValue.clamp(widget.min, widget.max),

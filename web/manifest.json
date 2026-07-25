@@ -1,11 +1,11 @@
 {
-    "name": "emi_calculator",
-    "short_name": "emi_calculator",
+    "name": "EMI Calculator — Smart Loan Planner",
+    "short_name": "EMI Calculator",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#FFF8F0",
+    "theme_color": "#6C63FF",
+    "description": "Smart Loan Planner. Compare, Save, Pay Faster.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

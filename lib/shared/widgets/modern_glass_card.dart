@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/app_colors.dart';
-
-/// A reusable Material 3 card with glassmorphism aesthetics.
+/// A premium Material 3 card with clean, modern aesthetics.
 ///
 /// Features:
-/// - Subtle elevation with custom border radius
+/// - Soft, layered shadows for depth
 /// - Optional primary color tint on the top edge
-/// - Glassmorphism effect (semi-transparent background + blur overlay)
-/// - Configurable padding, margin, and elevation
+/// - Configurable padding, margin, and border radius
 ///
 /// Usage:
 /// ```dart
 /// ModernGlassCard(
 ///   child: Text('Your content'),
 ///   tintColor: Theme.of(context).colorScheme.primary,
-///   glass: true,
 /// )
 /// ```
 class ModernGlassCard extends StatelessWidget {
@@ -39,15 +35,13 @@ class ModernGlassCard extends StatelessWidget {
   /// Optional primary color tint applied as a top border accent.
   final Color? tintColor;
 
-  /// Whether to apply the glassmorphism effect.
-  ///
-  /// When true, applies a semi-transparent background with a blur overlay.
+  /// Legacy parameter — ignored. Kept for API compatibility.
   final bool glass;
 
   /// Custom border radius. Defaults to 16px.
   final double? borderRadius;
 
-  /// Custom elevation. Defaults to 2.
+  /// Custom elevation. Defaults to 0 (shadows handled by decoration).
   final double? elevation;
 
   /// Inner padding for the card content. Defaults to 20px.
@@ -65,8 +59,9 @@ class ModernGlassCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final radius = borderRadius ?? 16.0;
-    final cardElevation = elevation ?? 2;
+    final cardColor = theme.colorScheme.surfaceContainerLow;
 
     return Container(
       width: width,
@@ -74,83 +69,52 @@ class ModernGlassCard extends StatelessWidget {
       margin: margin ?? EdgeInsets.zero,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius),
+        color: cardColor,
+        border: Border.all(
+          color: theme.colorScheme.outlineVariant.withValues(alpha: isDark ? 0.15 : 0.3),
+          width: 1,
+        ),
         boxShadow: [
+          // Soft ambient shadow
           BoxShadow(
-            color: theme.shadowColor.withValues(alpha: 0.08),
-            blurRadius: 32,
-            offset: const Offset(0, 8),
+            color: theme.shadowColor.withValues(alpha: isDark ? 0.2 : 0.04),
+            blurRadius: 24,
+            offset: const Offset(0, 4),
+            spreadRadius: -2,
+          ),
+          // Tight contact shadow
+          BoxShadow(
+            color: theme.shadowColor.withValues(alpha: isDark ? 0.1 : 0.02),
+            blurRadius: 8,
+            offset: const Offset(0, 1),
           ),
         ],
       ),
-      child: Material(
-        elevation: cardElevation,
+      child: ClipRRect(
         borderRadius: BorderRadius.circular(radius),
-        color: glass
-            ? theme.colorScheme.surface.withValues(alpha: 0.7)
-            : theme.cardColor,
-        surfaceTintColor: tintColor?.withValues(alpha: 0.1),
-        shadowColor: theme.shadowColor,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(radius),
-            // Glassmorphism overlay
-            color: glass
-                ? (theme.brightness == Brightness.light
-                    ? AppColors.glassLight
-                    : AppColors.glassDark)
-                : null,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
             // Top tint accent line
-            border: tintColor != null
-                ? Border(
-                    top: BorderSide(
-                      color: tintColor!,
-                      width: 3,
-                    ),
-                  )
-                : null,
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(radius),
-            child: BackdropFilter(
-              filter: glass
-                  ? (theme.brightness == Brightness.light
-                      ? _glassLightFilter
-                      : _glassDarkFilter)
-                  : _noFilter,
-              child: Padding(
-                padding: padding ?? const EdgeInsets.all(20),
-                child: child,
+            if (tintColor != null)
+              Container(
+                height: 3,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      tintColor!,
+                      tintColor!.withValues(alpha: 0.4),
+                    ],
+                  ),
+                ),
               ),
+            Padding(
+              padding: padding ?? const EdgeInsets.all(20),
+              child: child,
             ),
-          ),
+          ],
         ),
       ),
     );
   }
-
-  /// Light-mode glassmorphism blur filter.
-  static const _glassLightFilter =
-      ColorFilter.matrix(<double>[
-    1, 0, 0, 0, 0,
-    0, 1, 0, 0, 0,
-    0, 0, 1, 0, 0,
-    0, 0, 0, 0.7, 0,
-  ]);
-
-  /// Dark-mode glassmorphism blur filter.
-  static const _glassDarkFilter =
-      ColorFilter.matrix(<double>[
-    1, 0, 0, 0, 0,
-    0, 1, 0, 0, 0,
-    0, 0, 1, 0, 0,
-    0, 0, 0, 0.15, 0,
-  ]);
-
-  /// No-op filter for non-glass cards.
-  static const _noFilter = ColorFilter.matrix(<double>[
-    1, 0, 0, 0, 0,
-    0, 1, 0, 0, 0,
-    0, 0, 1, 0, 0,
-    0, 0, 0, 1, 0,
-  ]);
 }

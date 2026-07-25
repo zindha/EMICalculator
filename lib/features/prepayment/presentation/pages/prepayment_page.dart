@@ -204,39 +204,41 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
       builder: (context) {
         return SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   'Export Plan',
                   style: GoogleFonts.spaceGrotesk(
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.w600,
+                    letterSpacing: -0.3,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
                 ListTile(
                   leading: const Icon(Icons.picture_as_pdf_rounded),
                   title: const Text('Export PDF'),
+                  subtitle: const Text('Professional document with summary'),
                   onTap: () {
                     Navigator.pop(context);
                     _exportPdf();
                   },
                 ),
-                const Divider(),
                 ListTile(
                   leading: const Icon(Icons.table_chart_rounded),
                   title: const Text('Export CSV'),
+                  subtitle: const Text('Open in spreadsheet apps'),
                   onTap: () {
                     Navigator.pop(context);
                     _exportCsv();
                   },
                 ),
-                const Divider(),
                 ListTile(
                   leading: const Icon(Icons.image_rounded),
                   title: const Text('Export Image'),
+                  subtitle: const Text('Share as a screenshot'),
                   onTap: () {
                     Navigator.pop(context);
                     _exportImage();
@@ -404,8 +406,9 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
       child: Text(
         title,
         style: GoogleFonts.spaceGrotesk(
-          fontSize: 20,
+          fontSize: 18,
           fontWeight: FontWeight.w600,
+          letterSpacing: -0.3,
           color: Theme.of(context).colorScheme.onSurface,
         ),
       ),

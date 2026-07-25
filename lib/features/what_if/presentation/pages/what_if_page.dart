@@ -121,8 +121,9 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
     return Text(
       title,
       style: GoogleFonts.spaceGrotesk(
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: FontWeight.w600,
+        letterSpacing: -0.3,
         color: Theme.of(context).colorScheme.onSurface,
       ),
     );
@@ -173,7 +174,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
     final isPositive = diff > 0;
     final diffColor = isPositive ? AppColors.danger : AppColors.positive;
     final diffText = diff > 0
-        ?        '+${formatInr(diff)}'
+        ? '+${formatInr(diff)}'
         : diff < 0
             ? '-${formatInr(diff.abs())}'
             : '—';
@@ -186,7 +187,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: 13,
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
@@ -196,18 +197,31 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
               Text(
                 formatInr(value),
                 style: GoogleFonts.jetBrainsMono(
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: FontWeight.w600,
                   color: theme.colorScheme.onSurface,
                 ),
               ),
-              Text(
-                diffText,
-                style: GoogleFonts.jetBrainsMono(
-                  fontSize: 11,
-                  color: diffColor,
+              if (diff != 0)
+                Container(
+                  margin: const EdgeInsets.only(top: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: diffColor.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    diffText,
+                    style: GoogleFonts.jetBrainsMono(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500,
+                      color: diffColor,
+                    ),
+                  ),
                 ),
-              ),
             ],
           ),
         ],
@@ -234,16 +248,18 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Text(
             formatInr(amount),
             style: GoogleFonts.spaceGrotesk(
               fontSize: 32,
               fontWeight: FontWeight.w700,
+              letterSpacing: -1,
               color: color,
             ),
           ),
@@ -256,7 +272,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
                     : 'The new scenario is more expensive overall.',
             style: GoogleFonts.inter(
               fontSize: 13,
-              color: theme.colorScheme.onSurface,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ],
@@ -316,27 +332,29 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
   void _showExportOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
       builder: (context) {
         return SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   'Export What-If',
                   style: GoogleFonts.spaceGrotesk(
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.w600,
+                    letterSpacing: -0.3,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
                 ListTile(
                   leading: const Icon(Icons.image_rounded),
                   title: const Text('Export Image'),
+                  subtitle: const Text('Share as a screenshot'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   onTap: () {
                     Navigator.pop(context);
                     _exportImage();

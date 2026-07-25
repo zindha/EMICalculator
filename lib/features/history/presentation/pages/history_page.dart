@@ -74,34 +74,46 @@ class HistoryPage extends ConsumerWidget {
   Widget _buildEmptyState(BuildContext context) {
     final theme = Theme.of(context);
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.history_rounded,
-            size: 80,
-            color: theme.colorScheme.onSurface.withValues(alpha: 0.15),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Calculation History',
-            style: GoogleFonts.spaceGrotesk(
-              fontSize: 22,
-              fontWeight: FontWeight.w600,
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 72,
+              height: 72,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primaryContainer
+                    .withValues(alpha: 0.3),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.receipt_long_outlined,
+                size: 32,
+                color: theme.colorScheme.primary.withValues(alpha: 0.6),
+              ),
             ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Your saved calculations will appear here.\nStart by calculating your first EMI.',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.inter(
-              fontSize: 14,
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
-              height: 1.5,
+            const SizedBox(height: 20),
+            Text(
+              'Calculation History',
+              style: GoogleFonts.spaceGrotesk(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: theme.colorScheme.onSurface,
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 8),
+            Text(
+              'Your saved calculations will appear here.\nStart by calculating your first EMI.',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                color: theme.colorScheme.onSurfaceVariant,
+                height: 1.5,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -128,27 +140,72 @@ class _HistoryListTile extends StatelessWidget {
     );
     final calculation = entry.calculation;
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        leading: IconButton(
-          icon: Icon(
-            entry.isFavorite ? Icons.star_rounded : Icons.star_outline_rounded,
-            color: entry.isFavorite ? AppColors.warning : theme.colorScheme.onSurfaceVariant,
+    return Dismissible(
+      key: ValueKey(entry.id),
+      direction: DismissDirection.endToStart,
+      onDismissed: (_) => onDelete(),
+      background: Container(
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 20),
+        margin: const EdgeInsets.only(bottom: 10),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.errorContainer,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Icon(
+          Icons.delete_outline_rounded,
+          color: theme.colorScheme.onErrorContainer,
+        ),
+      ),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surfaceContainerLow,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: theme.colorScheme.outlineVariant
+                .withValues(alpha: 0.2),
+            width: 1,
           ),
-          onPressed: onToggleFavorite,
         ),
-        title: Text(
-          entry.title ?? 'Loan Calculation',
-          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-        ),
-        subtitle: Text(
-          '${formatter.format(calculation.loanAmount)} · ${calculation.interestRate.toStringAsFixed(1)}% · ${calculation.tenureMonths} months',
-          style: GoogleFonts.inter(fontSize: 12),
-        ),
-        trailing: IconButton(
-          icon: const Icon(Icons.delete_outline_rounded),
-          onPressed: onDelete,
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 4,
+          ),
+          leading: GestureDetector(
+            onTap: onToggleFavorite,
+            child: Icon(
+              entry.isFavorite ? Icons.star_rounded : Icons.star_outline_rounded,
+              color: entry.isFavorite ? AppColors.warning : theme.colorScheme.onSurfaceVariant,
+              size: 22,
+            ),
+          ),
+          title: Text(
+            entry.title ?? 'Loan Calculation',
+            style: GoogleFonts.inter(
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+            ),
+          ),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 3),
+            child: Text(
+              '${formatter.format(calculation.loanAmount)} · ${calculation.interestRate.toStringAsFixed(1)}% · ${calculation.tenureMonths} months',
+              style: GoogleFonts.inter(
+                fontSize: 12,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+          trailing: IconButton(
+            icon: Icon(
+              Icons.delete_outline_rounded,
+              size: 20,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+            onPressed: onDelete,
+          ),
         ),
       ),
     );

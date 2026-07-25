@@ -40,14 +40,14 @@ class SettingsPage extends ConsumerWidget {
             Text(
               'Appearance',
               style: GoogleFonts.spaceGrotesk(
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.w600,
+                letterSpacing: -0.3,
                 color: theme.colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 16),
             ModernGlassCard(
-              glass: true,
               child: Column(
                 children: [
                   _SettingsTile(
@@ -88,14 +88,14 @@ class SettingsPage extends ConsumerWidget {
             Text(
               'Accent Color',
               style: GoogleFonts.spaceGrotesk(
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.w600,
+                letterSpacing: -0.3,
                 color: theme.colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 16),
             ModernGlassCard(
-              glass: true,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: Wrap(
@@ -166,14 +166,14 @@ class SettingsPage extends ConsumerWidget {
             Text(
               'Preferences',
               style: GoogleFonts.spaceGrotesk(
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.w600,
+                letterSpacing: -0.3,
                 color: theme.colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 16),
             ModernGlassCard(
-              glass: true,
               child: Column(
                 children: [
                   _SettingsActionTile(
@@ -223,23 +223,77 @@ class SettingsPage extends ConsumerWidget {
             Text(
               'About',
               style: GoogleFonts.spaceGrotesk(
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.w600,
+                letterSpacing: -0.3,
                 color: theme.colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 16),
-            const ModernGlassCard(
-              glass: true,
+            ModernGlassCard(
               child: Column(
                 children: [
-                  _SettingsInfoTile(
+                  // ── App Identity ──────────────────────
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 72,
+                          height: 72,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18),
+                            boxShadow: [
+                              BoxShadow(
+                                color: theme.shadowColor
+                                    .withValues(alpha: 0.1),
+                                blurRadius: 20,
+                                offset: const Offset(0, 6),
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(18),
+                            child: Image.asset(
+                              'assets/images/app_icon.png',
+                              width: 72,
+                              height: 72,
+                              fit: BoxFit.cover,
+                              cacheWidth: 144,
+                              cacheHeight: 144,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                        Text(
+                          'EMI Calculator',
+                          style: GoogleFonts.spaceGrotesk(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: -0.3,
+                            color: theme.colorScheme.onSurface,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Smart Loan Planner',
+                          style: GoogleFonts.inter(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Divider(height: 1),
+                  const _SettingsInfoTile(
                     icon: Icons.info_outline,
                     title: 'Version',
                     subtitle: '1.2.0',
                   ),
-                  Divider(height: 1),
-                  _SettingsInfoTile(
+                  const Divider(height: 1),
+                  const _SettingsInfoTile(
                     icon: Icons.code_rounded,
                     title: 'Built with',
                     subtitle: 'Flutter • Riverpod • Hive',

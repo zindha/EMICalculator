@@ -152,8 +152,9 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
       child: Text(
         title,
         style: GoogleFonts.spaceGrotesk(
-          fontSize: 20,
+          fontSize: 18,
           fontWeight: FontWeight.w600,
+          letterSpacing: -0.3,
           color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
@@ -177,11 +178,10 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
         children: highlightMap.entries.map((entry) {
           final metrics = result.offers[entry.value ?? ''];
           final label = entry.key;
-          final value = metrics?.offer.name ?? '—';
-
-          return ModernGlassCard(
-            width: 180,
-            margin: const EdgeInsets.only(right: 12),
+          final value = metrics?.offer.name ?? '—';            return ModernGlassCard(
+            width: 170,
+            margin: const EdgeInsets.only(right: 10),
+            padding: const EdgeInsets.all(16),
             tintColor: theme.colorScheme.primary,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,17 +190,18 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
                 Text(
                   label,
                   style: GoogleFonts.inter(
-                    fontSize: 12,
+                    fontSize: 11,
                     fontWeight: FontWeight.w500,
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 Text(
                   value,
                   style: GoogleFonts.spaceGrotesk(
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
+                    letterSpacing: -0.3,
                     color: theme.colorScheme.onSurface,
                   ),
                 ),
@@ -372,39 +373,41 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
       builder: (context) {
         return SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   'Export Comparison',
                   style: GoogleFonts.spaceGrotesk(
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.w600,
+                    letterSpacing: -0.3,
                   ),
                 ),
-                const SizedBox(height: 24),
-                ListTile(
-                  leading: const Icon(Icons.picture_as_pdf_rounded),
-                  title: const Text('Export PDF'),
+                const SizedBox(height: 20),
+                _ExportOptionTile(
+                  icon: Icons.picture_as_pdf_rounded,
+                  label: 'Export PDF',
+                  description: 'Professional document with summary',
                   onTap: () {
                     Navigator.pop(context);
                     _exportPdf();
                   },
                 ),
-                const Divider(),
-                ListTile(
-                  leading: const Icon(Icons.table_chart_rounded),
-                  title: const Text('Export CSV'),
+                _ExportOptionTile(
+                  icon: Icons.table_chart_rounded,
+                  label: 'Export CSV',
+                  description: 'Open in spreadsheet apps',
                   onTap: () {
                     Navigator.pop(context);
                     _exportCsv();
                   },
                 ),
-                const Divider(),
-                ListTile(
-                  leading: const Icon(Icons.image_rounded),
-                  title: const Text('Export Image'),
+                _ExportOptionTile(
+                  icon: Icons.image_rounded,
+                  label: 'Export Image',
+                  description: 'Share as a screenshot',
                   onTap: () {
                     Navigator.pop(context);
                     _exportImage();
@@ -471,6 +474,59 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
         );
       }
     }
+  }
+}
+
+class _ExportOptionTile extends StatelessWidget {
+  const _ExportOptionTile({
+    required this.icon,
+    required this.label,
+    required this.description,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final String description;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 4),
+        leading: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: theme.colorScheme.primaryContainer
+                .withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(icon, color: theme.colorScheme.primary, size: 20),
+        ),
+        title: Text(
+          label,
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        subtitle: Text(
+          description,
+          style: GoogleFonts.inter(
+            fontSize: 12,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        onTap: onTap,
+      ),
+    );
   }
 }
 

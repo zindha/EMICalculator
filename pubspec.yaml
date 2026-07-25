@@ -56,5 +56,37 @@ dev_dependencies:
   # Analyzer (compatible with the SDK and other code-generation packages)
   analyzer: ^6.4.1
 
+  # App Icon & Splash Screen Generation
+  flutter_launcher_icons: ^0.14.3
+  flutter_native_splash: ^2.4.3
+
+flutter_launcher_icons:
+  image_path: "app-icon.png"
+  android: true
+  ios: true
+  web:
+    generate: true
+    image_path: "app-icon.png"
+  windows:
+    generate: true
+    image_path: "app-icon.png"
+  macos:
+    generate: true
+    image_path: "app-icon.png"
+
+flutter_native_splash:
+  image: assets/images/app_icon.png
+  color: "#FFFFFF"
+  color_dark: "#1A1A2E"
+  android: true
+  ios: true
+  web: true
+  android_12:
+    color: "#FFFFFF"
+    color_dark: "#1A1A2E"
+    image: assets/images/app_icon.png
+
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/

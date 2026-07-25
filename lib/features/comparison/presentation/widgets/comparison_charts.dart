@@ -83,8 +83,9 @@ class _ComparisonChartsState extends State<ComparisonCharts> {
     return Text(
       title,
       style: GoogleFonts.spaceGrotesk(
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: FontWeight.w600,
+        letterSpacing: -0.3,
         color: Theme.of(context).colorScheme.onSurface,
       ),
     );

@@ -27,16 +27,27 @@ class SmartInsightsCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.lightbulb_rounded,
-                color: theme.colorScheme.primary,
+              Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primaryContainer
+                      .withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(7),
+                ),
+                child: Icon(
+                  Icons.lightbulb_rounded,
+                  color: theme.colorScheme.primary,
+                  size: 16,
+                ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 10),
               Text(
                 'Smart Insights',
                 style: GoogleFonts.spaceGrotesk(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
+                  letterSpacing: -0.3,
                   color: theme.colorScheme.onSurface,
                 ),
               ),
@@ -45,16 +56,16 @@ class SmartInsightsCard extends StatelessWidget {
           const SizedBox(height: 16),
           ...insights.insights.map((insight) {
             return Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.only(bottom: 10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 8,
-                    height: 8,
-                    margin: const EdgeInsets.only(top: 6, right: 12),
+                    width: 6,
+                    height: 6,
+                    margin: const EdgeInsets.only(top: 7, right: 12),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.primary,
+                      color: theme.colorScheme.primary.withValues(alpha: 0.6),
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -62,7 +73,7 @@ class SmartInsightsCard extends StatelessWidget {
                     child: Text(
                       insight,
                       style: GoogleFonts.inter(
-                        fontSize: 14,
+                        fontSize: 13,
                         height: 1.5,
                         color: theme.colorScheme.onSurface,
                       ),

@@ -55,9 +55,9 @@ class ResultCharts extends ConsumerWidget {
     return Text(
       title,
       style: GoogleFonts.inter(
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: FontWeight.w600,
-        color: Theme.of(context).colorScheme.onSurface,
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
       ),
     );
   }
@@ -201,7 +201,7 @@ class _BalanceLineChart extends StatelessWidget {
           horizontalInterval: maxBalance / 4,
           getDrawingHorizontalLine: (value) {
             return FlLine(
-              color: theme.colorScheme.outlineVariant.withAlpha(77),
+              color: theme.colorScheme.outlineVariant.withValues(alpha: 0.15),
               strokeWidth: 1,
             );
           },
@@ -245,9 +245,9 @@ class _BalanceLineChart extends StatelessWidget {
                 if (value == 0) return const SizedBox.shrink();
                 return Text(
                   formatter.format(value),
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.jetBrainsMono(
                     fontSize: 9,
-                    color: theme.colorScheme.onSurfaceVariant,
+                    color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                   ),
                 );
               },
@@ -292,7 +292,15 @@ class _BalanceLineChart extends StatelessWidget {
             ),
             belowBarData: BarAreaData(
               show: true,
-              color: theme.colorScheme.primary.withAlpha(26),
+              color: theme.colorScheme.primary.withValues(alpha: 0.08),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  theme.colorScheme.primary.withValues(alpha: 0.12),
+                  theme.colorScheme.primary.withValues(alpha: 0.01),
+                ],
+              ),
             ),
           ),
         ],

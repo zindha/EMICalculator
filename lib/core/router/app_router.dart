@@ -125,49 +125,69 @@ class _AppShell extends ConsumerWidget {
 
     return Scaffold(
       body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 250),
+        transitionBuilder: (child, animation) {
+          return FadeTransition(
+            opacity: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOutCubic,
+            ),
+            child: child,
+          );
+        },
         child: child,
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: currentIndex,
-        onDestinationSelected: (index) {
-          switch (index) {
-            case 0:
-              context.go(AppRoutes.dashboard);
-              break;
-            case 1:
-              context.go(AppRoutes.calculator);
-              break;
-            case 2:
-              context.go(AppRoutes.history);
-              break;
-            case 3:
-              context.go(AppRoutes.settings);
-              break;
-          }
-        },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.dashboard_outlined),
-            selectedIcon: Icon(Icons.dashboard_rounded),
-            label: 'Dashboard',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: Theme.of(context).colorScheme.outlineVariant
+                  .withValues(alpha: 0.15),
+              width: 1,
+            ),
           ),
-          NavigationDestination(
-            icon: Icon(Icons.calculate_outlined),
-            selectedIcon: Icon(Icons.calculate_rounded),
-            label: 'Calculator',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.history_outlined),
-            selectedIcon: Icon(Icons.history_rounded),
-            label: 'History',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings_rounded),
-            label: 'Settings',
-          ),
-        ],
+        ),
+        child: NavigationBar(
+          selectedIndex: currentIndex,
+          onDestinationSelected: (index) {
+            switch (index) {
+              case 0:
+                context.go(AppRoutes.dashboard);
+                break;
+              case 1:
+                context.go(AppRoutes.calculator);
+                break;
+              case 2:
+                context.go(AppRoutes.history);
+                break;
+              case 3:
+                context.go(AppRoutes.settings);
+                break;
+            }
+          },
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.dashboard_outlined, size: 22),
+              selectedIcon: Icon(Icons.dashboard_rounded, size: 22),
+              label: 'Dashboard',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.calculate_outlined, size: 22),
+              selectedIcon: Icon(Icons.calculate_rounded, size: 22),
+              label: 'Calculator',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.history_outlined, size: 22),
+              selectedIcon: Icon(Icons.history_rounded, size: 22),
+              label: 'History',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.settings_outlined, size: 22),
+              selectedIcon: Icon(Icons.settings_rounded, size: 22),
+              label: 'Settings',
+            ),
+          ],
+        ),
       ),
     );
   }

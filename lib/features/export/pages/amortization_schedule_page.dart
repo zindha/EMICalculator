@@ -64,8 +64,8 @@ class AmortizationSchedulePage extends ConsumerWidget {
           // ── Summary Header ─────────────────────
           ModernGlassCard(
             margin: const EdgeInsets.all(16),
-            padding: const EdgeInsets.all(16),
-            glass: true,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+            tintColor: theme.colorScheme.primary,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -92,8 +92,18 @@ class AmortizationSchedulePage extends ConsumerWidget {
           ),
 
           // ── Table Header ───────────────────────
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: theme.colorScheme.outlineVariant
+                      .withValues(alpha: 0.2),
+                  width: 1,
+                ),
+              ),
+            ),
             child: Row(
               children: [
                 _tableHeaderCell(context, '#', flex: 1),
@@ -104,7 +114,6 @@ class AmortizationSchedulePage extends ConsumerWidget {
               ],
             ),
           ),
-          const Divider(height: 1),
 
           // ── Schedule List ──────────────────────
           Expanded(
@@ -253,32 +262,38 @@ class AmortizationSchedulePage extends ConsumerWidget {
       builder: (context) {
         return SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   'Export Schedule',
                   style: GoogleFonts.spaceGrotesk(
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.w600,
+                    letterSpacing: -0.3,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
                 ListTile(
                   leading: const Icon(Icons.picture_as_pdf_rounded),
                   title: const Text('Export as PDF'),
                   subtitle: const Text('Professional document with summary'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   onTap: () {
                     Navigator.pop(context);
                     _exportPdf(context, ref, schedule, exportService);
                   },
                 ),
-                const Divider(),
                 ListTile(
                   leading: const Icon(Icons.table_chart_rounded),
                   title: const Text('Export as CSV'),
                   subtitle: const Text('Open in spreadsheet apps'),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   onTap: () {
                     Navigator.pop(context);
                     _exportCsv(context, schedule, exportService);

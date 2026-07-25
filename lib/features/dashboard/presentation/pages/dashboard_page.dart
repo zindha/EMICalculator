@@ -52,8 +52,9 @@ class DashboardPage extends ConsumerWidget {
             Text(
               'Quick Actions',
               style: GoogleFonts.spaceGrotesk(
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.w600,
+                letterSpacing: -0.3,
                 color: theme.colorScheme.onSurface,
               ),
             ),
@@ -94,31 +95,40 @@ class DashboardPage extends ConsumerWidget {
             Text(
               'Recent Calculations',
               style: GoogleFonts.spaceGrotesk(
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.w600,
+                letterSpacing: -0.3,
                 color: theme.colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 16),
             ModernGlassCard(
-              glass: true,
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 32),
+                  padding: const EdgeInsets.symmetric(vertical: 36),
                   child: Column(
                     children: [
-                      Icon(
-                        Icons.history_outlined,
-                        size: 48,
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+                      Container(
+                        width: 56,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primaryContainer
+                              .withValues(alpha: 0.3),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.receipt_long_outlined,
+                          size: 26,
+                          color: theme.colorScheme.primary.withValues(alpha: 0.6),
+                        ),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 16),
                       Text(
                         'No calculations yet',
                         style: GoogleFonts.inter(
-                          fontSize: 16,
+                          fontSize: 15,
                           fontWeight: FontWeight.w500,
-                          color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                          color: theme.colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -126,13 +136,13 @@ class DashboardPage extends ConsumerWidget {
                         'Start by calculating your first EMI',
                         style: GoogleFonts.inter(
                           fontSize: 13,
-                          color: theme.colorScheme.onSurface.withValues(alpha: 0.4),
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 20),
                       FilledButton.icon(
                         onPressed: () => context.go(AppRoutes.calculator),
-                        icon: const Icon(Icons.add_rounded),
+                        icon: const Icon(Icons.add_rounded, size: 18),
                         label: const Text('New Calculation'),
                       ),
                     ],
@@ -169,27 +179,36 @@ class _QuickActionCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
+        borderRadius: BorderRadius.circular(14),
+        child: Ink(
+          padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
           decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(16),
+            color: theme.colorScheme.surfaceContainerLow,
+            borderRadius: BorderRadius.circular(14),
             border: Border.all(
-              color: color.withValues(alpha: 0.2),
+              color: theme.colorScheme.outlineVariant
+                  .withValues(alpha: 0.25),
               width: 1,
             ),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(icon, color: color, size: 32),
-              const SizedBox(height: 8),
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(icon, color: color, size: 22),
+              ),
+              const SizedBox(height: 10),
               Text(
                 label,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.inter(
-                  fontSize: 12,
+                  fontSize: 11,
                   fontWeight: FontWeight.w500,
                   color: theme.colorScheme.onSurface,
                   height: 1.3,

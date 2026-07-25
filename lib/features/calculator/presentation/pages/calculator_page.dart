@@ -97,7 +97,7 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
 
             // ── Input Section ─────────────────────
             _buildSectionTitle(context, 'Loan Details'),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
 
             // Loan Amount Slider
             SyncedSliderInput(
@@ -137,12 +137,12 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
 
             // Tenure Slider with months/years toggle
             _buildSectionTitle(context, 'Tenure'),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             TenureToggle(
               inYears: _tenureInYears,
               onChanged: (value) => setState(() => _tenureInYears = value),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 12),
             SyncedSliderInput(
               label: _tenureInYears ? 'Tenure (Years)' : 'Tenure (Months)',
               value: _tenureInYears
@@ -171,14 +171,14 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
             // ── Charts Section ────────────────────
             if (result != null) ...[
               _buildSectionTitle(context, 'Charts & Analysis'),
-              const SizedBox(height: 16),
+              const SizedBox(height: 20),
               ModernGlassCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Loan Health Score Bar
                     _buildHealthScoreBar(context, result),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 20),
                     const ResultCharts(),
                   ],
                 ),
@@ -189,22 +189,33 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
             // Empty state when no result yet.
             if (result == null)
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 48),
+                padding: const EdgeInsets.symmetric(vertical: 40),
                 child: Center(
                   child: Column(
                     children: [
-                      Icon(
-                        Icons.calculate_outlined,
-                        size: 64,
-                        color: theme.colorScheme.onSurface.withValues(alpha: 0.2),
+                      Container(
+                        width: 72,
+                        height: 72,
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primaryContainer
+                              .withValues(alpha: 0.3),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.trending_up_rounded,
+                          size: 32,
+                          color: theme.colorScheme.primary.withValues(alpha: 0.6),
+                        ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 20),
                       Text(
-                        'Adjust the sliders above to\nsee your EMI breakdown',
+                        'Move the sliders to see\nyour EMI breakdown',
                         textAlign: TextAlign.center,
                         style: GoogleFonts.inter(
                           fontSize: 14,
-                          color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+                          fontWeight: FontWeight.w400,
+                          color: theme.colorScheme.onSurfaceVariant,
+                          height: 1.5,
                         ),
                       ),
                     ],
@@ -220,12 +231,16 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
 
   /// Builds a section title widget.
   Widget _buildSectionTitle(BuildContext context, String title) {
-    return Text(
-      title,
-      style: GoogleFonts.spaceGrotesk(
-        fontSize: 20,
-        fontWeight: FontWeight.w600,
-        color: Theme.of(context).colorScheme.onSurface,
+    return Padding(
+      padding: const EdgeInsets.only(left: 2),
+      child: Text(
+        title,
+        style: GoogleFonts.spaceGrotesk(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          letterSpacing: -0.3,
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
       ),
     );
   }
@@ -260,9 +275,9 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
             Text(
               'Loan Health Score',
               style: GoogleFonts.inter(
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: FontWeight.w500,
-                color: theme.colorScheme.onSurface,
+                color: theme.colorScheme.onSurfaceVariant,
               ),
             ),
             Row(
@@ -270,32 +285,44 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
                 Text(
                   '$score',
                   style: GoogleFonts.spaceGrotesk(
-                    fontSize: 24,
+                    fontSize: 22,
                     fontWeight: FontWeight.w700,
+                    letterSpacing: -0.5,
                     color: scoreColor,
                   ),
                 ),
-                const SizedBox(width: 4),
-                Text(
-                  scoreLabel,
-                  style: GoogleFonts.inter(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: scoreColor,
+                const SizedBox(width: 6),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
+                  decoration: BoxDecoration(
+                    color: scoreColor.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    scoreLabel,
+                    style: GoogleFonts.inter(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: scoreColor,
+                    ),
                   ),
                 ),
               ],
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 10),
         ClipRRect(
           borderRadius: BorderRadius.circular(4),
           child: LinearProgressIndicator(
             value: score / 100,
-            backgroundColor: theme.colorScheme.surfaceContainerHighest,
+            backgroundColor: theme.colorScheme.surfaceContainerHighest
+                .withValues(alpha: 0.5),
             valueColor: AlwaysStoppedAnimation<Color>(scoreColor),
-            minHeight: 6,
+            minHeight: 4,
           ),
         ),
       ],

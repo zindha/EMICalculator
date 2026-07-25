@@ -7,7 +7,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/widgets/modern_glass_card.dart';
 import '../providers/calculator_provider.dart';
 
-/// A stunning hero card that displays the computed monthly EMI in large,
+/// A premium hero card that displays the computed monthly EMI in large,
 /// bold typography with a smooth animated count-up/down effect.
 ///
 /// Uses [TweenAnimationBuilder] to animate the EMI value when inputs change.
@@ -22,7 +22,6 @@ class HeroCard extends ConsumerWidget {
     final result = ref.watch(emiResultNotifierProvider);
 
     return ModernGlassCard(
-      glass: true,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
       tintColor: theme.colorScheme.primary,
       child: Column(
@@ -32,9 +31,10 @@ class HeroCard extends ConsumerWidget {
           Text(
             'Monthly EMI',
             style: GoogleFonts.inter(
-              fontSize: 14,
+              fontSize: 13,
               fontWeight: FontWeight.w500,
-              color: theme.colorScheme.onSurface.withAlpha(179),
+              letterSpacing: 0.5,
+              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 8),
@@ -43,7 +43,7 @@ class HeroCard extends ConsumerWidget {
           if (result != null)
             TweenAnimationBuilder<double>(
               tween: Tween<double>(begin: 0, end: result.emi),
-              duration: const Duration(milliseconds: 400),
+              duration: const Duration(milliseconds: 500),
               curve: Curves.easeOutCubic,
               builder: (context, value, child) {
                 final formatter = NumberFormat.currency(
@@ -55,10 +55,11 @@ class HeroCard extends ConsumerWidget {
                 return Text(
                   formatter.format(value),
                   style: GoogleFonts.spaceGrotesk(
-                    fontSize: 36,
+                    fontSize: 40,
                     fontWeight: FontWeight.w700,
-                    color: theme.colorScheme.primary,
+                    color: theme.colorScheme.onSurface,
                     height: 1.1,
+                    letterSpacing: -1.5,
                   ),
                 );
               },
@@ -67,14 +68,15 @@ class HeroCard extends ConsumerWidget {
             Text(
               '₹ 0',
               style: GoogleFonts.spaceGrotesk(
-                fontSize: 36,
+                fontSize: 40,
                 fontWeight: FontWeight.w700,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.15),
                 height: 1.1,
+                letterSpacing: -1.5,
               ),
             ),
 
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
 
           // ── Per Month Label ────────────────────
           Text(
@@ -82,8 +84,16 @@ class HeroCard extends ConsumerWidget {
             style: GoogleFonts.inter(
               fontSize: 12,
               fontWeight: FontWeight.w400,
-              color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
+              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+              letterSpacing: 0.5,
             ),
+          ),
+          const SizedBox(height: 24),
+
+          // ── Divider ────────────────────────────
+          Container(
+            height: 1,
+            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.2),
           ),
           const SizedBox(height: 20),
 
@@ -96,9 +106,9 @@ class HeroCard extends ConsumerWidget {
                   crossAxisCount: crossAxisCount,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  childAspectRatio: 1.4,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
+                  childAspectRatio: 1.5,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
                   children: [
                     _buildStatItem(
                       context,
@@ -114,13 +124,13 @@ class HeroCard extends ConsumerWidget {
                     ),
                     _buildStatItem(
                       context,
-                      label: 'Total Payment',
+                      label: 'Total',
                       value: _formatInr(result.totalPayment),
                       color: theme.colorScheme.onSurface,
                     ),
                     _buildStatItem(
                       context,
-                      label: 'Health Score',
+                      label: 'Health',
                       value: '${result.healthScore}',
                       color: _healthScoreColor(result.healthScore),
                     ),
@@ -142,10 +152,10 @@ class HeroCard extends ConsumerWidget {
   }) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
-        borderRadius: BorderRadius.circular(12),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.35),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -156,13 +166,13 @@ class HeroCard extends ConsumerWidget {
             child: Text(
               value,
               style: GoogleFonts.jetBrainsMono(
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: color,
               ),
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 3),
           Text(
             label,
             style: GoogleFonts.inter(
@@ -171,6 +181,8 @@ class HeroCard extends ConsumerWidget {
               color: theme.colorScheme.onSurfaceVariant,
             ),
             textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
