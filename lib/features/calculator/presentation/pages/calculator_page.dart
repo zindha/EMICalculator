@@ -212,6 +212,7 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
           ],
         ),
       ),
+    ),
     );
   }
 
