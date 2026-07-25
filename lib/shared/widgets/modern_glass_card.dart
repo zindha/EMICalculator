@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_colors.dart';
+
 /// A reusable Material 3 card with glassmorphism aesthetics.
 ///
 /// Features:
@@ -93,9 +95,9 @@ class ModernGlassCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(radius),
             // Glassmorphism overlay
             color: glass
-                ? Colors.white.withValues(
-                    alpha: theme.brightness == Brightness.light ? 0.3 : 0.05,
-                  )
+                ? (theme.brightness == Brightness.light
+                    ? AppColors.glassLight
+                    : AppColors.glassDark)
                 : null,
             // Top tint accent line
             border: tintColor != null

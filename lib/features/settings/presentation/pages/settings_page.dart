@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/theme_provider.dart';
 import '../../../../shared/widgets/modern_glass_card.dart';
 
@@ -102,58 +103,58 @@ class SettingsPage extends ConsumerWidget {
                   runSpacing: 12,
                   children: [
                     _AccentColorDot(
-                      color: const Color(0xFF6C63FF),
+                      color: AppColors.primary,
                       label: 'Purple',
                       isSelected: themeState.accentSeedColor.toARGB32() ==
-                          const Color(0xFF6C63FF).toARGB32(),
+                          AppColors.primary.toARGB32(),
                       onTap: () => ref
                           .read(themeNotifierProvider.notifier)
-                          .setAccentColor(const Color(0xFF6C63FF)),
+                          .setAccentColor(AppColors.primary),
                     ),
                     _AccentColorDot(
-                      color: const Color(0xFFFF6584),
+                      color: AppColors.secondary,
                       label: 'Coral',
                       isSelected: themeState.accentSeedColor.toARGB32() ==
-                          const Color(0xFFFF6584).toARGB32(),
+                          AppColors.secondary.toARGB32(),
                       onTap: () => ref
                           .read(themeNotifierProvider.notifier)
-                          .setAccentColor(const Color(0xFFFF6584)),
+                          .setAccentColor(AppColors.secondary),
                     ),
                     _AccentColorDot(
-                      color: const Color(0xFF00C9A7),
+                      color: AppColors.tertiary,
                       label: 'Mint',
                       isSelected: themeState.accentSeedColor.toARGB32() ==
-                          const Color(0xFF00C9A7).toARGB32(),
+                          AppColors.tertiary.toARGB32(),
                       onTap: () => ref
                           .read(themeNotifierProvider.notifier)
-                          .setAccentColor(const Color(0xFF00C9A7)),
+                          .setAccentColor(AppColors.tertiary),
                     ),
                     _AccentColorDot(
-                      color: const Color(0xFF3498DB),
+                      color: AppColors.info,
                       label: 'Blue',
                       isSelected: themeState.accentSeedColor.toARGB32() ==
-                          const Color(0xFF3498DB).toARGB32(),
+                          AppColors.info.toARGB32(),
                       onTap: () => ref
                           .read(themeNotifierProvider.notifier)
-                          .setAccentColor(const Color(0xFF3498DB)),
+                          .setAccentColor(AppColors.info),
                     ),
                     _AccentColorDot(
-                      color: const Color(0xFFE74C3C),
+                      color: AppColors.danger,
                       label: 'Red',
                       isSelected: themeState.accentSeedColor.toARGB32() ==
-                          const Color(0xFFE74C3C).toARGB32(),
+                          AppColors.danger.toARGB32(),
                       onTap: () => ref
                           .read(themeNotifierProvider.notifier)
-                          .setAccentColor(const Color(0xFFE74C3C)),
+                          .setAccentColor(AppColors.danger),
                     ),
                     _AccentColorDot(
-                      color: const Color(0xFF2ECC71),
+                      color: AppColors.positive,
                       label: 'Green',
                       isSelected: themeState.accentSeedColor.toARGB32() ==
-                          const Color(0xFF2ECC71).toARGB32(),
+                          AppColors.positive.toARGB32(),
                       onTap: () => ref
                           .read(themeNotifierProvider.notifier)
-                          .setAccentColor(const Color(0xFF2ECC71)),
+                          .setAccentColor(AppColors.positive),
                     ),
                   ],
                 ),

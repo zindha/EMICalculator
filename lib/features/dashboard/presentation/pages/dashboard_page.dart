@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/router/app_router.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/widgets/modern_glass_card.dart';
 
 /// The Dashboard screen — the first screen users see after launching the app.
@@ -70,19 +71,19 @@ class DashboardPage extends ConsumerWidget {
                 _QuickActionCard(
                   icon: Icons.compare_arrows_rounded,
                   label: 'Compare\nLoans',
-                  color: const Color(0xFFFF6584),
+                  color: AppColors.secondary,
                   onTap: () => context.go(AppRoutes.comparison),
                 ),
                 _QuickActionCard(
                   icon: Icons.savings_rounded,
                   label: 'Prepayment\nPlanner',
-                  color: const Color(0xFF00C9A7),
+                  color: AppColors.tertiary,
                   onTap: () => context.go(AppRoutes.prepayment),
                 ),
                 _QuickActionCard(
                   icon: Icons.trending_down_rounded,
                   label: 'What If\nSimulator',
-                  color: const Color(0xFF9B59B6),
+                  color: AppColors.info,
                   onTap: () => context.go(AppRoutes.whatIf),
                 ),
               ],

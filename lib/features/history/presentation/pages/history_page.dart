@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/theme/app_colors.dart';
+
 import '../../data/repositories/history_repository.dart';
 import '../providers/history_provider.dart';
 
@@ -132,7 +134,7 @@ class _HistoryListTile extends StatelessWidget {
         leading: IconButton(
           icon: Icon(
             entry.isFavorite ? Icons.star_rounded : Icons.star_outline_rounded,
-            color: entry.isFavorite ? const Color(0xFFF39C12) : theme.colorScheme.onSurfaceVariant,
+            color: entry.isFavorite ? AppColors.warning : theme.colorScheme.onSurfaceVariant,
           ),
           onPressed: onToggleFavorite,
         ),

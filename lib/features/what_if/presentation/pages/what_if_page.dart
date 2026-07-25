@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+
+import '../../../../core/theme/app_colors.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -169,7 +171,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
   ) {
     final theme = Theme.of(context);
     final isPositive = diff > 0;
-    final diffColor = isPositive ? const Color(0xFFE74C3C) : const Color(0xFF2ECC71);
+    final diffColor = isPositive ? AppColors.danger : AppColors.positive;
     final diffText = diff > 0
         ?        '+${formatInr(diff)}'
         : diff < 0
@@ -220,7 +222,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
     final amount = isSaving ? result.diff.savings : result.diff.extraCost;
     final color = !hasDiff
         ? theme.colorScheme.onSurfaceVariant
-        : (isSaving ? const Color(0xFF2ECC71) : const Color(0xFFE74C3C));
+        : (isSaving ? AppColors.positive : AppColors.danger);
     final label = !hasDiff ? 'No Difference' : (isSaving ? 'Total Savings' : 'Extra Cost');
 
     return ModernGlassCard(

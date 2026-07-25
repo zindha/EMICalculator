@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../shared/widgets/modern_glass_card.dart';
 import '../../../../shared/widgets/synced_slider_input.dart';
@@ -240,13 +241,13 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
     Color scoreColor;
     String scoreLabel;
     if (score >= 80) {
-      scoreColor = const Color(0xFF2ECC71);
+      scoreColor = AppColors.healthExcellent;
       scoreLabel = 'Excellent';
     } else if (score >= 50) {
-      scoreColor = const Color(0xFFF39C12);
+      scoreColor = AppColors.healthFair;
       scoreLabel = 'Fair';
     } else {
-      scoreColor = const Color(0xFFE74C3C);
+      scoreColor = AppColors.healthRisky;
       scoreLabel = 'Risky';
     }
 
@@ -318,12 +319,11 @@ class _AdvancedFieldsState extends ConsumerState<_AdvancedFields> {
     final input = ref.watch(calculatorInputNotifierProvider);
 
     return Column(
-      children: [
-        InkWell(
+      children: [          InkWell(
           onTap: () => setState(() => _expanded = !_expanded),
           borderRadius: BorderRadius.circular(8),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: 14),
             child: Row(
               children: [
                 Icon(
