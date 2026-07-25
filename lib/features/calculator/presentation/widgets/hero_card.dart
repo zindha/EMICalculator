@@ -102,7 +102,7 @@ class HeroCard extends ConsumerWidget {
                   children: [
                     _buildStatItem(
                       context,
-                      label: 'Principal",
+                      label: 'Principal',
                       value: _formatInr(result.effectiveLoanAmount),
                       color: theme.colorScheme.primary,
                     ),
