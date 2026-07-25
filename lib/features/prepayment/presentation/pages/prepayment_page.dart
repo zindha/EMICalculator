@@ -270,7 +270,7 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
       );
       await exportService.sharePdf(filePath);
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('PDF export failed: \$e')),
         );
@@ -297,7 +297,7 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
 
       await Share.shareXFiles([XFile(filePath)], subject: 'Prepayment Plan');
     } catch (e) {
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Image export failed: \$e')),
         );
@@ -495,7 +495,7 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
 
     if (title != null && title.isNotEmpty) {
       await ref.read(savedPrepaymentPlansNotifierProvider.notifier).saveCurrent(title);
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Plan saved')),
         );
