@@ -38,7 +38,6 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final session = ref.watch(activeComparisonNotifierProvider);
     final result = ref.watch(comparisonResultProvider);
     final insights = ref.watch(comparisonInsightsProvider);
@@ -495,8 +494,6 @@ class _SavedComparisonListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return ListTile(
       leading: IconButton(
         icon: Icon(

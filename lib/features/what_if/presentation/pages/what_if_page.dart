@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -38,7 +37,6 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
   Widget build(BuildContext context) {
     final inputState = ref.watch(whatIfInputNotifierProvider);
     final result = ref.watch(whatIfResultProvider);
-    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(

@@ -126,7 +126,7 @@ class ComparisonRepository {
     return LoanOffer(
       id: 'offer_$index',
       name: 'Loan ${String.fromCharCode(65 + index)}',
-      calculation: const EmiCalculation(
+      calculation: EmiCalculation(
         loanAmount: 500000 + (index * 100000).toDouble(),
         interestRate: 10.5 + (index * 0.5),
         tenureMonths: 60,

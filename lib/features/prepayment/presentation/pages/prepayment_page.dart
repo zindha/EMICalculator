@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -14,6 +13,7 @@ import '../../../../../shared/widgets/modern_glass_card.dart';
 import '../../data/repositories/prepayment_repository.dart';
 import '../../domain/models/prepayment_frequency.dart';
 import '../../domain/models/prepayment_rule.dart';
+import '../../domain/models/prepayment_strategy.dart';
 import '../providers/prepayment_provider.dart';
 import '../widgets/prepayment_pie_chart.dart';
 import '../widgets/prepayment_strategy_toggle.dart';
@@ -39,7 +39,6 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final input = ref.watch(prepaymentInputNotifierProvider);
     final result = ref.watch(prepaymentResultProvider);
 
     return Scaffold(
@@ -520,8 +519,6 @@ class _SavedPlanListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return ListTile(
       leading: IconButton(
         icon: Icon(

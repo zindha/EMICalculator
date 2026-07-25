@@ -2,7 +2,6 @@ import 'dart:math';
 
 import '../../../calculator/domain/engines/emi_calculator_service.dart';
 import '../../../calculator/domain/models/amortization_month.dart';
-import '../../../calculator/domain/models/emi_calculation.dart';
 import '../models/prepayment_frequency.dart';
 import '../models/prepayment_input.dart';
 import '../models/prepayment_result.dart';
@@ -27,7 +26,6 @@ class PrepaymentEngineService {
     final principal = base.loanAmount - base.downPayment;
     final monthlyRate = base.interestRate / 12 / 100;
     final originalEmi = _calculator.calculateEmi(base);
-    final originalSchedule = _calculator.generateAmortizationSchedule(base);
     final originalTotalInterest = _calculator.calculateTotalInterest(base);
     final originalTotalPayment = _calculator.calculateTotalPayment(base);
 

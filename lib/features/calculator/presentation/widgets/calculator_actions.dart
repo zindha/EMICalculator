@@ -52,6 +52,7 @@ Future<void> saveCalculationToHistory(
 void showCalculatorExportOptions({
   required BuildContext context,
   required WidgetRef ref,
+  required EmiCalculation input,
   required EmiCalculationResult result,
   required GlobalKey captureKey,
 }) {
@@ -91,7 +92,9 @@ void showCalculatorExportOptions({
                     );
                     await exportService.sharePdf(filePath);
                   } catch (e) {
-                    _showError(context, 'PDF export failed: $e');
+                    if (context.mounted) {
+                      _showError(context, 'PDF export failed: $e');
+                    }
                   }
                 },
               ),
@@ -107,7 +110,9 @@ void showCalculatorExportOptions({
                     );
                     await exportService.shareCsv(csv);
                   } catch (e) {
-                    _showError(context, 'CSV export failed: $e');
+                    if (context.mounted) {
+                      _showError(context, 'CSV export failed: $e');
+                    }
                   }
                 },
               ),
@@ -142,7 +147,9 @@ Future<void> _shareScreenshot(BuildContext context, GlobalKey captureKey) async 
       subject: 'EMI Calculation',
     );
   } catch (e) {
-    _showError(context, 'Image export failed: $e');
+    if (context.mounted) {
+      _showError(context, 'Image export failed: $e');
+    }
   }
 }
 

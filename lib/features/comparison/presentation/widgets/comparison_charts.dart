@@ -127,7 +127,6 @@ class _GroupedBarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final metrics = offers
         .map((o) => result.offers[o.id])
         .whereType<LoanOfferMetrics>()
@@ -169,7 +168,7 @@ class _GroupedBarChart extends StatelessWidget {
         gridData: const FlGridData(show: false),
         titlesData: FlTitlesData(
           leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: const AxisTitles(sideSides: SideTitles(showTitles: false)),
+          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(

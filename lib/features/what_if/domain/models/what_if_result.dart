@@ -1,4 +1,4 @@
-import '../../calculator/domain/models/emi_calculation.dart';
+import '../../../calculator/domain/models/emi_calculation.dart';
 
 /// Result of a single What-If scenario.
 class WhatIfScenarioResult {

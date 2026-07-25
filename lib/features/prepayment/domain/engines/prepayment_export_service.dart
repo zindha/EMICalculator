@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -10,6 +11,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../models/prepayment_input.dart';
 import '../models/prepayment_result.dart';
+import '../models/prepayment_strategy.dart';
 
 /// Service that handles exporting prepayment plans as PDF, CSV, and images,
 /// and sharing them via the native share sheet.

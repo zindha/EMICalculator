@@ -4,7 +4,7 @@ import 'package:emi_calculator/features/comparison/domain/models/comparison_resu
 import 'package:emi_calculator/features/comparison/domain/models/loan_offer.dart';
 import 'package:emi_calculator/features/comparison/presentation/widgets/comparison_table.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test.dart' hide ComparisonResult;
 
 void main() {
   group('ComparisonTable', () {

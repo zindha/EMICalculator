@@ -1,8 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:emi_calculator/features/calculator/domain/models/emi_calculation.dart';
-import 'package:emi_calculator/features/what_if/domain/models/what_if_result.dart';
 import 'package:emi_calculator/features/what_if/presentation/providers/what_if_provider.dart';
 
 void main() {

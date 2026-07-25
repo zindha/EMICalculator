@@ -8,7 +8,6 @@ import 'package:share_plus/share_plus.dart';
 
 import '../models/comparison_result.dart';
 import '../models/comparison_session.dart';
-import '../models/loan_offer.dart';
 
 /// Service that handles exporting a comparison session to CSV and PDF and
 /// sharing it.

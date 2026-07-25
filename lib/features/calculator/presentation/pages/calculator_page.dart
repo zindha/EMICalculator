@@ -75,6 +75,7 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
               onPressed: () => showCalculatorExportOptions(
                 context: context,
                 ref: ref,
+                input: input,
                 result: result,
                 captureKey: _captureKey,
               ),

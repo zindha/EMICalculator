@@ -1,5 +1,4 @@
 import '../models/comparison_result.dart';
-import '../models/loan_offer.dart';
 
 /// Pure Dart service that generates human-readable insights from a
 /// [ComparisonResult].
@@ -93,7 +92,6 @@ class SmartInsightsService {
     String Function(double) formatCurrency,
   ) {
     final insights = <String>[];
-    final entries = result.offers.values.toList();
 
     // Suggest increasing down payment for the best-overall candidate if it
     // doesn't already have one.

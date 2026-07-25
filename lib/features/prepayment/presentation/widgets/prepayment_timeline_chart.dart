@@ -21,9 +21,9 @@ class PrepaymentTimelineChart extends StatelessWidget {
     final theme = Theme.of(context);
 
     final originalSpots = <FlSpot>[
-      FlSpot(0, result.updatedSchedule.isNotEmpty
+      FlSpot(0.0, result.updatedSchedule.isNotEmpty
           ? result.updatedSchedule.first.openingBalance
-          : 0),
+          : 0.0),
     ];
 
     for (final entry in result.updatedSchedule) {

@@ -145,7 +145,7 @@ class PrepaymentPieChart extends StatelessWidget {
 }
 
 class _PieEntry {
-  const _PieEntry(this.label, this.value, this.color);
+  const _PieEntry({required this.label, required this.value, required this.color});
 
   final String label;
   final double value;

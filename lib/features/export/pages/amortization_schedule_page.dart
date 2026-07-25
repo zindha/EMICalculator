@@ -326,9 +326,11 @@ class AmortizationSchedulePage extends ConsumerWidget {
 
       await exportService.sharePdf(filePath);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Export failed: $e')),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Export failed: $e')),
+        );
+      }
     }
   }
 
@@ -342,9 +344,11 @@ class AmortizationSchedulePage extends ConsumerWidget {
       final csv = exportService.generateCsv(schedule: schedule);
       await exportService.shareCsv(csv);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Export failed: $e')),
-      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Export failed: $e')),
+        );
+      }
     }
   }
 }
