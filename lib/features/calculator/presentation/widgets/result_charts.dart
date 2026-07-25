@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-import '../providers/calculator_provider.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_typography.dart';
+import '../providers/calculator_provider.dart';
 
 /// Widget that displays two charts: a pie chart showing the principal vs.
 /// interest breakdown, and a line chart showing the loan balance over time.
@@ -55,10 +55,7 @@ class ResultCharts extends ConsumerWidget {
   Widget _buildSectionTitle(BuildContext context, String title) {
     return Text(
       title,
-      style: GoogleFonts.inter(
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
-        color: Theme.of(context).colorScheme.onSurfaceVariant,
+      style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 14, fontWeight: FontWeight.w600, color: Theme.of(context).colorScheme.onSurfaceVariant,
       ),
     );
   }
@@ -103,22 +100,14 @@ class _PrincipalVsInterestPieChart extends StatelessWidget {
                   color: AppColors.primary,
                   value: max(principal, 1),
                   title: '$principalPercent%',
-                  titleStyle: GoogleFonts.inter(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
+                  titleStyle: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.white),
                   radius: 35,
                 ),
                 PieChartSectionData(
                   color: AppColors.danger,
                   value: max(totalInterest, 1),
                   title: '$interestPercent%',
-                  titleStyle: GoogleFonts.inter(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
+                  titleStyle: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.white),
                   radius: 35,
                 ),
               ],
@@ -130,18 +119,12 @@ class _PrincipalVsInterestPieChart extends StatelessWidget {
             children: [
               Text(
                 'Total',
-                style: GoogleFonts.inter(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 10, fontWeight: FontWeight.w400, color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
               Text(
                 formatter.format(total),
-                style: GoogleFonts.jetBrainsMono(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).colorScheme.onSurface,
+                style: AppTypography.monetaryStyle(context).copyWith(fontSize: 12, fontWeight: FontWeight.w600, color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ],
@@ -176,10 +159,7 @@ class _BalanceLineChart extends StatelessWidget {
       return Center(
         child: Text(
           'No amortization data',
-          style: GoogleFonts.inter(
-            fontSize: 14,
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 14, color: theme.colorScheme.onSurfaceVariant),
         ),
       );
     }
@@ -236,10 +216,7 @@ class _BalanceLineChart extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 4),
                     child: Text(
                       'M${entry.monthNumber}',
-                      style: GoogleFonts.inter(
-                        fontSize: 10,
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 10, color: theme.colorScheme.onSurfaceVariant),
                     ),
                   );
                 },
@@ -253,9 +230,7 @@ class _BalanceLineChart extends StatelessWidget {
                   if (value == 0) return const SizedBox.shrink();
                   return Text(
                     formatter.format(value),
-                    style: GoogleFonts.jetBrainsMono(
-                      fontSize: 9,
-                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                    style: AppTypography.monetaryStyle(context).copyWith(fontSize: 9, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                     ),
                   );
                 },
@@ -275,7 +250,7 @@ class _BalanceLineChart extends StatelessWidget {
                   final entry = schedule[spot.spotIndex] as dynamic;
                   return LineTooltipItem(
                     'M${entry.monthNumber}: ${formatter.format(entry.closingBalance)}',
-                    GoogleFonts.interTextTheme().bodySmall!.copyWith(
+                    AppTypography.caption(context).copyWith(
                           color: Colors.white,
                           fontSize: 11,
                         ),

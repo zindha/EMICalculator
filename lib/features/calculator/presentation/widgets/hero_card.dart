@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/theme/app_colors.dart';
-import '../../../../shared/widgets/modern_glass_card.dart';
+import '../../../../core/theme/app_typography.dart';
+import '../../../../shared/widgets/modern_card.dart';
 import '../providers/calculator_provider.dart';
 
 /// A premium hero card that displays the computed monthly EMI in large,
@@ -21,7 +21,7 @@ class HeroCard extends ConsumerWidget {
     final theme = Theme.of(context);
     final result = ref.watch(emiResultNotifierProvider);
 
-    return ModernGlassCard(
+    return ModernCard(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
       tintColor: theme.colorScheme.primary,
       child: Column(
@@ -30,12 +30,7 @@ class HeroCard extends ConsumerWidget {
           // ── Label ──────────────────────────────
           Text(
             'Monthly EMI',
-            style: GoogleFonts.inter(
-              fontSize: 13,
-              fontWeight: FontWeight.w500,
-              letterSpacing: 0.5,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 13, fontWeight: FontWeight.w500, letterSpacing: 0.5, color: theme.colorScheme.onSurfaceVariant),
           ),
           const SizedBox(height: 8),
 
@@ -55,14 +50,12 @@ class HeroCard extends ConsumerWidget {
                   decimalDigits: 0,
                 );
 
-                return Text(
-                  formatter.format(value),
-                  style: GoogleFonts.spaceGrotesk(
-                    fontSize: 40,
-                    fontWeight: FontWeight.w700,
-                    color: theme.colorScheme.onSurface,
-                    height: 1.1,
-                    letterSpacing: -1.5,
+                return FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    formatter.format(value),
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(fontSize: 40, fontWeight: FontWeight.w700, color: theme.colorScheme.onSurface, height: 1.1, letterSpacing: -1.5),
                   ),
                 );
               },
@@ -70,10 +63,7 @@ class HeroCard extends ConsumerWidget {
           else
             Text(
               '₹ 0',
-              style: GoogleFonts.spaceGrotesk(
-                fontSize: 40,
-                fontWeight: FontWeight.w700,
-                color: theme.colorScheme.onSurface.withValues(alpha: 0.15),
+              style: Theme.of(context).textTheme.displaySmall?.copyWith(fontSize: 40, fontWeight: FontWeight.w700, color: theme.colorScheme.onSurface.withValues(alpha: 0.15),
                 height: 1.1,
                 letterSpacing: -1.5,
               ),
@@ -84,10 +74,7 @@ class HeroCard extends ConsumerWidget {
           // ── Per Month Label ────────────────────
           Text(
             'per month',
-            style: GoogleFonts.inter(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
               letterSpacing: 0.5,
             ),
           ),
@@ -104,14 +91,9 @@ class HeroCard extends ConsumerWidget {
           if (result != null)
             LayoutBuilder(
               builder: (context, constraints) {
-                final crossAxisCount = constraints.maxWidth > 360 ? 4 : 2;
-                return GridView.count(
-                  crossAxisCount: crossAxisCount,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  childAspectRatio: 1.5,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
+                return Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
                   children: [
                     _buildStatItem(
                       context,
@@ -168,21 +150,13 @@ class HeroCard extends ConsumerWidget {
             fit: BoxFit.scaleDown,
             child: Text(
               value,
-              style: GoogleFonts.jetBrainsMono(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: color,
-              ),
+              style: AppTypography.monetaryStyle(context).copyWith(fontSize: 13, fontWeight: FontWeight.w600, color: color),
             ),
           ),
           const SizedBox(height: 3),
           Text(
             label,
-            style: GoogleFonts.inter(
-              fontSize: 10,
-              fontWeight: FontWeight.w500,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 10, fontWeight: FontWeight.w500, color: theme.colorScheme.onSurfaceVariant),
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

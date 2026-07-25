@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/router/app_router.dart';
-import '../../../../shared/widgets/modern_glass_card.dart';
+import '../../../../shared/widgets/modern_card.dart';
 import '../../../../shared/widgets/synced_slider_input.dart';
 import '../providers/calculator_provider.dart';
 import '../widgets/calculator_actions.dart';
@@ -43,9 +42,7 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
       appBar: AppBar(
         title: Text(
           'EMI Calculator',
-          style: GoogleFonts.spaceGrotesk(
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
         actions: [
@@ -195,7 +192,7 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
             if (result != null) ...[
               _buildSectionTitle(context, 'Charts & Analysis'),
               const SizedBox(height: 20),
-              ModernGlassCard(
+              ModernCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -234,12 +231,7 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
                       Text(
                         'Move the sliders to see\nyour EMI breakdown',
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: theme.colorScheme.onSurfaceVariant,
-                          height: 1.5,
-                        ),
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 14, fontWeight: FontWeight.w400, color: theme.colorScheme.onSurfaceVariant, height: 1.5),
                       ),
                     ],
                   ),
@@ -258,11 +250,7 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
       padding: const EdgeInsets.only(left: 2),
       child: Text(
         title,
-        style: GoogleFonts.spaceGrotesk(
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-          letterSpacing: -0.3,
-          color: Theme.of(context).colorScheme.onSurface,
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18, fontWeight: FontWeight.w600, letterSpacing: -0.3, color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
     );
@@ -297,22 +285,13 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
           children: [
             Text(
               'Loan Health Score',
-              style: GoogleFonts.inter(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 13, fontWeight: FontWeight.w500, color: theme.colorScheme.onSurfaceVariant),
             ),
             Row(
               children: [
                 Text(
                   '$score',
-                  style: GoogleFonts.spaceGrotesk(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.5,
-                    color: scoreColor,
-                  ),
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontSize: 22, fontWeight: FontWeight.w700, letterSpacing: -0.5, color: scoreColor),
                 ),
                 const SizedBox(width: 6),
                 Container(
@@ -326,11 +305,7 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
                   ),
                   child: Text(
                     scoreLabel,
-                    style: GoogleFonts.inter(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: scoreColor,
-                    ),
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 11, fontWeight: FontWeight.w600, color: scoreColor),
                   ),
                 ),
               ],
@@ -415,11 +390,7 @@ class _AdvancedFieldsState extends ConsumerState<_AdvancedFields> {
                 const SizedBox(width: 8),
                 Text(
                   _expanded ? 'Hide Advanced Fields' : 'Show Advanced Fields',
-                  style: GoogleFonts.inter(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: theme.colorScheme.primary,
-                  ),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 14, fontWeight: FontWeight.w500, color: theme.colorScheme.primary),
                 ),
               ],
             ),

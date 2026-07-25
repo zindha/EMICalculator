@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// Toggle switch for selecting tenure input in months or years.
 /// Animated sliding indicator for a premium feel.
@@ -75,21 +74,11 @@ class _ToggleOption extends StatelessWidget {
               ? theme.colorScheme.surface
               : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
-          boxShadow: selected
-              ? [
-                  BoxShadow(
-                    color: theme.shadowColor.withValues(alpha: 0.08),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ]
-              : null,
         ),
         child: Text(
           label,
           textAlign: TextAlign.center,
-          style: GoogleFonts.inter(
-            fontSize: 13,
+          style: theme.textTheme.labelLarge?.copyWith(
             fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
             color: selected
                 ? theme.colorScheme.primary

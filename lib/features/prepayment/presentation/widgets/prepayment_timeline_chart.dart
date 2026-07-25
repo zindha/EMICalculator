@@ -1,6 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../domain/models/prepayment_result.dart';
 
@@ -60,7 +59,7 @@ class PrepaymentTimelineChart extends StatelessWidget {
               getTitlesWidget: (value, meta) {
                 return Text(
                   'M${value.toInt()}',
-                  style: GoogleFonts.inter(fontSize: 10),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 10),
                 );
               },
             ),
@@ -72,7 +71,7 @@ class PrepaymentTimelineChart extends StatelessWidget {
               getTitlesWidget: (value, meta) {
                 return Text(
                   _formatCompact(value),
-                  style: GoogleFonts.inter(fontSize: 9),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 9),
                 );
               },
             ),

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_typography.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-
 import '../../../../core/constants/app_constants.dart';
-import '../../../../shared/widgets/modern_glass_card.dart';
+import '../../../../shared/widgets/modern_card.dart';
 import '../../../../shared/widgets/image_export_service.dart';
 import '../../../../shared/widgets/number_formatter.dart';
 import '../../../../shared/widgets/synced_slider_input.dart';
@@ -38,10 +36,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'What If Simulator',
-          style: GoogleFonts.spaceGrotesk(fontWeight: FontWeight.w600),
-        ),
+        title: const Text('What If Simulator'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -99,9 +94,9 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
 
               _buildSectionTitle(context, 'Breakdown'),
               const SizedBox(height: 12),
-              ModernGlassCard(
+              ModernCard(
                 child: SizedBox(
-                  height: 220,
+                  height: _clampChartHeight(0.28),
                   child: WhatIfPieChart(result: result),
                 ),
               ),
@@ -113,14 +108,18 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
     );
   }
 
+  double _clampChartHeight(double factor) {
+    final height = MediaQuery.of(context).size.height * factor;
+    return height.clamp(180.0, 280.0);
+  }
+
   Widget _buildSectionTitle(BuildContext context, String title) {
+    final theme = Theme.of(context);
     return Text(
       title,
-      style: GoogleFonts.spaceGrotesk(
-        fontSize: 18,
+      style: theme.textTheme.titleLarge?.copyWith(
         fontWeight: FontWeight.w600,
         letterSpacing: -0.3,
-        color: Theme.of(context).colorScheme.onSurface,
       ),
     );
   }
@@ -132,7 +131,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
   ) {
     final theme = Theme.of(context);
 
-    return ModernGlassCard(
+    return ModernCard(
       tintColor: theme.colorScheme.primary,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -182,8 +181,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
         children: [
           Text(
             label,
-            style: GoogleFonts.inter(
-              fontSize: 13,
+            style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
@@ -192,10 +190,8 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
             children: [
               Text(
                 formatInr(value),
-                style: GoogleFonts.jetBrainsMono(
-                  fontSize: 15,
+                style: AppTypography.monetaryStyle(context).copyWith(
                   fontWeight: FontWeight.w600,
-                  color: theme.colorScheme.onSurface,
                 ),
               ),
               if (diff != 0)
@@ -211,7 +207,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
                   ),
                   child: Text(
                     diffText,
-                    style: GoogleFonts.jetBrainsMono(
+                    style: AppTypography.monetaryStyle(context).copyWith(
                       fontSize: 10,
                       fontWeight: FontWeight.w500,
                       color: diffColor,
@@ -235,7 +231,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
         : (isSaving ? AppColors.positive : AppColors.danger);
     final label = !hasDiff ? 'No Difference' : (isSaving ? 'Total Savings' : 'Extra Cost');
 
-    return ModernGlassCard(
+    return ModernCard(
       tintColor: color,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -243,8 +239,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
         children: [
           Text(
             label,
-            style: GoogleFonts.inter(
-              fontSize: 13,
+            style: theme.textTheme.bodySmall?.copyWith(
               fontWeight: FontWeight.w500,
               color: theme.colorScheme.onSurfaceVariant,
             ),
@@ -252,8 +247,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
           const SizedBox(height: 6),
           Text(
             formatInr(amount),
-            style: GoogleFonts.spaceGrotesk(
-              fontSize: 32,
+            style: theme.textTheme.displaySmall?.copyWith(
               fontWeight: FontWeight.w700,
               letterSpacing: -1,
               color: color,
@@ -266,8 +260,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
                 : isSaving
                     ? 'The new scenario is cheaper overall.'
                     : 'The new scenario is more expensive overall.',
-            style: GoogleFonts.inter(
-              fontSize: 13,
+            style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
@@ -337,8 +330,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
               children: [
                 Text(
                   'Export What-If',
-                  style: GoogleFonts.spaceGrotesk(
-                    fontSize: 18,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                     letterSpacing: -0.3,
                   ),

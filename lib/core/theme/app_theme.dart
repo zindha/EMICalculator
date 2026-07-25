@@ -149,7 +149,7 @@ class AppTheme {
       // ── Input Fields ────────────────────────
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        fillColor: colorScheme.surfaceContainerHighest,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
@@ -260,7 +260,7 @@ class AppTheme {
       dialogTheme: DialogThemeData(
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(28),
         ),
         backgroundColor: colorScheme.surfaceContainerHigh,
       ),

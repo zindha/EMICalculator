@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+import '../../core/theme/app_typography.dart';
 
 /// A custom input widget that combines a [Slider] and a [TextField] that
 /// stay perfectly synchronized with each other.
@@ -170,9 +171,7 @@ class _SyncedSliderInputState extends ConsumerState<SyncedSliderInput> {
               children: [
                 Text(
                   widget.label,
-                  style: GoogleFonts.inter(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
+                  style: theme.textTheme.labelLarge?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
@@ -189,9 +188,8 @@ class _SyncedSliderInputState extends ConsumerState<SyncedSliderInput> {
                     ),
                     child: Text(
                       _formatValue(_currentValue),
-                      style: GoogleFonts.jetBrainsMono(
+                      style: AppTypography.monetaryStyle(context).copyWith(
                         fontSize: 12,
-                        fontWeight: FontWeight.w600,
                         color: theme.colorScheme.primary,
                       ),
                     ),
@@ -213,22 +211,18 @@ class _SyncedSliderInputState extends ConsumerState<SyncedSliderInput> {
                   RegExp(r'[\d.]'),
                 ),
               ],
-              style: GoogleFonts.jetBrainsMono(
+              style: AppTypography.monetaryStyle(context).copyWith(
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
-                color: theme.colorScheme.onSurface,
               ),
               decoration: InputDecoration(
                 prefixText: widget.prefixSymbol,
-                prefixStyle: GoogleFonts.inter(
-                  fontSize: 15,
+                prefixStyle: theme.textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.w500,
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
                 suffixText: widget.suffixText,
-                suffixStyle: GoogleFonts.inter(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
+                suffixStyle: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
                 filled: true,
@@ -302,9 +296,7 @@ class _SyncedSliderInputState extends ConsumerState<SyncedSliderInput> {
               padding: const EdgeInsets.only(top: 2, left: 4),
               child: Text(
                 widget.helperText!,
-                style: GoogleFonts.inter(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
+                style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),

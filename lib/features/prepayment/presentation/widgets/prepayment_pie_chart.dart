@@ -1,6 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../domain/models/prepayment_result.dart';
 
@@ -54,11 +53,7 @@ class PrepaymentPieChart extends StatelessWidget {
           color: entry.color,
           title: total > 0 ? '${_percentage(entry.value, total)}%' : '',
           radius: 70,
-          titleStyle: GoogleFonts.inter(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
+          titleStyle: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.white),
         ),
       );
       legend.add(_LegendItem(entry.label, entry.color, entry.value));
@@ -101,18 +96,11 @@ class PrepaymentPieChart extends StatelessWidget {
                         children: [
                           Text(
                             item.label,
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: theme.colorScheme.onSurface,
-                            ),
+                            style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
                           ),
                           Text(
                             '₹${_formatCompact(item.value)}',
-                            style: GoogleFonts.inter(
-                              fontSize: 11,
-                              color: theme.colorScheme.onSurfaceVariant,
-                            ),
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 11, color: theme.colorScheme.onSurfaceVariant),
                           ),
                         ],
                       ),

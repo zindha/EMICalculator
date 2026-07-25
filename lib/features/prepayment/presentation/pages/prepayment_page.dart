@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-
-import '../../../../../shared/widgets/modern_glass_card.dart';
+import '../../../../shared/widgets/modern_card.dart';
 import '../../../../shared/widgets/image_export_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../data/repositories/prepayment_repository.dart';
@@ -40,10 +38,7 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Prepayment Planner',
-          style: GoogleFonts.spaceGrotesk(fontWeight: FontWeight.w600),
-        ),
+        title: const Text('Prepayment Planner'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -120,9 +115,9 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
             const SizedBox(height: 12),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: ModernGlassCard(
+              child: ModernCard(
                 child: SizedBox(
-                  height: 220,
+                  height: _clampChartHeight(0.28),
                   child: PrepaymentPieChart(result: result),
                 ),
               ),
@@ -134,9 +129,9 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
             const SizedBox(height: 12),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: ModernGlassCard(
+              child: ModernCard(
                 child: SizedBox(
-                  height: 240,
+                  height: _clampChartHeight(0.32),
                   child: PrepaymentTimelineChart(result: result),
                 ),
               ),
@@ -148,7 +143,7 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
             const SizedBox(height: 12),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: ModernGlassCard(
+              child: ModernCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -170,10 +165,8 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
                           Expanded(
                             child: Text(
                               insight,
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 height: 1.5,
-                                color: theme.colorScheme.onSurface,
                               ),
                             ),
                           ),
@@ -207,8 +200,7 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
               children: [
                 Text(
                   'Export Plan',
-                  style: GoogleFonts.spaceGrotesk(
-                    fontSize: 18,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                     letterSpacing: -0.3,
                   ),
@@ -318,10 +310,7 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
                     children: [
                       Text(
                         'Saved Plans',
-                        style: GoogleFonts.spaceGrotesk(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(height: 16),
                       Expanded(
@@ -331,7 +320,7 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
                               return Center(
                                 child: Text(
                                   'No saved plans yet',
-                                  style: GoogleFonts.inter(
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: theme.colorScheme.onSurfaceVariant,
                                   ),
                                 ),
@@ -386,16 +375,20 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
     );
   }
 
+  double _clampChartHeight(double factor) {
+    final height = MediaQuery.of(context).size.height * factor;
+    return height.clamp(180.0, 280.0);
+  }
+
   Widget _buildSectionTitle(BuildContext context, String title) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Text(
         title,
-        style: GoogleFonts.spaceGrotesk(
-          fontSize: 18,
+        style: theme.textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.w600,
           letterSpacing: -0.3,
-          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
     );
@@ -405,13 +398,13 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
     final input = ref.watch(prepaymentInputNotifierProvider);
 
     if (input.rules.isEmpty) {
-      return ModernGlassCard(
+      return ModernCard(
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
               'No prepayment rules yet. Add one to see savings.',
-              style: GoogleFonts.inter(
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
@@ -427,11 +420,11 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
         return ListTile(
           title: Text(
             rule.name ?? rule.frequency.label,
-            style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+            style: const TextStyle(fontWeight: FontWeight.w600),
           ),
           subtitle: Text(
             '₹${rule.amount.toStringAsFixed(0)} starting month ${rule.startMonth}',
-            style: GoogleFonts.inter(fontSize: 12),
+            style: Theme.of(context).textTheme.bodySmall,
           ),
           trailing: IconButton(
             icon: const Icon(Icons.delete_outline_rounded),
@@ -518,11 +511,11 @@ class _SavedPlanListTile extends StatelessWidget {
       ),
       title: Text(
         plan.title,
-        style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+        style: const TextStyle(fontWeight: FontWeight.w600),
       ),
       subtitle: Text(
         '${plan.input.strategy.label} • ${DateFormat.yMMMd().format(plan.createdAt)}',
-        style: GoogleFonts.inter(fontSize: 12),
+        style: Theme.of(context).textTheme.bodySmall,
       ),
       trailing: IconButton(
         icon: const Icon(Icons.delete_outline_rounded),

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 
-import '../../../../shared/widgets/modern_glass_card.dart';
+import '../../../../shared/widgets/modern_card.dart';
 import '../../../../shared/widgets/image_export_service.dart';
 import '../../../../shared/widgets/number_formatter.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -42,7 +41,7 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
       appBar: AppBar(
         title: Text(
           'Compare Loans',
-          style: GoogleFonts.spaceGrotesk(fontWeight: FontWeight.w600),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
         actions: [
@@ -74,7 +73,8 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
               _buildSectionTitle(context, 'Loan Offers'),
               const SizedBox(height: 12),
               SizedBox(
-                height: 640,
+                height: (MediaQuery.of(context).size.height * 0.72)
+                    .clamp(520.0, 680.0),
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -148,11 +148,7 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Text(
         title,
-        style: GoogleFonts.spaceGrotesk(
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-          letterSpacing: -0.3,
-          color: Theme.of(context).colorScheme.onSurface,
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18, fontWeight: FontWeight.w600, letterSpacing: -0.3, color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
     );
@@ -175,7 +171,7 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
         children: highlightMap.entries.map((entry) {
           final metrics = result.offers[entry.value ?? ''];
           final label = entry.key;
-          final value = metrics?.offer.name ?? '—';            return ModernGlassCard(
+          final value = metrics?.offer.name ?? '—';            return ModernCard(
             width: 170,
             margin: const EdgeInsets.only(right: 10),
             padding: const EdgeInsets.all(16),
@@ -186,21 +182,12 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
               children: [
                 Text(
                   label,
-                  style: GoogleFonts.inter(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w500,
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 11, fontWeight: FontWeight.w500, color: theme.colorScheme.onSurfaceVariant),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   value,
-                  style: GoogleFonts.spaceGrotesk(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: -0.3,
-                    color: theme.colorScheme.onSurface,
-                  ),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 15, fontWeight: FontWeight.w600, letterSpacing: -0.3, color: theme.colorScheme.onSurface),
                 ),
               ],
             ),
@@ -245,10 +232,7 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
                     children: [
                       Text(
                         'Saved Comparisons',
-                        style: GoogleFonts.spaceGrotesk(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 20, fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(height: 16),
                       Expanded(
@@ -258,9 +242,7 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
                               return Center(
                                 child: Text(
                                   'No saved comparisons yet',
-                                  style: GoogleFonts.inter(
-                                    color: theme.colorScheme.onSurfaceVariant,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                                 ),
                               );
                             }
@@ -376,11 +358,7 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
               children: [
                 Text(
                   'Export Comparison',
-                  style: GoogleFonts.spaceGrotesk(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: -0.3,
-                  ),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18, fontWeight: FontWeight.w600, letterSpacing: -0.3),
                 ),
                 const SizedBox(height: 20),
                 _ExportOptionTile(
@@ -495,17 +473,11 @@ class _ExportOptionTile extends StatelessWidget {
         ),
         title: Text(
           label,
-          style: GoogleFonts.inter(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 14, fontWeight: FontWeight.w500),
         ),
         subtitle: Text(
           description,
-          style: GoogleFonts.inter(
-            fontSize: 12,
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12, color: theme.colorScheme.onSurfaceVariant),
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -545,11 +517,11 @@ class _SavedComparisonListTile extends StatelessWidget {
       ),
       title: Text(
         session.title,
-        style: GoogleFonts.inter(fontWeight: FontWeight.w600),
+        style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
       ),
       subtitle: Text(
         '${session.offers.length} loans • ${DateFormat.yMMMd().format(session.createdAt)}',
-        style: GoogleFonts.inter(fontSize: 12),
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12),
       ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,

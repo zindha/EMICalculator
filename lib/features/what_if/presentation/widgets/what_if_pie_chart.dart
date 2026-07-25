@@ -1,6 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../domain/models/what_if_result.dart';
 
@@ -28,40 +27,44 @@ class _WhatIfPieChartState extends State<WhatIfPieChart> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: _buildPie(
-                context,
-                label: 'Baseline',
-                result: widget.result.baseline,
-                color: const Color(0xFF6C63FF),
-                interestColor: const Color(0xFFE74C3C),
-                indexOffset: 0,
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: _buildPie(
+                  context,
+                  label: 'Baseline',
+                  result: widget.result.baseline,
+                  color: const Color(0xFF6C63FF),
+                  interestColor: const Color(0xFFE74C3C),
+                  indexOffset: 0,
+                ),
               ),
-            ),
-            Expanded(
-              child: _buildPie(
-                context,
-                label: 'New',
-                result: widget.result.current,
-                color: const Color(0xFF00C9A7),
-                interestColor: const Color(0xFFF39C12),
-                indexOffset: 2,
+              Expanded(
+                child: _buildPie(
+                  context,
+                  label: 'New',
+                  result: widget.result.current,
+                  color: const Color(0xFF00C9A7),
+                  interestColor: const Color(0xFFF39C12),
+                  indexOffset: 2,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         const SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _buildLegendItem(
+              context,
               'Baseline Principal',
               const Color(0xFF6C63FF),
             ),
             const SizedBox(width: 12),
             _buildLegendItem(
+              context,
               'Baseline Interest',
               const Color(0xFFE74C3C),
             ),
@@ -72,11 +75,13 @@ class _WhatIfPieChartState extends State<WhatIfPieChart> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _buildLegendItem(
+              context,
               'New Principal',
               const Color(0xFF00C9A7),
             ),
             const SizedBox(width: 12),
             _buildLegendItem(
+              context,
               'New Interest',
               const Color(0xFFF39C12),
             ),
@@ -105,8 +110,7 @@ class _WhatIfPieChartState extends State<WhatIfPieChart> {
             ? '${((result.effectiveLoanAmount / total) * 100).round()}%'
             : '',
         radius: _touchedIndex == indexOffset ? 55 : 50,
-        titleStyle: GoogleFonts.inter(
-          fontSize: 11,
+        titleStyle: theme.textTheme.labelSmall?.copyWith(
           fontWeight: FontWeight.w600,
           color: Colors.white,
         ),
@@ -118,8 +122,7 @@ class _WhatIfPieChartState extends State<WhatIfPieChart> {
             ? '${((result.totalInterest / total) * 100).round()}%'
             : '',
         radius: _touchedIndex == indexOffset + 1 ? 55 : 50,
-        titleStyle: GoogleFonts.inter(
-          fontSize: 11,
+        titleStyle: theme.textTheme.labelSmall?.copyWith(
           fontWeight: FontWeight.w600,
           color: Colors.white,
         ),
@@ -127,19 +130,15 @@ class _WhatIfPieChartState extends State<WhatIfPieChart> {
     ];
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           label,
-          style: GoogleFonts.inter(
-            fontSize: 12,
+          style: theme.textTheme.labelMedium?.copyWith(
             fontWeight: FontWeight.w600,
-            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 8),
-        SizedBox(
-          height: 130,
+        Expanded(
           child: PieChart(
             PieChartData(
               sections: sections,
@@ -166,7 +165,7 @@ class _WhatIfPieChartState extends State<WhatIfPieChart> {
     );
   }
 
-  Widget _buildLegendItem(String label, Color color) {
+  Widget _buildLegendItem(BuildContext context, String label, Color color) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -181,7 +180,7 @@ class _WhatIfPieChartState extends State<WhatIfPieChart> {
         const SizedBox(width: 6),
         Text(
           label,
-          style: GoogleFonts.inter(fontSize: 11),
+          style: Theme.of(context).textTheme.labelSmall,
         ),
       ],
     );

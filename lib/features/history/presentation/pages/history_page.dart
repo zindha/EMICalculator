@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/router/app_router.dart';
@@ -27,9 +26,7 @@ class HistoryPage extends ConsumerWidget {
       appBar: AppBar(
         title: Text(
           'History',
-          style: GoogleFonts.spaceGrotesk(
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
         actions: [
@@ -66,7 +63,7 @@ class HistoryPage extends ConsumerWidget {
         error: (error, _) => Center(
           child: Text(
             'Error: $error',
-            style: GoogleFonts.inter(color: theme.colorScheme.error),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: theme.colorScheme.error),
           ),
         ),
       ),
@@ -98,21 +95,13 @@ class HistoryPage extends ConsumerWidget {
             const SizedBox(height: 20),
             Text(
               'Calculation History',
-              style: GoogleFonts.spaceGrotesk(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: theme.colorScheme.onSurface,
-              ),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 20, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
             ),
             const SizedBox(height: 8),
             Text(
               'Your saved calculations will appear here.\nStart by calculating your first EMI.',
               textAlign: TextAlign.center,
-              style: GoogleFonts.inter(
-                fontSize: 14,
-                color: theme.colorScheme.onSurfaceVariant,
-                height: 1.5,
-              ),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 14, color: theme.colorScheme.onSurfaceVariant, height: 1.5),
             ),
             const SizedBox(height: 20),
             FilledButton.icon(
@@ -181,29 +170,25 @@ class _HistoryListTile extends StatelessWidget {
             horizontal: 16,
             vertical: 4,
           ),
-          leading: GestureDetector(
-            onTap: onToggleFavorite,
-            child: Icon(
+          leading: IconButton(
+            icon: Icon(
               entry.isFavorite ? Icons.star_rounded : Icons.star_outline_rounded,
               color: entry.isFavorite ? AppColors.warning : theme.colorScheme.onSurfaceVariant,
               size: 22,
             ),
+            tooltip: entry.isFavorite ? 'Remove from favorites' : 'Add to favorites',
+            onPressed: onToggleFavorite,
+            constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
           ),
           title: Text(
             entry.title ?? 'Loan Calculation',
-            style: GoogleFonts.inter(
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
-            ),
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600, fontSize: 14),
           ),
           subtitle: Padding(
             padding: const EdgeInsets.only(top: 3),
             child: Text(
               '${formatter.format(calculation.loanAmount)} · ${calculation.interestRate.toStringAsFixed(1)}% · ${calculation.tenureMonths} months',
-              style: GoogleFonts.inter(
-                fontSize: 12,
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12, color: theme.colorScheme.onSurfaceVariant),
             ),
           ),
           trailing: IconButton(

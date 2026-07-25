@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-import '../../../shared/widgets/modern_glass_card.dart';
-import '../../calculator/domain/models/amortization_month.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_typography.dart';
+import '../../../shared/widgets/modern_card.dart';
+import '../../calculator/domain/models/amortization_month.dart';
 import '../services/export_service.dart';
 
 /// Screen that displays the full amortization schedule in a beautifully
@@ -47,7 +47,7 @@ class AmortizationSchedulePage extends ConsumerWidget {
       appBar: AppBar(
         title: Text(
           'Amortization Schedule',
-          style: GoogleFonts.spaceGrotesk(
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -63,7 +63,7 @@ class AmortizationSchedulePage extends ConsumerWidget {
       body: Column(
         children: [
           // ── Summary Header ─────────────────────
-          ModernGlassCard(
+          ModernCard(
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
             tintColor: theme.colorScheme.primary,
@@ -192,18 +192,15 @@ class AmortizationSchedulePage extends ConsumerWidget {
       children: [
         Text(
           value,
-          style: GoogleFonts.jetBrainsMono(
+          style: AppTypography.monetaryStyle(context).copyWith(
             fontSize: 14,
-            fontWeight: FontWeight.w600,
             color: color,
           ),
         ),
         const SizedBox(height: 2),
         Text(
           label,
-          style: GoogleFonts.inter(
-            fontSize: 10,
-            fontWeight: FontWeight.w400,
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
             color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
           ),
         ),
@@ -218,10 +215,8 @@ class AmortizationSchedulePage extends ConsumerWidget {
       flex: flex,
       child: Text(
         text,
-        style: GoogleFonts.inter(
-          fontSize: 10,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
           fontWeight: FontWeight.w600,
-          color: Theme.of(context).colorScheme.onSurfaceVariant,
         ),
       ),
     );
@@ -239,7 +234,7 @@ class AmortizationSchedulePage extends ConsumerWidget {
       flex: flex,
       child: Text(
         text,
-        style: GoogleFonts.jetBrainsMono(
+        style: AppTypography.monetaryStyle(context).copyWith(
           fontSize: 11,
           fontWeight: isBold ? FontWeight.w600 : FontWeight.w400,
           color: color ?? Theme.of(context).colorScheme.onSurface,
@@ -269,8 +264,7 @@ class AmortizationSchedulePage extends ConsumerWidget {
               children: [
                 Text(
                   'Export Schedule',
-                  style: GoogleFonts.spaceGrotesk(
-                    fontSize: 18,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                     letterSpacing: -0.3,
                   ),

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_info.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/theme_provider.dart';
-import '../../../../shared/widgets/modern_glass_card.dart';
+import '../../../../shared/widgets/modern_card.dart';
 
 /// The Settings screen where users can customize their app experience.
 ///
@@ -25,12 +24,7 @@ class SettingsPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Settings',
-          style: GoogleFonts.spaceGrotesk(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        title: const Text('Settings'),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -42,7 +36,7 @@ class SettingsPage extends ConsumerWidget {
               // ── Theme Mode ────────────────────────
               const _SectionTitle(title: 'Appearance'),
               const SizedBox(height: 12),
-              ModernGlassCard(
+              ModernCard(
                 child: Column(
                   children: [
                     _SettingsTile(
@@ -83,7 +77,7 @@ class SettingsPage extends ConsumerWidget {
               // ── Accent Color ──────────────────────
               const _SectionTitle(title: 'Accent Color'),
               const SizedBox(height: 12),
-              ModernGlassCard(
+              ModernCard(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   child: LayoutBuilder(
@@ -167,7 +161,7 @@ class SettingsPage extends ConsumerWidget {
               // ── Preferences ─────────────────────
               const _SectionTitle(title: 'Preferences'),
               const SizedBox(height: 12),
-              ModernGlassCard(
+              ModernCard(
                 child: Column(
                   children: [
                     _SettingsActionTile(
@@ -210,28 +204,14 @@ class SettingsPage extends ConsumerWidget {
               // ── About ─────────────────────────────
               const _SectionTitle(title: 'About'),
               const SizedBox(height: 12),
-              ModernGlassCard(
+              ModernCard(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // ── App Identity ──────────────────────
-                      Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: theme.shadowColor
-                                  .withValues(alpha: 0.1),
-                              blurRadius: 24,
-                              offset: const Offset(0, 6),
-                            ),
-                          ],
-                        ),
-                        child: ClipRRect(
+                      ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Image.asset(
                             'assets/images/app_icon.png',
@@ -248,24 +228,19 @@ class SettingsPage extends ConsumerWidget {
                               ),
                             ),
                           ),
-                        ),
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        AppInfo.appName,
-                        style: GoogleFonts.spaceGrotesk(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: -0.3,
-                          color: theme.colorScheme.onSurface,
-                        ),
+        AppInfo.appName,
+        style: theme.textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.w700,
+          letterSpacing: -0.3,
+        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         'Version ${AppInfo.version}',
-                        style: GoogleFonts.inter(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
+                        style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
@@ -276,8 +251,7 @@ class SettingsPage extends ConsumerWidget {
                         child: Text(
                           AppInfo.companyDescription,
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.inter(
-                            fontSize: 13,
+                          style: theme.textTheme.bodyMedium?.copyWith(
                             height: 1.5,
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
@@ -368,13 +342,12 @@ class _SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Text(
       title,
-      style: GoogleFonts.spaceGrotesk(
-        fontSize: 18,
+      style: theme.textTheme.titleLarge?.copyWith(
         fontWeight: FontWeight.w600,
         letterSpacing: -0.3,
-        color: Theme.of(context).colorScheme.onSurface,
       ),
     );
   }
@@ -409,18 +382,13 @@ class _SettingsTile extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: GoogleFonts.inter(
-          fontSize: 15,
+        style: theme.textTheme.bodyLarge?.copyWith(
           fontWeight: FontWeight.w500,
-          color: theme.colorScheme.onSurface,
         ),
       ),
       subtitle: Text(
         subtitle,
-        style: GoogleFonts.inter(
-          fontSize: 12,
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
+        style: theme.textTheme.bodySmall,
       ),
       trailing: isSelected
           ? Icon(
@@ -456,18 +424,13 @@ class _SettingsInfoTile extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: GoogleFonts.inter(
-          fontSize: 15,
+        style: theme.textTheme.bodyLarge?.copyWith(
           fontWeight: FontWeight.w500,
-          color: theme.colorScheme.onSurface,
         ),
       ),
       subtitle: Text(
         subtitle,
-        style: GoogleFonts.inter(
-          fontSize: 12,
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
+        style: theme.textTheme.bodySmall,
       ),
     );
   }
@@ -498,18 +461,13 @@ class _SettingsActionTile extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: GoogleFonts.inter(
-          fontSize: 15,
+        style: theme.textTheme.bodyLarge?.copyWith(
           fontWeight: FontWeight.w500,
-          color: theme.colorScheme.onSurface,
         ),
       ),
       subtitle: Text(
         subtitle,
-        style: GoogleFonts.inter(
-          fontSize: 12,
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
+        style: theme.textTheme.bodySmall,
       ),
       trailing: Icon(
         Icons.chevron_right_rounded,
@@ -556,15 +514,6 @@ class _AccentColorDot extends StatelessWidget {
                 border: isSelected
                     ? Border.all(color: Colors.white, width: 3)
                     : null,
-                boxShadow: isSelected
-                    ? [
-                        BoxShadow(
-                          color: color.withValues(alpha: 0.4),
-                          blurRadius: 8,
-                          spreadRadius: 1,
-                        ),
-                      ]
-                    : null,
               ),
               child: isSelected
                   ? const Icon(Icons.check, color: Colors.white, size: 18)
@@ -573,11 +522,7 @@ class _AccentColorDot extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               label,
-              style: GoogleFonts.inter(
-                fontSize: 10,
-                fontWeight: FontWeight.w400,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
         ),

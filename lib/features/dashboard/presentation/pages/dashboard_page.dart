@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import '../../../../core/constants/app_info.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../shared/widgets/modern_glass_card.dart';
+import '../../../../shared/widgets/modern_card.dart';
 
 /// The Dashboard screen — the first screen users see after launching the app.
 ///
@@ -28,16 +26,13 @@ class DashboardPage extends ConsumerWidget {
           children: [
             Text(
               AppInfo.appName,
-              style: GoogleFonts.spaceGrotesk(
-                fontSize: 20,
+              style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
             ),
             Text(
               AppInfo.tagline,
-              style: GoogleFonts.inter(
-                fontSize: 11,
-                fontWeight: FontWeight.w400,
+              style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
             ),
@@ -54,11 +49,9 @@ class DashboardPage extends ConsumerWidget {
               // ── Quick Actions ─────────────────────
               Text(
                 'Quick Actions',
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: 18,
+                style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w600,
                   letterSpacing: -0.3,
-                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 16),
@@ -116,15 +109,13 @@ class DashboardPage extends ConsumerWidget {
               // ── Recent Calculations ───────────────
               Text(
                 'Recent Calculations',
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: 18,
+                style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w600,
                   letterSpacing: -0.3,
-                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 16),
-              ModernGlassCard(
+              ModernCard(
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 36),
@@ -148,17 +139,14 @@ class DashboardPage extends ConsumerWidget {
                         const SizedBox(height: 16),
                         Text(
                           'No calculations yet',
-                          style: GoogleFonts.inter(
-                            fontSize: 15,
+                          style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w500,
-                            color: theme.colorScheme.onSurface,
                           ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           'Start by calculating your first EMI',
-                          style: GoogleFonts.inter(
-                            fontSize: 13,
+                          style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
                         ),
@@ -234,10 +222,8 @@ class _QuickActionCard extends StatelessWidget {
               Text(
                 label,
                 textAlign: TextAlign.center,
-                style: GoogleFonts.inter(
-                  fontSize: 12,
+                style: theme.textTheme.labelLarge?.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: theme.colorScheme.onSurface,
                   height: 1.35,
                 ),
               ),

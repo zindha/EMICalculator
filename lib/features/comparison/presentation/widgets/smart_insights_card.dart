@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../../shared/widgets/modern_glass_card.dart';
+import '../../../../../shared/widgets/modern_card.dart';
 import '../providers/comparison_provider.dart';
 
 /// Card that displays the human-readable insights generated for a comparison.
@@ -19,7 +18,7 @@ class SmartInsightsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return ModernGlassCard(
+    return ModernCard(
       tintColor: theme.colorScheme.primary,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,12 +43,7 @@ class SmartInsightsCard extends StatelessWidget {
               const SizedBox(width: 10),
               Text(
                 'Smart Insights',
-                style: GoogleFonts.spaceGrotesk(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: -0.3,
-                  color: theme.colorScheme.onSurface,
-                ),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: -0.3, color: theme.colorScheme.onSurface),
               ),
             ],
           ),
@@ -72,11 +66,7 @@ class SmartInsightsCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       insight,
-                      style: GoogleFonts.inter(
-                        fontSize: 13,
-                        height: 1.5,
-                        color: theme.colorScheme.onSurface,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 13, height: 1.5, color: theme.colorScheme.onSurface),
                     ),
                   ),
                 ],

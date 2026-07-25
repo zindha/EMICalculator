@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/constants/app_info.dart';
 
@@ -122,33 +121,19 @@ class _SplashScreenState extends State<SplashScreen>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // ── App Icon ───────────────────────────
-                  Container(
-                    width: 96,
-                    height: 96,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(22),
-                      boxShadow: [
-                        BoxShadow(
-                          color: theme.shadowColor.withValues(alpha: 0.15),
-                          blurRadius: 32,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(22),
-                      child: Image.asset(
-                        'assets/images/app_icon.png',
-                        width: 96,
-                        height: 96,
-                        fit: BoxFit.cover,
-                        cacheWidth: 192,
-                        cacheHeight: 192,
-                        errorBuilder: (_, __, ___) => Icon(
-                          Icons.calculate_rounded,
-                          size: 48,
-                          color: theme.colorScheme.primary,
-                        ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(22),
+                    child: Image.asset(
+                      'assets/images/app_icon.png',
+                      width: 96,
+                      height: 96,
+                      fit: BoxFit.cover,
+                      cacheWidth: 192,
+                      cacheHeight: 192,
+                      errorBuilder: (_, __, ___) => Icon(
+                        Icons.calculate_rounded,
+                        size: 48,
+                        color: theme.colorScheme.primary,
                       ),
                     ),
                   ),
@@ -157,8 +142,7 @@ class _SplashScreenState extends State<SplashScreen>
                   // ── App Name ───────────────────────────
                   Text(
                     AppInfo.appName,
-                    style: GoogleFonts.spaceGrotesk(
-                      fontSize: 26,
+                    style: theme.textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w700,
                       letterSpacing: -0.5,
                       color: theme.colorScheme.onSurface,
@@ -169,9 +153,7 @@ class _SplashScreenState extends State<SplashScreen>
                   // ── Tagline ────────────────────────────
                   Text(
                     AppInfo.tagline,
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       letterSpacing: 0.5,
                       color: theme.colorScheme.onSurfaceVariant,
                     ),

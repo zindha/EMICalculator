@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../domain/models/prepayment_strategy.dart';
 import '../providers/prepayment_provider.dart';
@@ -40,15 +39,6 @@ class PrepaymentStrategyToggle extends ConsumerWidget {
                       ? theme.colorScheme.surface
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
-                  boxShadow: isSelected
-                      ? [
-                          BoxShadow(
-                            color: theme.shadowColor.withValues(alpha: 0.08),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ]
-                      : null,
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -56,21 +46,15 @@ class PrepaymentStrategyToggle extends ConsumerWidget {
                     Text(
                       strategy.label,
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(
-                        fontSize: 13,
-                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                        color: isSelected
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 13, fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500, color: isSelected
                             ? theme.colorScheme.primary
-                            : theme.colorScheme.onSurfaceVariant,
-                      ),
+                            : theme.colorScheme.onSurfaceVariant),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       strategy.description,
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(
-                        fontSize: 10,
-                        color: isSelected
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 10, color: isSelected
                             ? theme.colorScheme.primary.withValues(alpha: 0.7)
                             : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                       ),

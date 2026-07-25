@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../core/constants/app_constants.dart';
-import '../../../../../shared/widgets/modern_glass_card.dart';
+import '../../../../../shared/widgets/modern_card.dart';
 import '../../../../../shared/widgets/synced_slider_input.dart';
 import '../../../calculator/domain/models/emi_calculation.dart';
 import '../../domain/models/loan_offer.dart';
@@ -63,7 +62,7 @@ class _LoanInputCardState extends ConsumerState<LoanInputCard> {
     final theme = Theme.of(context);
     final calculation = widget.offer.calculation;
 
-    return ModernGlassCard(
+    return ModernCard(
       width: 320,
       margin: const EdgeInsets.only(right: 12, bottom: 8),
       child: Column(
@@ -80,15 +79,9 @@ class _LoanInputCardState extends ConsumerState<LoanInputCard> {
                     hintText: 'Loan Name',
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.zero,
-                    hintStyle: GoogleFonts.spaceGrotesk(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
+                    hintStyle: Theme.of(context).textTheme.titleLarge?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                   ),
-                  style: GoogleFonts.spaceGrotesk(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.onSurface,
-                  ),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
                   onChanged: (value) {
                     ref
                         .read(activeComparisonNotifierProvider.notifier)

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../../shared/widgets/modern_glass_card.dart';
+import '../../../../../shared/widgets/modern_card.dart';
 import '../../../../../shared/widgets/number_formatter.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../domain/models/comparison_result.dart';
@@ -61,10 +60,7 @@ class ComparisonTable extends StatelessWidget with NumberFormatter {
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Text(
               label,
-              style: GoogleFonts.inter(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 13, fontWeight: FontWeight.w600, color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           );
@@ -91,7 +87,7 @@ class ComparisonTable extends StatelessWidget with NumberFormatter {
       _CellData(value: '${metrics.healthScore}'),
     ];
 
-    return ModernGlassCard(
+    return ModernCard(
       width: 160,
       margin: const EdgeInsets.only(right: 12, bottom: 8),
       tintColor: isBestOverall ? theme.colorScheme.primary : null,
@@ -114,15 +110,11 @@ class ComparisonTable extends StatelessWidget with NumberFormatter {
             child: Text(
               cell.value,
               textAlign: TextAlign.center,
-              style: GoogleFonts.inter(
-                fontSize: cell.isHeader ? 14 : 13,
-                fontWeight: cell.isHeader || isHighlighted
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: cell.isHeader ? 14 : 13, fontWeight: cell.isHeader || isHighlighted
                     ? FontWeight.w600
-                    : FontWeight.w400,
-                color: isHighlighted
+                    : FontWeight.w400, color: isHighlighted
                     ? AppColors.positive
-                    : theme.colorScheme.onSurface,
-              ),
+                    : theme.colorScheme.onSurface),
             ),
           );
         }).toList(),

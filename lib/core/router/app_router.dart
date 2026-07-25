@@ -127,7 +127,7 @@ class _AppShell extends ConsumerWidget {
       body: AnimatedSwitcher(
         duration: Duration(
           milliseconds:
-              MediaQuery.of(context).disableAnimations ? 0 : 250,
+              MediaQuery.of(context).disableAnimations ? 0 : 150,
         ),
         transitionBuilder: (child, animation) {
           return FadeTransition(
@@ -140,19 +140,7 @@ class _AppShell extends ConsumerWidget {
         },
         child: child,
       ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surface,
-            border: Border(
-              top: BorderSide(
-                color: Theme.of(context).colorScheme.outlineVariant
-                    .withValues(alpha: 0.15),
-                width: 1,
-              ),
-            ),
-          ),
-          child: NavigationBar(
+      bottomNavigationBar: NavigationBar(
             selectedIndex: currentIndex,
             onDestinationSelected: (index) {
               switch (index) {
@@ -197,8 +185,6 @@ class _AppShell extends ConsumerWidget {
               ),
             ],
           ),
-        ),
-      ),
     );
   }
 }

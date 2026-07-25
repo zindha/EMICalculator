@@ -1,6 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../domain/models/comparison_result.dart';
 import '../../domain/models/loan_offer.dart';
@@ -83,11 +82,7 @@ class _ComparisonChartsState extends State<ComparisonCharts> {
   Widget _buildSectionTitle(BuildContext context, String title) {
     return Text(
       title,
-      style: GoogleFonts.spaceGrotesk(
-        fontSize: 16,
-        fontWeight: FontWeight.w600,
-        letterSpacing: -0.3,
-        color: Theme.of(context).colorScheme.onSurface,
+      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: -0.3, color: Theme.of(context).colorScheme.onSurface,
       ),
     );
   }
@@ -108,7 +103,7 @@ class _ComparisonChartsState extends State<ComparisonCharts> {
             child: ChoiceChip(
               label: Text(
                 offer.name,
-                style: GoogleFonts.inter(fontSize: 12),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 12),
               ),
               selected: isSelected,
               onSelected: (_) => setState(() => _selectedPieIndex = index),
@@ -187,7 +182,7 @@ class _GroupedBarChart extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
                       offers[index].name,
-                      style: GoogleFonts.inter(fontSize: 10),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 10),
                     ),
                   );
                 },
@@ -260,7 +255,7 @@ class _PrincipalInterestChart extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
                       offers[index].name,
-                      style: GoogleFonts.inter(fontSize: 10),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 10),
                     ),
                   );
                 },
@@ -306,7 +301,7 @@ class _PaymentBreakdownPieChart extends StatelessWidget {
       return Center(
         child: Text(
           'No data available',
-          style: GoogleFonts.inter(color: theme.colorScheme.onSurfaceVariant),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
         ),
       );
     }
@@ -317,11 +312,7 @@ class _PaymentBreakdownPieChart extends StatelessWidget {
         title: '${_percentage(principal, total)}%',
         color: AppColors.primary,
         radius: 80,
-        titleStyle: GoogleFonts.inter(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
-        ),
+        titleStyle: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.white),
       ),
     );
     legendItems.add(_PieLegendItem('Principal', AppColors.primary, principal));
@@ -332,11 +323,7 @@ class _PaymentBreakdownPieChart extends StatelessWidget {
         title: '${_percentage(interest, total)}%',
         color: AppColors.danger,
         radius: 80,
-        titleStyle: GoogleFonts.inter(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
-        ),
+        titleStyle: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.white),
       ),
     );
     legendItems.add(_PieLegendItem('Interest', AppColors.danger, interest));
@@ -378,18 +365,11 @@ class _PaymentBreakdownPieChart extends StatelessWidget {
                           children: [
                             Text(
                               item.label,
-                              style: GoogleFonts.inter(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: theme.colorScheme.onSurface,
-                              ),
+                              style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
                             ),
                             Text(
                               '₹${_formatCompact(item.value)}',
-                              style: GoogleFonts.inter(
-                                fontSize: 11,
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 11, color: theme.colorScheme.onSurfaceVariant),
                             ),
                           ],
                         ),
@@ -487,7 +467,7 @@ class _SavingsChart extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
                       offers[index].name,
-                      style: GoogleFonts.inter(fontSize: 10),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 10),
                     ),
                   );
                 },

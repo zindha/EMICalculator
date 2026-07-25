@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../../shared/widgets/modern_glass_card.dart';
+import '../../../../core/theme/app_typography.dart';
+import '../../../../../shared/widgets/modern_card.dart';
 import '../../../../shared/widgets/number_formatter.dart';
 import '../../domain/models/prepayment_result.dart';
 
@@ -20,7 +20,7 @@ class PrepaymentSummaryCard extends StatelessWidget with NumberFormatter {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return ModernGlassCard(
+    return ModernCard(
       tintColor: theme.colorScheme.primary,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,11 +28,7 @@ class PrepaymentSummaryCard extends StatelessWidget with NumberFormatter {
         children: [
           Text(
             'Prepayment Summary',
-            style: GoogleFonts.spaceGrotesk(
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-              color: theme.colorScheme.onSurface,
-            ),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 18, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
           ),
           const SizedBox(height: 16),
           _buildRow(
@@ -97,10 +93,7 @@ class PrepaymentSummaryCard extends StatelessWidget with NumberFormatter {
         children: [
           Text(
             label,
-            style: GoogleFonts.inter(
-              fontSize: 13,
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 13, color: theme.colorScheme.onSurfaceVariant),
           ),
           Container(
             padding: valueColor != null
@@ -114,11 +107,7 @@ class PrepaymentSummaryCard extends StatelessWidget with NumberFormatter {
                 : null,
             child: Text(
               value,
-              style: GoogleFonts.jetBrainsMono(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: valueColor ?? theme.colorScheme.onSurface,
-              ),
+              style: AppTypography.monetaryStyle(context).copyWith(fontSize: 13, fontWeight: FontWeight.w600, color: valueColor ?? theme.colorScheme.onSurface),
             ),
           ),
         ],
