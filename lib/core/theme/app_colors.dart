@@ -96,7 +96,7 @@ class AppColors {
   // ──────────────────────────────────────────────
 
   /// Semi-transparent white overlay for light-mode glassmorphism.
-  static const Color glassLight = Color(0xB3FFFFFF); // 70% opacity
+  static const Color glassLight = Color(0x4DFFFFFF); // 30% opacity
 
   /// Semi-transparent white overlay for dark-mode glassmorphism.
   static const Color glassDark = Color(0x0DFFFFFF); // 5% opacity
