@@ -11,14 +11,14 @@ void main() {
 
   group('PrepaymentEngineService', () {
     test('reduce tenure shortens the loan duration', () {
-      final input = const PrepaymentInput(
-        baseCalculation: const EmiCalculation(
+      const input = const PrepaymentInput(
+        baseCalculation: EmiCalculation(
           loanAmount: 500000,
           interestRate: 10.5,
           tenureMonths: 60,
         ),
         rules: [
-          const PrepaymentRule(
+          PrepaymentRule(
             id: '1',
             amount: 5000,
             frequency: PrepaymentFrequency.monthly,
@@ -37,14 +37,14 @@ void main() {
     });
 
     test('reduce EMI lowers the monthly EMI while keeping tenure', () {
-      final input = const PrepaymentInput(
-        baseCalculation: const EmiCalculation(
+      const input = const PrepaymentInput(
+        baseCalculation: EmiCalculation(
           loanAmount: 500000,
           interestRate: 10.5,
           tenureMonths: 60,
         ),
         rules: [
-          const PrepaymentRule(
+          PrepaymentRule(
             id: '1',
             amount: 5000,
             frequency: PrepaymentFrequency.monthly,
@@ -62,14 +62,14 @@ void main() {
     });
 
     test('one-time prepayment reduces interest', () {
-      final input = const PrepaymentInput(
-        baseCalculation: const EmiCalculation(
+      const input = const PrepaymentInput(
+        baseCalculation: EmiCalculation(
           loanAmount: 500000,
           interestRate: 10.5,
           tenureMonths: 60,
         ),
         rules: [
-          const PrepaymentRule(
+          PrepaymentRule(
             id: '1',
             amount: 100000,
             frequency: PrepaymentFrequency.oneTime,
@@ -86,14 +86,14 @@ void main() {
     });
 
     test('quarterly prepayment rule applies correctly', () {
-      final input = const PrepaymentInput(
-        baseCalculation: const EmiCalculation(
+      const input = const PrepaymentInput(
+        baseCalculation: EmiCalculation(
           loanAmount: 500000,
           interestRate: 10.5,
           tenureMonths: 24,
         ),
         rules: [
-          const PrepaymentRule(
+          PrepaymentRule(
             id: '1',
             amount: 10000,
             frequency: PrepaymentFrequency.quarterly,
@@ -109,20 +109,20 @@ void main() {
     });
 
     test('combined prepayment rules are supported', () {
-      final input = const PrepaymentInput(
-        baseCalculation: const EmiCalculation(
+      const input = const PrepaymentInput(
+        baseCalculation: EmiCalculation(
           loanAmount: 500000,
           interestRate: 10.5,
           tenureMonths: 60,
         ),
         rules: [
-          const PrepaymentRule(
+          PrepaymentRule(
             id: '1',
             amount: 5000,
             frequency: PrepaymentFrequency.monthly,
             startMonth: 1,
           ),
-          const PrepaymentRule(
+          PrepaymentRule(
             id: '2',
             amount: 50000,
             frequency: PrepaymentFrequency.yearly,
@@ -139,14 +139,14 @@ void main() {
     });
 
     test('large prepayment that would exceed balance is capped', () {
-      final input = const PrepaymentInput(
-        baseCalculation: const EmiCalculation(
+      const input = const PrepaymentInput(
+        baseCalculation: EmiCalculation(
           loanAmount: 50000,
           interestRate: 10.5,
           tenureMonths: 12,
         ),
         rules: [
-          const PrepaymentRule(
+          PrepaymentRule(
             id: '1',
             amount: 100000,
             frequency: PrepaymentFrequency.oneTime,
@@ -163,14 +163,14 @@ void main() {
     });
 
     test('zero interest loan handles prepayments without error', () {
-      final input = const PrepaymentInput(
-        baseCalculation: const EmiCalculation(
+      const input = const PrepaymentInput(
+        baseCalculation: EmiCalculation(
           loanAmount: 100000,
           interestRate: 0,
           tenureMonths: 12,
         ),
         rules: [
-          const PrepaymentRule(
+          PrepaymentRule(
             id: '1',
             amount: 5000,
             frequency: PrepaymentFrequency.monthly,
@@ -187,13 +187,13 @@ void main() {
     });
 
     test('no prepayment rules returns original schedule metrics', () {
-      final input = const PrepaymentInput(
-        baseCalculation: const EmiCalculation(
+      const input = const PrepaymentInput(
+        baseCalculation: EmiCalculation(
           loanAmount: 500000,
           interestRate: 10.5,
           tenureMonths: 60,
         ),
-        rules: const [],
+        rules: [],
         strategy: PrepaymentStrategy.reduceTenure,
       );
 

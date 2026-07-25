@@ -41,7 +41,7 @@ void main() {
           const LoanOffer(
             id: 'offer_1',
             name: 'Loan A',
-            calculation: const EmiCalculation(
+            calculation: EmiCalculation(
               loanAmount: 500000,
               interestRate: 10.5,
               tenureMonths: 60,

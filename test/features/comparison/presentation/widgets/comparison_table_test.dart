@@ -12,7 +12,7 @@ void main() {
       const LoanOffer(
         id: 'a',
         name: 'Loan A',
-        calculation: const EmiCalculation(
+        calculation: EmiCalculation(
           loanAmount: 500000,
           interestRate: 10.5,
           tenureMonths: 60,
@@ -21,7 +21,7 @@ void main() {
       const LoanOffer(
         id: 'b',
         name: 'Loan B',
-        calculation: const EmiCalculation(
+        calculation: EmiCalculation(
           loanAmount: 500000,
           interestRate: 9.5,
           tenureMonths: 60,

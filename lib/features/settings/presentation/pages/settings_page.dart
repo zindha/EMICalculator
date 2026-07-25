@@ -230,15 +230,15 @@ class SettingsPage extends ConsumerWidget {
             const SizedBox(height: 16),
             const ModernGlassCard(
               glass: true,
-              child: const Column(
+              child: Column(
                 children: [
-                  const _SettingsInfoTile(
+                  _SettingsInfoTile(
                     icon: Icons.info_outline,
                     title: 'Version',
                     subtitle: '1.2.0',
                   ),
-                  const Divider(height: 1),
-                  const _SettingsInfoTile(
+                  Divider(height: 1),
+                  _SettingsInfoTile(
                     icon: Icons.code_rounded,
                     title: 'Built with',
                     subtitle: 'Flutter • Riverpod • Hive',

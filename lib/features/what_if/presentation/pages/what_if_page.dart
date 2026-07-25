@@ -372,7 +372,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: const Text('Image export failed: \$e')),
+          const SnackBar(content: Text('Image export failed: \$e')),
         );
       }
     }

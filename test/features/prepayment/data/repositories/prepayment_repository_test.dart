@@ -30,12 +30,12 @@ void main() {
 
     PrepaymentInput sampleInput() {
       return const PrepaymentInput(
-        baseCalculation: const EmiCalculation(
+        baseCalculation: EmiCalculation(
           loanAmount: 500000,
           interestRate: 10.5,
           tenureMonths: 60,
         ),
-        rules: const [],
+        rules: [],
         strategy: PrepaymentStrategy.reduceTenure,
       );
     }

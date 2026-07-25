@@ -127,7 +127,7 @@ class ModernGlassCard extends StatelessWidget {
   }
 
   /// Light-mode glassmorphism blur filter.
-  static final _glassLightFilter =
+  static const _glassLightFilter =
       const ColorFilter.matrix(<double>[
     1, 0, 0, 0, 0,
     0, 1, 0, 0, 0,
@@ -136,7 +136,7 @@ class ModernGlassCard extends StatelessWidget {
   ]);
 
   /// Dark-mode glassmorphism blur filter.
-  static final _glassDarkFilter =
+  static const _glassDarkFilter =
       const ColorFilter.matrix(<double>[
     1, 0, 0, 0, 0,
     0, 1, 0, 0, 0,
@@ -145,7 +145,7 @@ class ModernGlassCard extends StatelessWidget {
   ]);
 
   /// No-op filter for non-glass cards.
-  static final _noFilter = const ColorFilter.matrix(<double>[
+  static const _noFilter = const ColorFilter.matrix(<double>[
     1, 0, 0, 0, 0,
     0, 1, 0, 0, 0,
     0, 0, 1, 0, 0,
