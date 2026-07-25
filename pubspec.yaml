@@ -58,7 +58,7 @@ dev_dependencies:
 
   # App Icon & Splash Screen Generation
   flutter_launcher_icons: ^0.14.3
-  flutter_native_splash: ^2.4.3
+  flutter_native_splash: ^2.4.8
 
 flutter_launcher_icons:
   image_path: "app-icon.png"

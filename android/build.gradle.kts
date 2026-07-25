@@ -1,3 +1,6 @@
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.LibraryExtension
+
 allprojects {
     repositories {
         google()
@@ -17,6 +20,16 @@ subprojects {
 }
 subprojects {
     project.evaluationDependsOn(":app")
+}
+subprojects {
+    afterEvaluate {
+        extensions.findByType<ApplicationExtension>()?.let {
+            it.compileSdk = 36
+        }
+        extensions.findByType<LibraryExtension>()?.let {
+            it.compileSdk = 36
+        }
+    }
 }
 
 tasks.register<Delete>("clean") {
