@@ -9,7 +9,7 @@ void main() {
     const engine = ComparisonEngineService();
     const service = SmartInsightsService();
 
-    LoanOffer _createOffer({
+    LoanOffer createOffer({
       required String id,
       required String name,
       required double loanAmount,
@@ -29,14 +29,14 @@ void main() {
 
     test('generates insights comparing two loans', () {
       final offers = [
-        _createOffer(
+        createOffer(
           id: 'a',
           name: 'Loan A',
           loanAmount: 500000,
           interestRate: 10.5,
           tenureMonths: 60,
         ),
-        _createOffer(
+        createOffer(
           id: 'b',
           name: 'Loan B',
           loanAmount: 500000,
@@ -66,14 +66,14 @@ void main() {
 
     test('includes what-if down payment recommendation', () {
       final offers = [
-        _createOffer(
+        createOffer(
           id: 'a',
           name: 'Loan A',
           loanAmount: 500000,
           interestRate: 10.5,
           tenureMonths: 60,
         ),
-        _createOffer(
+        createOffer(
           id: 'b',
           name: 'Loan B',
           loanAmount: 500000,

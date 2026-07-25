@@ -12,7 +12,7 @@ part 'calculator_provider.g.dart';
 /// notifier below.
 @Riverpod(keepAlive: true)
 EmiCalculatorService emiCalculatorService(EmiCalculatorServiceRef ref) {
-  return EmiCalculatorService();
+  return const EmiCalculatorService();
 }
 
 /// Notifier that manages the user's current loan input state.
@@ -23,7 +23,7 @@ EmiCalculatorService emiCalculatorService(EmiCalculatorServiceRef ref) {
 class CalculatorInputNotifier extends _$CalculatorInputNotifier {
   @override
   EmiCalculation build() {
-    return EmiCalculation(
+    return const EmiCalculation(
       loanAmount: 500000,
       interestRate: 10.5,
       tenureMonths: 60,

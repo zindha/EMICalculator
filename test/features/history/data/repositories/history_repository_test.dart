@@ -26,7 +26,7 @@ void main() {
       await box.clear();
     });
 
-    EmiCalculation _sampleCalculation() {
+    EmiCalculation sampleCalculation() {
       return const EmiCalculation(
         loanAmount: 500000,
         interestRate: 10.5,
@@ -37,7 +37,7 @@ void main() {
     test('save and retrieve an entry', () async {
       final entry = CalculationHistoryEntry(
         id: HistoryRepository.generateId(),
-        calculation: _sampleCalculation(),
+        calculation: sampleCalculation(),
         createdAt: DateTime.now(),
       );
 
@@ -51,7 +51,7 @@ void main() {
     test('toggle favorite updates the entry', () async {
       final entry = CalculationHistoryEntry(
         id: HistoryRepository.generateId(),
-        calculation: _sampleCalculation(),
+        calculation: sampleCalculation(),
         createdAt: DateTime.now(),
         isFavorite: false,
       );
@@ -66,7 +66,7 @@ void main() {
     test('delete removes the entry', () async {
       final entry = CalculationHistoryEntry(
         id: HistoryRepository.generateId(),
-        calculation: _sampleCalculation(),
+        calculation: sampleCalculation(),
         createdAt: DateTime.now(),
       );
 

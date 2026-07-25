@@ -14,7 +14,7 @@ class ComparisonEngineService {
   /// Creates a [ComparisonEngineService].
   const ComparisonEngineService();
 
-  static final _calculator = EmiCalculatorService();
+  static const _calculator = EmiCalculatorService();
 
   /// Analyzes the given [offers] and returns a fully populated
   /// [ComparisonResult].

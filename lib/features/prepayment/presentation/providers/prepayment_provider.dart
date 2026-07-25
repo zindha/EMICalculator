@@ -33,8 +33,8 @@ class PrepaymentInputNotifier extends StateNotifier<PrepaymentInput> {
   PrepaymentInputNotifier() : super(_defaultInput());
 
   static PrepaymentInput _defaultInput() {
-    return PrepaymentInput(
-      baseCalculation: const EmiCalculation(
+    return const PrepaymentInput(
+      baseCalculation: EmiCalculation(
         loanAmount: 500000,
         interestRate: 10.5,
         tenureMonths: 60,

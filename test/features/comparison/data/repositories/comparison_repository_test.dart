@@ -33,7 +33,7 @@ void main() {
       await box.deleteFromDisk();
     });
 
-    ComparisonSession _createSession(String title) {
+    ComparisonSession createSession(String title) {
       return ComparisonSession(
         id: 'session_1',
         title: title,
@@ -53,7 +53,7 @@ void main() {
     }
 
     test('saves and retrieves a session', () async {
-      final session = _createSession('Test Comparison');
+      final session = createSession('Test Comparison');
       await repository.save(session);
 
       final retrieved = await repository.getById(session.id);
@@ -86,7 +86,7 @@ void main() {
     });
 
     test('deletes a session', () async {
-      final session = _createSession('To Delete');
+      final session = createSession('To Delete');
       await repository.save(session);
       await repository.delete(session.id);
 
@@ -95,7 +95,7 @@ void main() {
     });
 
     test('toggles favorite status', () async {
-      final session = _createSession('Favorite Test');
+      final session = createSession('Favorite Test');
       await repository.save(session);
 
       await repository.toggleFavorite(session.id);
@@ -104,7 +104,7 @@ void main() {
     });
 
     test('duplicates a session', () async {
-      final session = _createSession('Original');
+      final session = createSession('Original');
       await repository.save(session);
 
       final duplicate = await repository.duplicate(session.id);

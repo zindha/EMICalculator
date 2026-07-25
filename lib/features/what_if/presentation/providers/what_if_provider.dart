@@ -6,7 +6,7 @@ import '../../domain/models/what_if_result.dart';
 
 /// Provider for the [EmiCalculatorService] used by the what-if simulator.
 final whatIfCalculatorServiceProvider = Provider<EmiCalculatorService>((ref) {
-  return EmiCalculatorService();
+  return const EmiCalculatorService();
 });
 
 /// Notifier that manages baseline and current loan inputs for the What-If
@@ -22,7 +22,7 @@ class WhatIfInputNotifier extends StateNotifier<WhatIfInputState> {
       tenureMonths: 60,
     );
 
-    return WhatIfInputState(
+    return const WhatIfInputState(
       baseline: defaultInput,
       current: defaultInput,
     );

@@ -7,7 +7,7 @@ void main() {
   group('ComparisonEngineService', () {
     const service = ComparisonEngineService();
 
-    LoanOffer _createOffer({
+    LoanOffer createOffer({
       required String id,
       required String name,
       required double loanAmount,
@@ -33,14 +33,14 @@ void main() {
 
     test('analyzes two loans and identifies lowest EMI', () {
       final offers = [
-        _createOffer(
+        createOffer(
           id: 'a',
           name: 'Loan A',
           loanAmount: 500000,
           interestRate: 10.5,
           tenureMonths: 60,
         ),
-        _createOffer(
+        createOffer(
           id: 'b',
           name: 'Loan B',
           loanAmount: 500000,
@@ -59,14 +59,14 @@ void main() {
 
     test('identifies shortest tenure independently', () {
       final offers = [
-        _createOffer(
+        createOffer(
           id: 'a',
           name: 'Loan A',
           loanAmount: 500000,
           interestRate: 10.5,
           tenureMonths: 48,
         ),
-        _createOffer(
+        createOffer(
           id: 'b',
           name: 'Loan B',
           loanAmount: 500000,
@@ -82,28 +82,28 @@ void main() {
 
     test('handles four loans with mixed characteristics', () {
       final offers = [
-        _createOffer(
+        createOffer(
           id: 'a',
           name: 'Loan A',
           loanAmount: 1000000,
           interestRate: 11,
           tenureMonths: 120,
         ),
-        _createOffer(
+        createOffer(
           id: 'b',
           name: 'Loan B',
           loanAmount: 1000000,
           interestRate: 10,
           tenureMonths: 120,
         ),
-        _createOffer(
+        createOffer(
           id: 'c',
           name: 'Loan C',
           loanAmount: 1000000,
           interestRate: 10.5,
           tenureMonths: 96,
         ),
-        _createOffer(
+        createOffer(
           id: 'd',
           name: 'Loan D',
           loanAmount: 1000000,

@@ -18,7 +18,7 @@ class PrepaymentEngineService {
   /// Creates a [PrepaymentEngineService].
   const PrepaymentEngineService();
 
-  static final _calculator = EmiCalculatorService();
+  static const _calculator = EmiCalculatorService();
 
   /// Simulates prepayments based on [input] and returns a [PrepaymentResult].
   PrepaymentResult calculate(PrepaymentInput input) {

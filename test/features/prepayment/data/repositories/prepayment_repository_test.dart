@@ -28,7 +28,7 @@ void main() {
       await box.clear();
     });
 
-    PrepaymentInput _sampleInput() {
+    PrepaymentInput sampleInput() {
       return PrepaymentInput(
         baseCalculation: const EmiCalculation(
           loanAmount: 500000,
@@ -44,7 +44,7 @@ void main() {
       final plan = SavedPrepaymentPlan(
         id: PrepaymentRepository.generateId(),
         title: 'Test Plan',
-        input: _sampleInput(),
+        input: sampleInput(),
         result: null,
         createdAt: DateTime.now(),
       );
@@ -61,14 +61,14 @@ void main() {
       final plan1 = SavedPrepaymentPlan(
         id: PrepaymentRepository.generateId(),
         title: 'Older Plan',
-        input: _sampleInput(),
+        input: sampleInput(),
         result: null,
         createdAt: DateTime(2023, 1, 1),
       );
       final plan2 = SavedPrepaymentPlan(
         id: PrepaymentRepository.generateId(),
         title: 'Newer Plan',
-        input: _sampleInput(),
+        input: sampleInput(),
         result: null,
         createdAt: DateTime(2024, 1, 1),
       );
@@ -87,7 +87,7 @@ void main() {
       final plan = SavedPrepaymentPlan(
         id: PrepaymentRepository.generateId(),
         title: 'Delete Me',
-        input: _sampleInput(),
+        input: sampleInput(),
         result: null,
         createdAt: DateTime.now(),
       );
@@ -103,7 +103,7 @@ void main() {
       final plan = SavedPrepaymentPlan(
         id: PrepaymentRepository.generateId(),
         title: 'Favorite Plan',
-        input: _sampleInput(),
+        input: sampleInput(),
         result: null,
         createdAt: DateTime.now(),
         isFavorite: false,
