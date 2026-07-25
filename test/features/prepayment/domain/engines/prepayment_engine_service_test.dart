@@ -11,7 +11,7 @@ void main() {
 
   group('PrepaymentEngineService', () {
     test('reduce tenure shortens the loan duration', () {
-      const input = const PrepaymentInput(
+      const input = PrepaymentInput(
         baseCalculation: EmiCalculation(
           loanAmount: 500000,
           interestRate: 10.5,
@@ -37,7 +37,7 @@ void main() {
     });
 
     test('reduce EMI lowers the monthly EMI while keeping tenure', () {
-      const input = const PrepaymentInput(
+      const input = PrepaymentInput(
         baseCalculation: EmiCalculation(
           loanAmount: 500000,
           interestRate: 10.5,
@@ -62,7 +62,7 @@ void main() {
     });
 
     test('one-time prepayment reduces interest', () {
-      const input = const PrepaymentInput(
+      const input = PrepaymentInput(
         baseCalculation: EmiCalculation(
           loanAmount: 500000,
           interestRate: 10.5,
@@ -86,7 +86,7 @@ void main() {
     });
 
     test('quarterly prepayment rule applies correctly', () {
-      const input = const PrepaymentInput(
+      const input = PrepaymentInput(
         baseCalculation: EmiCalculation(
           loanAmount: 500000,
           interestRate: 10.5,
@@ -109,7 +109,7 @@ void main() {
     });
 
     test('combined prepayment rules are supported', () {
-      const input = const PrepaymentInput(
+      const input = PrepaymentInput(
         baseCalculation: EmiCalculation(
           loanAmount: 500000,
           interestRate: 10.5,
@@ -139,7 +139,7 @@ void main() {
     });
 
     test('large prepayment that would exceed balance is capped', () {
-      const input = const PrepaymentInput(
+      const input = PrepaymentInput(
         baseCalculation: EmiCalculation(
           loanAmount: 50000,
           interestRate: 10.5,
@@ -163,7 +163,7 @@ void main() {
     });
 
     test('zero interest loan handles prepayments without error', () {
-      const input = const PrepaymentInput(
+      const input = PrepaymentInput(
         baseCalculation: EmiCalculation(
           loanAmount: 100000,
           interestRate: 0,
@@ -187,7 +187,7 @@ void main() {
     });
 
     test('no prepayment rules returns original schedule metrics', () {
-      const input = const PrepaymentInput(
+      const input = PrepaymentInput(
         baseCalculation: EmiCalculation(
           loanAmount: 500000,
           interestRate: 10.5,
