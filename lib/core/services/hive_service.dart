@@ -36,6 +36,12 @@ class HiveService {
       boxes[HiveConstants.savedOffersBox] = await Hive.openBox(
         HiveConstants.savedOffersBox,
       );
+      boxes[HiveConstants.comparisonBox] = await Hive.openBox(
+        HiveConstants.comparisonBox,
+      );
+      boxes[HiveConstants.prepaymentBox] = await Hive.openBox(
+        HiveConstants.prepaymentBox,
+      );
     } catch (e) {
       // Re-throw to allow callers to handle initialization failures.
       rethrow;
@@ -57,6 +63,8 @@ class HiveService {
       HiveConstants.themeBox,
       HiveConstants.loanHistoryBox,
       HiveConstants.savedOffersBox,
+      HiveConstants.comparisonBox,
+      HiveConstants.prepaymentBox,
     ];
 
     for (final name in boxNames) {

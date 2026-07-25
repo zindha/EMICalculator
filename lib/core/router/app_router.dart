@@ -4,10 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../features/calculator/presentation/pages/calculator_page.dart';
+import '../../features/comparison/presentation/pages/comparison_page.dart';
 import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../../features/export/pages/amortization_schedule_page.dart';
 import '../../features/history/presentation/pages/history_page.dart';
+import '../../features/prepayment/presentation/pages/prepayment_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
+import '../../features/what_if/presentation/pages/what_if_page.dart';
 
 part 'app_router.g.dart';
 
@@ -17,8 +20,11 @@ class AppRoutes {
 
   static const dashboard = '/';
   static const calculator = '/calculator';
+  static const comparison = '/comparison';
+  static const prepayment = '/prepayment';
   static const history = '/history';
   static const settings = '/settings';
+  static const whatIf = '/what-if';
   static const amortizationSchedule = '/amortization-schedule';
 }
 
@@ -45,6 +51,16 @@ GoRouter appRouter(AppRouterRef ref) {
             builder: (context, state) => const CalculatorPage(),
           ),
           GoRoute(
+            path: AppRoutes.comparison,
+            name: 'comparison',
+            builder: (context, state) => const ComparisonPage(),
+          ),
+          GoRoute(
+            path: AppRoutes.prepayment,
+            name: 'prepayment',
+            builder: (context, state) => const PrepaymentPage(),
+          ),
+          GoRoute(
             path: AppRoutes.history,
             name: 'history',
             builder: (context, state) => const HistoryPage(),
@@ -53,6 +69,11 @@ GoRouter appRouter(AppRouterRef ref) {
             path: AppRoutes.settings,
             name: 'settings',
             builder: (context, state) => const SettingsPage(),
+          ),
+          GoRoute(
+            path: AppRoutes.whatIf,
+            name: 'whatIf',
+            builder: (context, state) => const WhatIfPage(),
           ),
         ],
       ),

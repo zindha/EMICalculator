@@ -57,45 +57,33 @@ class DashboardPage extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Row(
+            Wrap(
+              spacing: 12,
+              runSpacing: 12,
               children: [
-                Expanded(
-                  child: _QuickActionCard(
-                    icon: Icons.calculate_rounded,
-                    label: 'New\nCalculation',
-                    color: theme.colorScheme.primary,
-                    onTap: () => context.go(AppRoutes.calculator),
-                  ),
+                _QuickActionCard(
+                  icon: Icons.calculate_rounded,
+                  label: 'New\nCalculation',
+                  color: theme.colorScheme.primary,
+                  onTap: () => context.go(AppRoutes.calculator),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _QuickActionCard(
-                    icon: Icons.compare_arrows_rounded,
-                    label: 'Compare\nLoans',
-                    color: const Color(0xFFFF6584),
-                    onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Compare feature coming soon!'),
-                        ),
-                      );
-                    },
-                  ),
+                _QuickActionCard(
+                  icon: Icons.compare_arrows_rounded,
+                  label: 'Compare\nLoans',
+                  color: const Color(0xFFFF6584),
+                  onTap: () => context.go(AppRoutes.comparison),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _QuickActionCard(
-                    icon: Icons.savings_rounded,
-                    label: 'Prepayment\nPlanner',
-                    color: const Color(0xFF00C9A7),
-                    onTap: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Prepayment feature coming soon!'),
-                        ),
-                      );
-                    },
-                  ),
+                _QuickActionCard(
+                  icon: Icons.savings_rounded,
+                  label: 'Prepayment\nPlanner',
+                  color: const Color(0xFF00C9A7),
+                  onTap: () => context.go(AppRoutes.prepayment),
+                ),
+                _QuickActionCard(
+                  icon: Icons.trending_down_rounded,
+                  label: 'What If\nSimulator',
+                  color: const Color(0xFF9B59B6),
+                  onTap: () => context.go(AppRoutes.whatIf),
                 ),
               ],
             ),

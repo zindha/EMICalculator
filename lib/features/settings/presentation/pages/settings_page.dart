@@ -161,6 +161,63 @@ class SettingsPage extends ConsumerWidget {
             ),
             const SizedBox(height: 32),
 
+            // ── Preferences ─────────────────────
+            Text(
+              'Preferences',
+              style: GoogleFonts.spaceGrotesk(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: theme.colorScheme.onSurface,
+              ),
+            ),
+            const SizedBox(height: 16),
+            ModernGlassCard(
+              glass: true,
+              child: Column(
+                children: [
+                  _SettingsActionTile(
+                    icon: Icons.currency_rupee_rounded,
+                    title: 'Currency',
+                    subtitle: 'Indian Rupee (₹)',
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Currency picker coming soon'),
+                        ),
+                      );
+                    },
+                  ),
+                  const Divider(height: 1),
+                  _SettingsActionTile(
+                    icon: Icons.star_rate_rounded,
+                    title: 'Rate the App',
+                    subtitle: 'Love the app? Leave a rating',
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Rate app action coming soon'),
+                        ),
+                      );
+                    },
+                  ),
+                  const Divider(height: 1),
+                  _SettingsActionTile(
+                    icon: Icons.privacy_tip_outlined,
+                    title: 'Privacy Policy',
+                    subtitle: 'How we handle your data',
+                    onTap: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Privacy policy coming soon'),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+
             // ── About ─────────────────────────────
             Text(
               'About',
@@ -178,7 +235,7 @@ class SettingsPage extends ConsumerWidget {
                   _SettingsInfoTile(
                     icon: Icons.info_outline,
                     title: 'Version',
-                    subtitle: '1.0.0',
+                    subtitle: '1.2.0',
                   ),
                   const Divider(height: 1),
                   _SettingsInfoTile(
@@ -284,6 +341,53 @@ class _SettingsInfoTile extends StatelessWidget {
           color: theme.colorScheme.onSurfaceVariant,
         ),
       ),
+    );
+  }
+}
+
+/// A single action-only settings tile without radio-style selection.
+class _SettingsActionTile extends StatelessWidget {
+  const _SettingsActionTile({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: theme.colorScheme.primary,
+      ),
+      title: Text(
+        title,
+        style: GoogleFonts.inter(
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+          color: theme.colorScheme.onSurface,
+        ),
+      ),
+      subtitle: Text(
+        subtitle,
+        style: GoogleFonts.inter(
+          fontSize: 12,
+          color: theme.colorScheme.onSurfaceVariant,
+        ),
+      ),
+      trailing: Icon(
+        Icons.chevron_right_rounded,
+        color: theme.colorScheme.onSurfaceVariant,
+      ),
+      onTap: onTap,
     );
   }
 }

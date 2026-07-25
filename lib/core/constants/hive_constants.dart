@@ -18,6 +18,12 @@ class HiveConstants {
   /// Box for persisting saved loan offers for comparison.
   static const String savedOffersBox = 'savedOffersBox';
 
+  /// Box for persisting saved loan comparison sessions.
+  static const String comparisonBox = 'comparisonBox';
+
+  /// Box for persisting saved prepayment plans.
+  static const String prepaymentBox = 'prepaymentBox';
+
   // ──────────────────────────────────────────────
   // Theme Box Keys
   // ──────────────────────────────────────────────
@@ -34,4 +40,7 @@ class HiveConstants {
 
   /// Type adapter ID for [EmiCalculation].
   static const int emiCalculationAdapterId = 1;
+
+  /// Type adapter ID for [ComparisonSession].
+  static const int comparisonSessionAdapterId = 2;
 }

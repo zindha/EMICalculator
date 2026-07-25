@@ -8,8 +8,10 @@ import '../../../../core/router/app_router.dart';
 import '../../../../shared/widgets/modern_glass_card.dart';
 import '../../../../shared/widgets/synced_slider_input.dart';
 import '../providers/calculator_provider.dart';
+import '../widgets/calculator_actions.dart';
 import '../widgets/hero_card.dart';
 import '../widgets/result_charts.dart';
+import '../widgets/tenure_toggle.dart';
 
 /// The main EMI Calculator screen.
 ///
@@ -18,12 +20,20 @@ import '../widgets/result_charts.dart';
 /// - Middle section: [SyncedSliderInput] widgets for loan amount, rate, tenure,
 ///   and optional expandable fields for processing fee and down payment.
 /// - Bottom section: [ResultCharts] showing pie and line charts.
-class CalculatorPage extends ConsumerWidget {
+class CalculatorPage extends ConsumerStatefulWidget {
   /// Creates the [CalculatorPage].
   const CalculatorPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CalculatorPage> createState() => _CalculatorPageState();
+}
+
+class _CalculatorPageState extends ConsumerState<CalculatorPage> {
+  bool _tenureInYears = false;
+  final GlobalKey _captureKey = GlobalKey();
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final input = ref.watch(calculatorInputNotifierProvider);
     final result = ref.watch(emiResultNotifierProvider);
@@ -38,7 +48,12 @@ class CalculatorPage extends ConsumerWidget {
         ),
         centerTitle: true,
         actions: [
-          if (result != null)
+          if (result != null) ...[
+            IconButton(
+              icon: const Icon(Icons.save_rounded),
+              tooltip: 'Save Calculation',
+              onPressed: () => saveCalculationToHistory(context, ref, input),
+            ),
             IconButton(
               icon: const Icon(Icons.download_rounded),
               tooltip: 'View Amortization Schedule',
@@ -54,9 +69,22 @@ class CalculatorPage extends ConsumerWidget {
                 );
               },
             ),
+            IconButton(
+              icon: const Icon(Icons.share_rounded),
+              tooltip: 'Share / Export',
+              onPressed: () => showCalculatorExportOptions(
+                context: context,
+                ref: ref,
+                result: result,
+                captureKey: _captureKey,
+              ),
+            ),
+          ],
         ],
       ),
-      body: SingleChildScrollView(
+      body: RepaintBoundary(
+        key: _captureKey,
+        child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,19 +133,29 @@ class CalculatorPage extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
 
-            // Tenure Slider
+            // Tenure Slider with months/years toggle
+            _buildSectionTitle(context, 'Tenure'),
+            const SizedBox(height: 8),
+            TenureToggle(
+              inYears: _tenureInYears,
+              onChanged: (value) => setState(() => _tenureInYears = value),
+            ),
+            const SizedBox(height: 8),
             SyncedSliderInput(
-              label: 'Tenure',
-              value: input.tenureMonths.toDouble(),
-              min: AppConstants.minTenureMonths.toDouble(),
-              max: AppConstants.maxTenureMonths.toDouble(),
-              step: AppConstants.tenureStepMonths.toDouble(),
+              label: _tenureInYears ? 'Tenure (Years)' : 'Tenure (Months)',
+              value: _tenureInYears
+                  ? (input.tenureMonths / 12).floorToDouble()
+                  : input.tenureMonths.toDouble(),
+              min: 1,
+              max: _tenureInYears ? 30 : 360,
+              step: 1,
               decimalPlaces: 0,
               prefixSymbol: '',
-              suffixText: 'months',
+              suffixText: _tenureInYears ? 'years' : 'months',
               onChanged: (value) {
+                final months = _tenureInYears ? (value * 12).toInt() : value.toInt();
                 ref.read(calculatorInputNotifierProvider.notifier)
-                    .setTenureMonths(value.toInt());
+                    .setTenureMonths(months);
               },
               helperText: '1 month – 30 years',
               semanticLabel: 'Loan tenure slider',

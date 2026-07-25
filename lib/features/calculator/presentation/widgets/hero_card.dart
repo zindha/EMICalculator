@@ -87,64 +87,93 @@ class HeroCard extends ConsumerWidget {
           ),
           const SizedBox(height: 20),
 
-          // ── Health Score + Stats Row ───────────
+          // ── Principal / Interest / Total / Score ─
           if (result != null)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildStatItem(
-                  context,
-                  label: 'Total Interest',
-                  value: _formatInr(result.totalInterest),
-                  color: AppColors.danger,
-                ),
-                _buildStatItem(
-                  context,
-                  label: 'Total Payment',
-                  value: _formatInr(result.totalPayment),
-                  color: theme.colorScheme.onSurface,
-                ),
-                _buildStatItem(
-                  context,
-                  label: 'Health Score',
-                  value: '${result.healthScore}',
-                  color: _healthScoreColor(result.healthScore),
-                ),
-              ],
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final crossAxisCount = constraints.maxWidth > 360 ? 4 : 2;
+                return GridView.count(
+                  crossAxisCount: crossAxisCount,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  childAspectRatio: 1.4,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  children: [
+                    _buildStatItem(
+                      context,
+                      label: 'Principal",
+                      value: _formatInr(result.effectiveLoanAmount),
+                      color: theme.colorScheme.primary,
+                    ),
+                    _buildStatItem(
+                      context,
+                      label: 'Interest',
+                      value: _formatInr(result.totalInterest),
+                      color: AppColors.danger,
+                    ),
+                    _buildStatItem(
+                      context,
+                      label: 'Total Payment',
+                      value: _formatInr(result.totalPayment),
+                      color: theme.colorScheme.onSurface,
+                    ),
+                    _buildStatItem(
+                      context,
+                      label: 'Health Score',
+                      value: '${result.healthScore}',
+                      color: _healthScoreColor(result.healthScore),
+                    ),
+                  ],
+                );
+              },
             ),
         ],
       ),
     );
   }
 
-  /// Builds a single statistic item row.
+  /// Builds a single statistic item card.
   Widget _buildStatItem(
     BuildContext context, {
     required String label,
     required String value,
     required Color color,
   }) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          value,
-          style: GoogleFonts.jetBrainsMono(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: color,
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              value,
+              style: GoogleFonts.jetBrainsMono(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: color,
+              ),
+            ),
           ),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          label,
-          style: GoogleFonts.inter(
-            fontSize: 10,
-            fontWeight: FontWeight.w400,
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: GoogleFonts.inter(
+              fontSize: 10,
+              fontWeight: FontWeight.w500,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+            textAlign: TextAlign.center,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
