@@ -41,7 +41,7 @@ class PrepaymentTimelineChart extends StatelessWidget {
 
     final maxBalance = result.updatedSchedule.isNotEmpty
         ? result.updatedSchedule.first.openingBalance * 1.1
-        : 1;
+        : 1.0;
 
     return LineChart(
       LineChartData(
@@ -81,7 +81,7 @@ class PrepaymentTimelineChart extends StatelessWidget {
         borderData: FlBorderData(show: false),
         minX: 0,
         maxX: result.updatedSchedule.length.toDouble(),
-        minY: 0,
+        minY: 0.0,
         maxY: maxBalance,
         lineBarsData: [
           LineChartBarData(
