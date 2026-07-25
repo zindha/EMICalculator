@@ -212,20 +212,20 @@ class AppTheme {
             : colorScheme.surface,
         indicatorColor: colorScheme.primaryContainer,
         indicatorShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
         ),
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        height: 72,
+        height: 80,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
             return GoogleFonts.inter(
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: FontWeight.w600,
               letterSpacing: 0.2,
             );
           }
           return GoogleFonts.inter(
-            fontSize: 11,
+            fontSize: 12,
             fontWeight: FontWeight.w400,
             letterSpacing: 0.2,
           );

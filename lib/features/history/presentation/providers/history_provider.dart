@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/hive_constants.dart';
@@ -21,15 +22,37 @@ class HistoryNotifier extends StateNotifier<AsyncValue<List<CalculationHistoryEn
   final Ref _ref;
 
   Future<void> _load() async {
-    final repository = _ref.read(historyRepositoryProvider);
-    final entries = await repository.getAll();
-    state = AsyncValue.data(entries);
+    try {
+      final repository = _ref.read(historyRepositoryProvider);
+      final entries = await repository.getAll();
+      state = AsyncValue.data(entries);
+    } catch (e, stack) {
+      debugPrint('History load failed: $e');
+      debugPrint('$stack');
+      // Never stay in loading state; show an empty list so the user sees
+      // the empty state instead of a spinner.
+      state = const AsyncValue.data(<CalculationHistoryEntry>[]);
+    }
   }
 
   /// Refreshes the history list.
   Future<void> refresh() async {
-    final repository = _ref.read(historyRepositoryProvider);
-    state = AsyncValue.data(await repository.getAll());
+    try {
+      final repository = _ref.read(historyRepositoryProvider);
+      final entries = await repository.getAll();
+      state = AsyncValue.data(entries);
+    } catch (e, stack) {
+      debugPrint('History refresh failed: $e');
+      debugPrint('$stack');
+      // Preserve existing data on refresh failure to avoid flickering
+      // back to the empty state unexpectedly.
+      if (state case AsyncError(:final error)) {
+        debugPrint('Previous history error: $error');
+      }
+      if (state is! AsyncData) {
+        state = const AsyncValue.data(<CalculationHistoryEntry>[]);
+      }
+    }
   }
 
   /// Saves a new calculation entry with the given [calculation] and [title].

@@ -1,8 +1,19 @@
 # Changelog
 
-## 1.5.0 - Production Release Audit
+## 1.5.0 - Production Release
 
 ### Fixed
+- **History screen infinite loading:** `HistoryNotifier` now recovers from repository/Hive failures and immediately shows an attractive empty state instead of spinning forever.
+- **Calculator editing workflow:** added Reset, Undo, and Redo to `CalculatorInputNotifier` with a session-level history stack.
+- **Privacy Policy launch failure:** Settings now launches the external privacy policy URL via `url_launcher` and shows a Material dialog/SnackBar on error instead of failing silently.
+- **Application branding:** replaced generic "Smart Loan Planner" header with the official app name and Dzynova Technologies branding on Dashboard, Splash, and About screens.
+- **About page:** redesigned as a professional card-based layout showing app icon, app name, version, developer, contact email, and copyright.
+- **Quick Actions layout:** cards now use a responsive, adaptive grid that scales from small phones to tablets and landscape.
+- **Bottom Navigation:** improved height, padding, icon/label sizing, SafeArea handling, and touch targets (48dp minimum) for a professional feel.
+- **Page headers:** consistent height, spacing, typography, and SafeArea usage across Dashboard, Calculator, History, and Settings.
+- **Settings responsiveness:** fixed accent color section, cards, list tiles, and About section for small, medium, large, and landscape screens; prevented overflow and clipping.
+- **Material 3 consistency:** unified card radii, button radii, padding, margins, typography, elevation, loading indicators, and section spacing across all screens.
+- **Performance:** removed unnecessary rebuilds, added missing `const` constructors, and cleaned up unused imports / dead code.
 - Release signing: replaced debug-only signing with `key.properties`-based release config (falls back to debug if keystore absent).
 - Broken `$e` error interpolation in `const` SnackBars on prepayment and what-if pages.
 - Silent `catch (_)` error swallowing in 3 repositories (history, comparison, prepayment) — now logs via `debugPrint`.
@@ -16,6 +27,10 @@
 - Splash screen timer leak in `widget_test.dart`.
 
 ### Added
+- **Calculator undo/redo tests:** new unit tests for `CalculatorInputNotifier` history stack (reset, undo, redo, redo-after-edit clears forward history, boundary no-ops).
+- **History error-recovery tests:** new unit tests verifying `HistoryNotifier` falls back to an empty list when the repository throws and preserves existing data when refresh fails.
+- `mocktail` dev dependency to support notifier/repository unit tests.
+- `url_launcher` dependency for external privacy policy links.
 - Reduce Motion support: animations respect `MediaQuery.disableAnimations` across 4 widgets (router transitions, tenure toggle, hero card, calculator cross-fade).
 - Semantics labels on 6 chart widgets (pie, line, bar, grouped bar, principal-interest, savings bars).
 - Shared `ImageExportService` utility — replaces ~120 lines of duplicated image capture/share code across 4 pages.
@@ -32,7 +47,7 @@
 
 ### Quality
 - **Static analysis:** 0 errors, 0 warnings, 0 info (`flutter analyze` passes clean).
-- **Test suite:** 67/67 tests passing.
+- **Test suite:** 77/77 tests passing.
 - **Code reuse:** `ImageExportService` eliminates duplicated export logic; `_colorToInt()` helper replaces deprecated `Color.value` usage.
 
 ## 1.4.0 - What If Simulator

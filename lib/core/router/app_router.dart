@@ -140,56 +140,63 @@ class _AppShell extends ConsumerWidget {
         },
         child: child,
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: Theme.of(context).colorScheme.outlineVariant
-                  .withValues(alpha: 0.15),
-              width: 1,
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            border: Border(
+              top: BorderSide(
+                color: Theme.of(context).colorScheme.outlineVariant
+                    .withValues(alpha: 0.15),
+                width: 1,
+              ),
             ),
           ),
-        ),
-        child: NavigationBar(
-          selectedIndex: currentIndex,
-          onDestinationSelected: (index) {
-            switch (index) {
-              case 0:
-                context.go(AppRoutes.dashboard);
-                break;
-              case 1:
-                context.go(AppRoutes.calculator);
-                break;
-              case 2:
-                context.go(AppRoutes.history);
-                break;
-              case 3:
-                context.go(AppRoutes.settings);
-                break;
-            }
-          },
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.dashboard_outlined, size: 22),
-              selectedIcon: Icon(Icons.dashboard_rounded, size: 22),
-              label: 'Dashboard',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.calculate_outlined, size: 22),
-              selectedIcon: Icon(Icons.calculate_rounded, size: 22),
-              label: 'Calculator',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.history_outlined, size: 22),
-              selectedIcon: Icon(Icons.history_rounded, size: 22),
-              label: 'History',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.settings_outlined, size: 22),
-              selectedIcon: Icon(Icons.settings_rounded, size: 22),
-              label: 'Settings',
-            ),
-          ],
+          child: NavigationBar(
+            selectedIndex: currentIndex,
+            onDestinationSelected: (index) {
+              switch (index) {
+                case 0:
+                  context.go(AppRoutes.dashboard);
+                  break;
+                case 1:
+                  context.go(AppRoutes.calculator);
+                  break;
+                case 2:
+                  context.go(AppRoutes.history);
+                  break;
+                case 3:
+                  context.go(AppRoutes.settings);
+                  break;
+              }
+            },
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(Icons.dashboard_outlined, size: 24),
+                selectedIcon: Icon(Icons.dashboard_rounded, size: 24),
+                label: 'Dashboard',
+                tooltip: 'Dashboard',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.calculate_outlined, size: 24),
+                selectedIcon: Icon(Icons.calculate_rounded, size: 24),
+                label: 'Calculator',
+                tooltip: 'Calculator',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.history_outlined, size: 24),
+                selectedIcon: Icon(Icons.history_rounded, size: 24),
+                label: 'History',
+                tooltip: 'History',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.settings_outlined, size: 24),
+                selectedIcon: Icon(Icons.settings_rounded, size: 24),
+                label: 'Settings',
+                tooltip: 'Settings',
+              ),
+            ],
+          ),
         ),
       ),
     );

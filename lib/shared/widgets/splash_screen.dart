@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/constants/app_info.dart';
+
 /// A premium splash screen that displays the app icon and name,
 /// then fades out after a brief delay to reveal the main app.
 ///
@@ -142,6 +144,11 @@ class _SplashScreenState extends State<SplashScreen>
                         fit: BoxFit.cover,
                         cacheWidth: 192,
                         cacheHeight: 192,
+                        errorBuilder: (_, __, ___) => Icon(
+                          Icons.calculate_rounded,
+                          size: 48,
+                          color: theme.colorScheme.primary,
+                        ),
                       ),
                     ),
                   ),
@@ -149,7 +156,7 @@ class _SplashScreenState extends State<SplashScreen>
 
                   // ── App Name ───────────────────────────
                   Text(
-                    'EMI Calculator',
+                    AppInfo.appName,
                     style: GoogleFonts.spaceGrotesk(
                       fontSize: 26,
                       fontWeight: FontWeight.w700,
@@ -161,7 +168,7 @@ class _SplashScreenState extends State<SplashScreen>
 
                   // ── Tagline ────────────────────────────
                   Text(
-                    'Smart Loan Planner',
+                    AppInfo.tagline,
                     style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,

@@ -49,6 +49,29 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
         ),
         centerTitle: true,
         actions: [
+          // ── Undo / Redo / Reset ────────────────
+          _UndoRedoButton(
+            icon: Icons.undo_rounded,
+            tooltip: 'Undo',
+            onPressed: () => ref.read(calculatorInputNotifierProvider.notifier).undo(),
+            enabled: ref.read(calculatorInputNotifierProvider.notifier).canUndo,
+          ),
+          _UndoRedoButton(
+            icon: Icons.redo_rounded,
+            tooltip: 'Redo',
+            onPressed: () => ref.read(calculatorInputNotifierProvider.notifier).redo(),
+            enabled: ref.read(calculatorInputNotifierProvider.notifier).canRedo,
+          ),
+          IconButton(
+            icon: const Icon(Icons.replay_rounded),
+            tooltip: 'Reset',
+            onPressed: () {
+              ref.read(calculatorInputNotifierProvider.notifier).reset();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Calculator reset')),
+              );
+            },
+          ),
           if (result != null) ...[
             IconButton(
               icon: const Icon(Icons.save_rounded),
@@ -326,6 +349,37 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Small icon button used for undo/redo actions.
+///
+/// Unlike a plain [IconButton], this widget fades out when disabled and
+/// always occupies the same 48dp touch target.
+class _UndoRedoButton extends StatelessWidget {
+  const _UndoRedoButton({
+    required this.icon,
+    required this.tooltip,
+    required this.onPressed,
+    required this.enabled,
+  });
+
+  final IconData icon;
+  final String tooltip;
+  final VoidCallback onPressed;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return IconButton(
+      icon: Icon(icon),
+      tooltip: enabled ? tooltip : '$tooltip (unavailable)',
+      color: theme.colorScheme.onSurface.withValues(
+        alpha: enabled ? 1.0 : 0.38,
+      ),
+      onPressed: enabled ? onPressed : null,
     );
   }
 }

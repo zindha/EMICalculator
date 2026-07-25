@@ -1,7 +1,7 @@
 name: emi_calculator
 description: "EMI Calculator - Smart Loan Planner. Compare, Save, Pay Faster."
 publish_to: 'none'
-version: 1.5.0+1
+version: 1.5.0+2
 
 environment:
   sdk: '>=3.10.0 <4.0.0'
@@ -31,6 +31,9 @@ dependencies:
   fl_chart: ^0.68.0
   intl: ^0.19.0
 
+  # Device / Platform
+  url_launcher: ^6.3.0
+
   # Export
   pdf: ^3.11.1
   share_plus: ^9.0.0
@@ -52,6 +55,9 @@ dev_dependencies:
 
   # Linting
   flutter_lints: ^5.0.0
+
+  # Mocking
+  mocktail: ^1.0.4
 
   # Analyzer (compatible with the SDK and other code-generation packages)
   analyzer: ^6.4.1

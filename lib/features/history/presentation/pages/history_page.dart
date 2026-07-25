@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 
 import '../../data/repositories/history_repository.dart';
@@ -111,6 +113,12 @@ class HistoryPage extends ConsumerWidget {
                 color: theme.colorScheme.onSurfaceVariant,
                 height: 1.5,
               ),
+            ),
+            const SizedBox(height: 20),
+            FilledButton.icon(
+              onPressed: () => context.go(AppRoutes.calculator),
+              icon: const Icon(Icons.add_rounded, size: 18),
+              label: const Text('New Calculation'),
             ),
           ],
         ),

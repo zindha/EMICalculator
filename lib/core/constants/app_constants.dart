@@ -107,6 +107,8 @@ class AppConstants {
   // ──────────────────────────────────────────────
 
   /// URL for the app's privacy policy.
+  ///
+  /// Prefer [AppInfo.privacyPolicyUrl] for user-facing branding.
   static const String privacyPolicyUrl =
       'https://sites.google.com/view/emi-calculator-privacy';
 }
