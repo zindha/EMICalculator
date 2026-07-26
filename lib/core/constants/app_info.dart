@@ -29,7 +29,7 @@ class AppInfo {
   /// Copyright notice.
   static const String copyright = '© 2026 Dzynova Technologies';
 
-  /// Full privacy policy URL.
+  /// Full privacy policy URL (hosted on GitHub Pages).
   static const String privacyPolicyUrl =
-      'https://sites.google.com/view/emi-calculator-privacy';
+      'https://zindha.github.io/EMICalculator/privacy-policy.html';
 }
