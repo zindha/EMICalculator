@@ -15,7 +15,7 @@ void main() {
       );
 
       NotificationService.show('Hello from tests');
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.text('Hello from tests'), findsOneWidget);
     });
@@ -31,7 +31,7 @@ void main() {
 
       NotificationService.show('Only once');
       NotificationService.show('Only once');
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.text('Only once'), findsOneWidget);
     });
@@ -46,11 +46,11 @@ void main() {
       );
 
       NotificationService.show('Initial message');
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
       expect(find.text('Initial message'), findsOneWidget);
 
       NotificationService.show('Error message', isError: true);
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.text('Initial message'), findsNothing);
       expect(find.text('Error message'), findsOneWidget);
@@ -65,11 +65,11 @@ void main() {
       );
 
       NotificationService.show('Will be hidden');
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
       expect(find.text('Will be hidden'), findsOneWidget);
 
       NotificationService.hide();
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 300));
 
       expect(find.text('Will be hidden'), findsNothing);
     });
@@ -84,7 +84,7 @@ void main() {
       );
 
       NotificationService.show('Error', isError: true);
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
 
       final snackBar = tester.widget<SnackBar>(find.byType(SnackBar));
       expect(snackBar.backgroundColor, Colors.red.shade800);

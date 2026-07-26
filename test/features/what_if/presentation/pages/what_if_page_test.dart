@@ -32,7 +32,7 @@ void main() {
         ),
       );
 
-      await tester.pumpAndSettle();
+      await tester.pump();
 
       expect(find.text('What If Simulator'), findsOneWidget);
       expect(find.text('Baseline Scenario'), findsOneWidget);
@@ -51,10 +51,10 @@ void main() {
         ),
       );
 
-      await tester.pumpAndSettle();
+      await tester.pump();
 
       await tester.tap(find.byIcon(Icons.refresh_rounded));
-      await tester.pumpAndSettle();
+      await tester.pump();
 
       expect(find.text('Baseline Scenario'), findsOneWidget);
       expect(find.text('New Scenario'), findsOneWidget);
@@ -69,19 +69,19 @@ void main() {
         ),
       );
 
-      await tester.pumpAndSettle();
+      await tester.pump();
 
       expect(find.text('No Difference'), findsOneWidget);
 
       // Change the loan amount to a higher value.
       final loanAmountField = find.byType(TextField).first;
       await tester.ensureVisible(loanAmountField);
-      await tester.pumpAndSettle();
+      await tester.pump();
       await tester.tap(loanAmountField);
       await tester.pump();
       await tester.enterText(loanAmountField, '1000000');
       await tester.testTextInput.receiveAction(TextInputAction.done);
-      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.text('Extra Cost'), findsOneWidget);
       expect(

@@ -30,9 +30,8 @@ void main() {
     // Verify the app rendered after the splash animation completed.
     expect(find.byType(MaterialApp), findsOneWidget);
 
-    // Cleanly unmount so that any keepAlive Riverpod listeners and
-    // animation controllers are fully disposed before the test ends.
-    await tester.pumpAndSettle();
+    // Cleanly unmount.
     await tester.pumpWidget(const SizedBox());
+    await tester.pump();
   });
 }

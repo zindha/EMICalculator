@@ -15,16 +15,24 @@ import '../../../../shared/widgets/modern_card.dart';
 /// - Theme mode switching (Light, Dark, AMOLED)
 /// - Accent color selection
 /// - App information and version
-class SettingsPage extends ConsumerWidget {
+class SettingsPage extends ConsumerStatefulWidget {
   /// Creates the [SettingsPage].
   const SettingsPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends ConsumerState<SettingsPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final themeState = ref.watch(themeNotifierProvider);
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Settings'),
         centerTitle: true,
@@ -84,14 +92,10 @@ class SettingsPage extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: LayoutBuilder(
                     builder: (context, constraints) {
-                      // Responsive sizing: cap dot size on very wide screens
-                      // while letting each chip expand evenly to fill the row.
-                      final width = constraints.maxWidth;
-                      final dotSize = width < 300
-                          ? 28.0
-                          : width > 600
-                              ? 44.0
-                              : 36.0;
+                      // Use the full available width, distributing color
+                      // options evenly with equal spacing. The dot size is
+                      // derived from the card width to look proportional on
+                      // any screen size.
                       final colorOptions = [
                         (AppColors.primary, 'Purple'),
                         (AppColors.secondary, 'Coral'),
@@ -100,6 +104,8 @@ class SettingsPage extends ConsumerWidget {
                         (AppColors.danger, 'Red'),
                         (AppColors.positive, 'Green'),
                       ];
+                      final dotSize =
+                          (constraints.maxWidth / 6).clamp(28.0, 44.0);
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +138,7 @@ class SettingsPage extends ConsumerWidget {
                   icon: Icons.currency_rupee_rounded,
                   title: 'Currency',
                   subtitle: ref.watch(currencyNotifierProvider).displayLabel,
-                  onTap: () => _showCurrencyPicker(context, ref),
+                  onTap: () => _showCurrencyPicker(ref),
                 ),
               ),
               const SizedBox(height: 28),
@@ -266,9 +272,16 @@ class SettingsPage extends ConsumerWidget {
   Future<void> _openPrivacyPolicy(BuildContext context) async {
     final uri = Uri.parse(AppInfo.privacyPolicyUrl);
     try {
+      // url_launcher 6.3+ uses canLaunchUrl to check. On Android 11+ the
+      // manifest must declare <queries> for VIEW intents, otherwise
+      // canLaunchUrl returns false. The fallback dialog guarantees the
+      // policy is always accessible.
       final canLaunch = await canLaunchUrl(uri);
       if (!context.mounted) return;
       if (!canLaunch) {
+        debugPrint(
+          '[Privacy] cannot launch $uri - manifest queries may be missing',
+        );
         _showPrivacyPolicyDialog(context);
         return;
       }
@@ -277,9 +290,11 @@ class SettingsPage extends ConsumerWidget {
         mode: LaunchMode.externalApplication,
       );
       if (!launched && context.mounted) {
+        debugPrint('[Privacy] launchUrl returned false for $uri');
         _showPrivacyPolicyDialog(context);
       }
     } catch (e) {
+      debugPrint('[Privacy] error launching URL: $e');
       if (!context.mounted) return;
       _showPrivacyPolicyDialog(context);
     }
@@ -292,8 +307,16 @@ class SettingsPage extends ConsumerWidget {
   void _showPrivacyPolicyDialog(BuildContext context) {
     showDialog<void>(
       context: context,
+      barrierDismissible: false,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Privacy Policy'),
+        title: Row(
+          children: [
+            Icon(Icons.privacy_tip_rounded,
+                color: Theme.of(context).colorScheme.primary),
+            const SizedBox(width: 8),
+            const Text('Privacy Policy'),
+          ],
+        ),
         content: const SingleChildScrollView(
           child: SelectableText(
             'Dzynova Technologies respects your privacy.\n\n'
@@ -309,12 +332,13 @@ class SettingsPage extends ConsumerWidget {
             onPressed: () => Navigator.of(dialogContext).pop(),
             child: const Text('Close'),
           ),
-          FilledButton(
+          FilledButton.icon(
+            icon: const Icon(Icons.open_in_new_rounded, size: 18),
             onPressed: () {
               Navigator.of(dialogContext).pop();
               _openPrivacyPolicy(context);
             },
-            child: const Text('Retry'),
+            label: const Text('Open in Browser'),
           ),
         ],
       ),
@@ -335,19 +359,28 @@ class SettingsPage extends ConsumerWidget {
   ///
   /// The selected currency is persisted to Hive and the UI rebuilds
   /// immediately.
-  void _showCurrencyPicker(BuildContext context, WidgetRef ref) {
+  void _showCurrencyPicker(WidgetRef ref) {
+    // Use the Scaffold's context so showModalBottomSheet always has a
+    // Scaffold ancestor to anchor to — critical because the widget tree
+    // context above the Scaffold cannot find it as an ancestor.
+    final scaffoldContext = _scaffoldKey.currentContext;
+    if (scaffoldContext == null || !scaffoldContext.mounted) return;
+
     final current = ref.read(currencyNotifierProvider).currency;
+    final mediaQuery = MediaQuery.of(scaffoldContext);
+
     showModalBottomSheet<void>(
-      context: context,
+      context: scaffoldContext,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (sheetContext) {
+        final sheetTheme = Theme.of(sheetContext);
         return SafeArea(
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height * 0.65,
+              maxHeight: mediaQuery.size.height * 0.65,
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -357,9 +390,9 @@ class SettingsPage extends ConsumerWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
                       'Select Currency',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                      style: sheetTheme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -373,20 +406,14 @@ class SettingsPage extends ConsumerWidget {
                         return ListTile(
                           leading: CircleAvatar(
                             backgroundColor: isSelected
-                                ? Theme.of(context).colorScheme.primaryContainer
-                                : Theme.of(context)
-                                    .colorScheme
-                                    .surfaceContainerHighest,
+                                ? sheetTheme.colorScheme.primaryContainer
+                                : sheetTheme.colorScheme.surfaceContainerHighest,
                             child: Text(
                               option.symbol,
                               style: TextStyle(
                                 color: isSelected
-                                    ? Theme.of(context)
-                                        .colorScheme
-                                        .onPrimaryContainer
-                                    : Theme.of(context)
-                                        .colorScheme
-                                        .onSurface,
+                                    ? sheetTheme.colorScheme.onPrimaryContainer
+                                    : sheetTheme.colorScheme.onSurface,
                               ),
                             ),
                           ),
@@ -395,7 +422,7 @@ class SettingsPage extends ConsumerWidget {
                           trailing: isSelected
                               ? Icon(
                                   Icons.check_circle_rounded,
-                                  color: Theme.of(context).colorScheme.primary,
+                                  color: sheetTheme.colorScheme.primary,
                                 )
                               : null,
                           onTap: () {
@@ -403,9 +430,11 @@ class SettingsPage extends ConsumerWidget {
                                 .read(currencyNotifierProvider.notifier)
                                 .setCurrency(option)
                                 .then((_) {
-                              NotificationService.show(
-                                'Currency updated to ${option.name}',
-                              );
+                              if (context.mounted) {
+                                NotificationService.show(
+                                  'Currency updated to ${option.name}',
+                                );
+                              }
                             });
                             Navigator.of(sheetContext).pop();
                           },
@@ -553,30 +582,33 @@ class _AccentColorDot extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(8),
-      child: Container(
-        width: size + 20,
+      child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: size,
-              height: size,
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-                border: isSelected
-                    ? Border.all(color: Colors.white, width: 3)
+            Center(
+              child: Container(
+                width: size,
+                height: size,
+                decoration: BoxDecoration(
+                  color: color,
+                  shape: BoxShape.circle,
+                  border: isSelected
+                      ? Border.all(color: Colors.white, width: 3)
+                      : null,
+                ),
+                child: isSelected
+                    ? const Icon(Icons.check, color: Colors.white, size: 18)
                     : null,
               ),
-              child: isSelected
-                  ? const Icon(Icons.check, color: Colors.white, size: 18)
-                  : null,
             ),
             const SizedBox(height: 4),
-            Text(
-              label,
-              style: Theme.of(context).textTheme.bodySmall,
+            Center(
+              child: Text(
+                label,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
             ),
           ],
         ),
