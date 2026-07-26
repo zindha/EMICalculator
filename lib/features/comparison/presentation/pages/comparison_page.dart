@@ -18,6 +18,7 @@ import '../widgets/loan_input_card.dart';
 import '../widgets/smart_insights_card.dart';
 
 import 'package:emi_calculator/core/services/notification_service.dart';
+import 'package:emi_calculator/shared/widgets/ad_banner.dart';
 
 /// The main Loan Comparison screen.
 ///
@@ -142,6 +143,12 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
                 child: SmartInsightsCard(insights: insights),
               ),
               const SizedBox(height: 32),
+
+              // ── Banner Ad ────────────────────────
+              const Center(
+                child: AdBanner(),
+              ),
+              const SizedBox(height: 16),
             ],
           ),
         ),

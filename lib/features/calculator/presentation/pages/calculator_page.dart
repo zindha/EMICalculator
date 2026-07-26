@@ -15,6 +15,7 @@ import '../widgets/result_charts.dart';
 import '../widgets/tenure_toggle.dart';
 
 import 'package:emi_calculator/core/services/notification_service.dart';
+import 'package:emi_calculator/shared/widgets/ad_banner.dart';
 
 /// The main EMI Calculator screen.
 ///
@@ -239,6 +240,12 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
                   ),
                 ),
               ),
+
+              // ── Banner Ad ────────────────────────
+              const Center(
+                child: AdBanner(),
+              ),
+              const SizedBox(height: 16),
           ],
         ),
       ),

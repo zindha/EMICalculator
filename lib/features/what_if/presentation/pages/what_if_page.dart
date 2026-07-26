@@ -14,6 +14,7 @@ import '../providers/what_if_provider.dart';
 import '../widgets/what_if_pie_chart.dart';
 
 import 'package:emi_calculator/core/services/notification_service.dart';
+import 'package:emi_calculator/shared/widgets/ad_banner.dart';
 
 /// A real-time What-If Simulator that lets users compare a baseline loan
 /// scenario with a modified one.
@@ -104,6 +105,12 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
                 ),
               ),
               const SizedBox(height: 32),
+
+              // ── Banner Ad ────────────────────────
+              const Center(
+                child: AdBanner(),
+              ),
+              const SizedBox(height: 16),
             ],
           ),
         ),

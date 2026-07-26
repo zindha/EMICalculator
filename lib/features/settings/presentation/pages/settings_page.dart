@@ -4,7 +4,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_info.dart';
 import '../../../../core/providers/currency_provider.dart';
+import '../../../../core/providers/premium_provider.dart';
 import '../../../../core/services/notification_service.dart';
+import '../../../../core/services/purchase_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/theme_provider.dart';
 import '../../../../shared/widgets/modern_card.dart';
@@ -141,6 +143,12 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                   onTap: () => _showCurrencyPicker(ref),
                 ),
               ),
+              const SizedBox(height: 28),
+
+              // ── Premium ────────────────────────────
+              const _SectionTitle(title: 'Premium'),
+              const SizedBox(height: 12),
+              _buildPremiumSection(context),
               const SizedBox(height: 28),
 
               // ── About ─────────────────────────────
@@ -374,6 +382,202 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       applicationVersion: AppInfo.version,
       applicationLegalese: '${AppInfo.copyright}\nAll Rights Reserved.',
     );
+  }
+
+  /// Builds the premium/remove-ads purchase section.
+  Widget _buildPremiumSection(BuildContext context) {
+    final theme = Theme.of(context);
+    final premiumAsync = ref.watch(premiumNotifierProvider);
+    final isPremium = premiumAsync.valueOrNull ?? false;
+
+    if (isPremium) {
+      return ModernCard(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 20,
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: AppColors.positive.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(
+                      Icons.workspace_premium_rounded,
+                      color: AppColors.positive,
+                      size: 22,
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Premium Active',
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.positive,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'All ads removed. Thank you for your support!',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return ModernCard(
+      child: Column(
+        children: [
+          _SettingsActionTile(
+            icon: Icons.workspace_premium_outlined,
+            title: 'Go Ad-Free',
+            subtitle: 'One-time purchase — remove all ads forever',
+            onTap: () => _showPremiumOptions(context),
+          ),
+          const Divider(height: 1),
+          _SettingsActionTile(
+            icon: Icons.restore_rounded,
+            title: 'Restore Purchase',
+            subtitle: 'Recover your premium purchase on this device',
+            onTap: () => _restorePurchase(context),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Shows the premium purchase options bottom sheet.
+  Future<void> _showPremiumOptions(BuildContext context) async {
+    final theme = Theme.of(context);
+
+    // Show a loading state while we fetch product details.
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    );
+
+    final products = await PurchaseService.getProducts();
+    if (!context.mounted) return;
+    Navigator.of(context).pop(); // Dismiss loading dialog.
+
+    if (products.isEmpty) {
+      NotificationService.show(
+        'Unable to load products. Check your internet connection.',
+        isError: true,
+      );
+      return;
+    }
+
+    final product = products.first;
+    showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: AppColors.positive.withValues(alpha: 0.15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.workspace_premium_rounded,
+                    color: AppColors.positive,
+                    size: 26,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Go Ad-Free',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Remove all banner ads with a single\none-time purchase. No subscription.',
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                    height: 1.5,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton.icon(
+                    icon: const Icon(Icons.lock_outline_rounded, size: 18),
+                    onPressed: PurchaseService.isPurchaseInProgress
+                        ? null
+                        : () {
+                            Navigator.of(sheetContext).pop();
+                            // The purchase completes asynchronously via the
+                            // purchase stream — PremiumNotifier listens to
+                            // PurchaseService.premiumStatus automatically.
+                            PurchaseService.purchase(product);
+                          },
+                    label: Text(
+                      'Purchase — ${product.price}',
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  /// Restores a previous premium purchase.
+  Future<void> _restorePurchase(BuildContext context) async {
+    NotificationService.show('Restoring purchase...');
+
+    await PurchaseService.restorePurchases();
+
+    // Refresh the premium status to see if the restore worked.
+    await ref.read(premiumNotifierProvider.notifier).refresh();
+
+    if (!context.mounted) return;
+    final isPremium = ref.read(premiumNotifierProvider).valueOrNull ?? false;
+
+    if (isPremium) {
+      NotificationService.show('Purchase restored! Ads are now removed.');
+    } else {
+      NotificationService.show(
+        'No previous purchase found on your account.',
+        isError: true,
+      );
+    }
   }
 
   /// Opens a bottom sheet with the supported currencies.

@@ -24,6 +24,9 @@ class HiveConstants {
   /// Box for persisting saved prepayment plans.
   static const String prepaymentBox = 'prepaymentBox';
 
+  /// Box for persisting premium/remove-ads purchase status.
+  static const String premiumBox = 'premiumBox';
+
   // ──────────────────────────────────────────────
   // Theme Box Keys
   // ──────────────────────────────────────────────

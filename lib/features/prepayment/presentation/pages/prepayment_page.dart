@@ -18,6 +18,7 @@ import '../widgets/prepayment_timeline_chart.dart';
 import '../widgets/prepayment_what_if_sliders.dart';
 
 import 'package:emi_calculator/core/services/notification_service.dart';
+import 'package:emi_calculator/shared/widgets/ad_banner.dart';
 
 /// The main Loan Prepayment Planner screen.
 ///
@@ -183,6 +184,12 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
               ),
             ),
             const SizedBox(height: 32),
+
+            // ── Banner Ad ────────────────────────
+            const Center(
+              child: AdBanner(),
+            ),
+            const SizedBox(height: 16),
           ],
         ),
       ),
