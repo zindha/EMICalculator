@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/providers/currency_provider.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../providers/calculator_provider.dart';
@@ -18,6 +19,7 @@ class ResultCharts extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final result = ref.watch(emiResultNotifierProvider);
+    final currency = ref.watch(currencyNotifierProvider).currency;
 
     if (result == null) {
       return const SizedBox.shrink();
@@ -34,6 +36,8 @@ class ResultCharts extends ConsumerWidget {
           child: _PrincipalVsInterestPieChart(
             principal: result.effectiveLoanAmount,
             totalInterest: result.totalInterest,
+            currencySymbol: currency.symbol,
+            currencyLocale: currency.locale,
           ),
         ),
         const SizedBox(height: 24),
@@ -46,6 +50,8 @@ class ResultCharts extends ConsumerWidget {
           child: _BalanceLineChart(
             amortizationSchedule: result.amortizationSchedule,
             principal: result.effectiveLoanAmount,
+            currencySymbol: currency.symbol,
+            currencyLocale: currency.locale,
           ),
         ),
       ],
@@ -66,16 +72,20 @@ class _PrincipalVsInterestPieChart extends StatelessWidget {
   const _PrincipalVsInterestPieChart({
     required this.principal,
     required this.totalInterest,
+    required this.currencySymbol,
+    required this.currencyLocale,
   });
 
   final double principal;
   final double totalInterest;
+  final String currencySymbol;
+  final String currencyLocale;
 
   @override
   Widget build(BuildContext context) {
     final formatter = NumberFormat.currency(
-      locale: 'en_IN',
-      symbol: '₹ ',
+      locale: currencyLocale,
+      symbol: '$currencySymbol ',
       decimalDigits: 0,
     );
 
@@ -140,18 +150,22 @@ class _BalanceLineChart extends StatelessWidget {
   const _BalanceLineChart({
     required this.amortizationSchedule,
     required this.principal,
+    required this.currencySymbol,
+    required this.currencyLocale,
   });
 
   final List<dynamic> amortizationSchedule;
   final double principal;
+  final String currencySymbol;
+  final String currencyLocale;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final schedule = amortizationSchedule;
     final formatter = NumberFormat.currency(
-      locale: 'en_IN',
-      symbol: '₹ ',
+      locale: currencyLocale,
+      symbol: '$currencySymbol ',
       decimalDigits: 0,
     );
 
@@ -180,7 +194,7 @@ class _BalanceLineChart extends StatelessWidget {
 
     return Semantics(
       label: 'Loan balance line chart from '
-          '₹${principal.toStringAsFixed(0)} to ₹0',
+          '$currencySymbol${principal.toStringAsFixed(0)} to $currencySymbol 0',
       child: LineChart(
         LineChartData(
           gridData: FlGridData(

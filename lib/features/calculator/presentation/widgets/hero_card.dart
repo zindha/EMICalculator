@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/providers/currency_provider.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../shared/widgets/modern_card.dart';
@@ -20,6 +21,7 @@ class HeroCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final result = ref.watch(emiResultNotifierProvider);
+    final currency = ref.watch(currencyNotifierProvider).currency;
 
     return ModernCard(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
@@ -45,8 +47,8 @@ class HeroCard extends ConsumerWidget {
               curve: Curves.easeOutCubic,
               builder: (context, value, child) {
                 final formatter = NumberFormat.currency(
-                  locale: 'en_IN',
-                  symbol: '₹ ',
+                  locale: currency.locale,
+                  symbol: '${currency.symbol} ',
                   decimalDigits: 0,
                 );
 
@@ -62,7 +64,7 @@ class HeroCard extends ConsumerWidget {
             )
           else
             Text(
-              '₹ 0',
+              '${currency.symbol} 0',
               style: Theme.of(context).textTheme.displaySmall?.copyWith(fontSize: 40, fontWeight: FontWeight.w700, color: theme.colorScheme.onSurface.withValues(alpha: 0.15),
                 height: 1.1,
                 letterSpacing: -1.5,
@@ -98,19 +100,19 @@ class HeroCard extends ConsumerWidget {
                     _buildStatItem(
                       context,
                       label: 'Principal',
-                      value: _formatInr(result.effectiveLoanAmount),
+                      value: _formatInr(result.effectiveLoanAmount, currency.symbol, currency.locale),
                       color: theme.colorScheme.primary,
                     ),
                     _buildStatItem(
                       context,
                       label: 'Interest',
-                      value: _formatInr(result.totalInterest),
+                      value: _formatInr(result.totalInterest, currency.symbol, currency.locale),
                       color: AppColors.danger,
                     ),
                     _buildStatItem(
                       context,
                       label: 'Total',
-                      value: _formatInr(result.totalPayment),
+                      value: _formatInr(result.totalPayment, currency.symbol, currency.locale),
                       color: theme.colorScheme.onSurface,
                     ),
                     _buildStatItem(
@@ -173,11 +175,11 @@ class HeroCard extends ConsumerWidget {
     return AppColors.danger;
   }
 
-  /// Formats a double as Indian rupees.
-  String _formatInr(double amount) {
+  /// Formats [amount] in the active currency.
+  String _formatInr(double amount, String currencySymbol, String currencyLocale) {
     final formatter = NumberFormat.currency(
-      locale: 'en_IN',
-      symbol: '₹ ',
+      locale: currencyLocale,
+      symbol: '$currencySymbol ',
       decimalDigits: 0,
     );
     return formatter.format(amount);

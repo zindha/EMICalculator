@@ -110,8 +110,8 @@ abstract class _$$ComparisonSessionImplCopyWith<$Res>
 class __$$ComparisonSessionImplCopyWithImpl<$Res>
     extends _$ComparisonSessionCopyWithImpl<$Res, _$ComparisonSessionImpl>
     implements _$$ComparisonSessionImplCopyWith<$Res> {
-  __$$ComparisonSessionImplCopyWithImpl(
-      _$ComparisonSessionImpl _value, $Res Function(_$ComparisonSessionImpl) _then)
+  __$$ComparisonSessionImplCopyWithImpl(_$ComparisonSessionImpl _value,
+      $Res Function(_$ComparisonSessionImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -133,7 +133,7 @@ class __$$ComparisonSessionImplCopyWithImpl<$Res>
           : title // ignore: cast_nullable_to_non_nullable
               as String,
       offers: null == offers
-          ? _value.offers
+          ? _value._offers
           : offers // ignore: cast_nullable_to_non_nullable
               as List<LoanOffer>,
       createdAt: null == createdAt
@@ -154,9 +154,10 @@ class _$ComparisonSessionImpl implements _ComparisonSession {
   const _$ComparisonSessionImpl(
       {required this.id,
       required this.title,
-      required this.offers,
+      required final List<LoanOffer> offers,
       required this.createdAt,
-      this.isFavorite = false});
+      this.isFavorite = false})
+      : _offers = offers;
 
   factory _$ComparisonSessionImpl.fromJson(Map<String, dynamic> json) =>
       _$$ComparisonSessionImplFromJson(json);
@@ -165,8 +166,14 @@ class _$ComparisonSessionImpl implements _ComparisonSession {
   final String id;
   @override
   final String title;
+  final List<LoanOffer> _offers;
   @override
-  final List<LoanOffer> offers;
+  List<LoanOffer> get offers {
+    if (_offers is EqualUnmodifiableListView) return _offers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_offers);
+  }
+
   @override
   final DateTime createdAt;
   @override
@@ -185,7 +192,7 @@ class _$ComparisonSessionImpl implements _ComparisonSession {
             other is _$ComparisonSessionImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
-            (identical(other.offers, offers) || other.offers == offers) &&
+            const DeepCollectionEquality().equals(other._offers, _offers) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.isFavorite, isFavorite) ||
@@ -194,14 +201,8 @@ class _$ComparisonSessionImpl implements _ComparisonSession {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-        runtimeType,
-        id,
-        title,
-        offers,
-        createdAt,
-        isFavorite,
-      );
+  int get hashCode => Object.hash(runtimeType, id, title,
+      const DeepCollectionEquality().hash(_offers), createdAt, isFavorite);
 
   @JsonKey(ignore: true)
   @override
@@ -220,11 +221,11 @@ class _$ComparisonSessionImpl implements _ComparisonSession {
 
 abstract class _ComparisonSession implements ComparisonSession {
   const factory _ComparisonSession(
-          {required final String id,
-          required final String title,
-          required final List<LoanOffer> offers,
-          required final DateTime createdAt,
-          final bool isFavorite}) = _$ComparisonSessionImpl;
+      {required final String id,
+      required final String title,
+      required final List<LoanOffer> offers,
+      required final DateTime createdAt,
+      final bool isFavorite}) = _$ComparisonSessionImpl;
 
   factory _ComparisonSession.fromJson(Map<String, dynamic> json) =
       _$ComparisonSessionImpl.fromJson;

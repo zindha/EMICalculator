@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../domain/models/comparison_result.dart';
 import '../../domain/models/loan_offer.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../shared/widgets/number_formatter.dart';
 
 /// Widget that displays comparison charts for a list of loan offers.
 ///
@@ -368,7 +369,7 @@ class _PaymentBreakdownPieChart extends StatelessWidget {
                               style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
                             ),
                             Text(
-                              '₹${_formatCompact(item.value)}',
+                              '${NumberFormatter.currencySymbol}${_formatCompact(item.value)}',
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 11, color: theme.colorScheme.onSurfaceVariant),
                             ),
                           ],

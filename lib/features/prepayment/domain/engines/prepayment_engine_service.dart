@@ -2,6 +2,7 @@ import 'dart:math';
 
 import '../../../calculator/domain/engines/emi_calculator_service.dart';
 import '../../../calculator/domain/models/amortization_month.dart';
+import '../../../../shared/widgets/number_formatter.dart';
 import '../models/prepayment_frequency.dart';
 import '../models/prepayment_input.dart';
 import '../models/prepayment_result.dart';
@@ -299,7 +300,7 @@ class PrepaymentEngineService {
 
     if (interestSaved > 0) {
       insights.add(
-        'You will save ₹${_formatCompact(interestSaved)} in interest with this prepayment plan.',
+        'You will save ${NumberFormatter.currencySymbol}${_formatCompact(interestSaved)} in interest with this prepayment plan.',
       );
     }
 
@@ -311,7 +312,7 @@ class PrepaymentEngineService {
 
     if (totalExtraPayments > 0) {
       insights.add(
-        'Total extra payments: ₹${_formatCompact(totalExtraPayments)}.',
+        'Total extra payments: ${NumberFormatter.currencySymbol}${_formatCompact(totalExtraPayments)}.',
       );
     }
 
@@ -381,8 +382,9 @@ class PrepaymentEngineService {
       if (saved <= 0) continue;
 
       final frequencyLabel = _recommendationFrequencyLabel(rule.frequency);
+      final sym = NumberFormatter.currencySymbol;
       insights.add(
-        'Paying ₹${_formatCompact(rule.amount)} extra $frequencyLabel saves ₹${_formatCompact(saved)} in interest.',
+        'Paying $sym${_formatCompact(rule.amount)} extra $frequencyLabel saves $sym${_formatCompact(saved)} in interest.',
       );
     }
 

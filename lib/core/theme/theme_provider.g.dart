@@ -6,7 +6,7 @@ part of 'theme_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$themeNotifierHash() => r'70f36c29b0eb608703c21ec8e63758ec71a01492';
+String _$themeNotifierHash() => r'a94e4fcbe765756ede80d04e7a7eeb4fe19e6f39';
 
 /// Riverpod [Notifier] that manages the application theme mode and
 /// accent color, persisting user preferences to Hive.

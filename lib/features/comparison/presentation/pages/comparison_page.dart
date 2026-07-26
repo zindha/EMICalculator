@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/providers/currency_provider.dart';
+
 
 import '../../../../shared/widgets/modern_card.dart';
 import '../../../../shared/widgets/image_export_service.dart';
@@ -14,6 +16,8 @@ import '../widgets/comparison_charts.dart';
 import '../widgets/comparison_table.dart';
 import '../widgets/loan_input_card.dart';
 import '../widgets/smart_insights_card.dart';
+
+import 'package:emi_calculator/core/services/notification_service.dart';
 
 /// The main Loan Comparison screen.
 ///
@@ -36,6 +40,8 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
     final session = ref.watch(activeComparisonNotifierProvider);
     final result = ref.watch(comparisonResultProvider);
     final insights = ref.watch(comparisonInsightsProvider);
+    // Watch currency so the page rebuilds when the selected currency changes.
+    ref.watch(currencyNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -200,9 +206,7 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
   Future<void> _saveComparison() async {
     await ref.read(activeComparisonNotifierProvider.notifier).saveActive();
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Comparison saved')),
-      );
+      NotificationService.show('Comparison saved');
     }
     await ref.read(savedComparisonsNotifierProvider.notifier).refresh();
   }
@@ -416,9 +420,7 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
       await exportService.sharePdf(filePath);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('PDF export failed: $e')),
-        );
+        NotificationService.show('PDF export failed: $e');
       }
     }
   }
@@ -433,9 +435,7 @@ class _ComparisonPageState extends ConsumerState<ComparisonPage>
       );
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Image export failed: $e')),
-        );
+        NotificationService.show('Image export failed: $e');
       }
     }
   }

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -9,6 +8,7 @@ import 'package:share_plus/share_plus.dart';
 import '../models/prepayment_input.dart';
 import '../models/prepayment_result.dart';
 import '../models/prepayment_strategy.dart';
+import '../../../../shared/widgets/number_formatter.dart';
 
 /// Service that handles exporting prepayment plans as PDF, CSV, and images,
 /// and sharing them via the native share sheet.
@@ -82,11 +82,7 @@ class PrepaymentExportService {
     required PrepaymentResult result,
   }) async {
     final pdf = pw.Document();
-    final formatter = NumberFormat.currency(
-      locale: 'en_IN',
-      symbol: '₹ ',
-      decimalDigits: 0,
-    );
+    final formatter = NumberFormatter.createCurrencyFormatter();
 
     pdf.addPage(
       pw.MultiPage(

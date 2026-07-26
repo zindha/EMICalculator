@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/providers/currency_provider.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../shared/widgets/modern_card.dart';
 import '../../calculator/domain/models/amortization_month.dart';
 import '../services/export_service.dart';
+
+import 'package:emi_calculator/core/services/notification_service.dart';
 
 /// Screen that displays the full amortization schedule in a beautifully
 /// striped list, with a floating action button for PDF/CSV export.
@@ -36,9 +39,11 @@ class AmortizationSchedulePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final schedule = amortizationMonths.cast<AmortizationMonth>();
+    // Watch currency so the page rebuilds when the selected currency changes.
+    final currency = ref.watch(currencyNotifierProvider).currency;
     final formatter = NumberFormat.currency(
-      locale: 'en_IN',
-      symbol: '₹ ',
+      locale: currency.locale,
+      symbol: '${currency.symbol} ',
       decimalDigits: 0,
     );
     const exportService = ExportService();
@@ -310,9 +315,7 @@ class AmortizationSchedulePage extends ConsumerWidget {
     ExportService exportService,
   ) async {
     try {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Generating PDF...')),
-      );
+      NotificationService.show('Generating PDF...');
 
       // Calculate EMI from schedule data
       final firstEntry = schedule.isNotEmpty ? schedule.first : null;
@@ -337,9 +340,7 @@ class AmortizationSchedulePage extends ConsumerWidget {
       await exportService.sharePdf(filePath);
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Export failed: $e')),
-        );
+        NotificationService.show('Export failed: $e');
       }
     }
   }
@@ -355,9 +356,7 @@ class AmortizationSchedulePage extends ConsumerWidget {
       await exportService.shareCsv(csv);
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Export failed: $e')),
-        );
+        NotificationService.show('Export failed: $e');
       }
     }
   }

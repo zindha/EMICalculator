@@ -25,7 +25,6 @@ class PrepaymentWhatIfSliders extends ConsumerWidget {
           min: AppConstants.minLoanAmount,
           max: AppConstants.maxLoanAmount,
           step: AppConstants.loanAmountStep,
-          prefixSymbol: '₹ ',
           onChanged: notifier.setLoanAmount,
           helperText: 'Principal loan amount',
           semanticLabel: 'Loan amount slider',

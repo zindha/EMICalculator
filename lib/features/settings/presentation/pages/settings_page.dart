@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/app_info.dart';
+import '../../../../core/providers/currency_provider.dart';
+import '../../../../core/services/notification_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/theme_provider.dart';
 import '../../../../shared/widgets/modern_card.dart';
@@ -79,78 +81,42 @@ class SettingsPage extends ConsumerWidget {
               const SizedBox(height: 12),
               ModernCard(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   child: LayoutBuilder(
                     builder: (context, constraints) {
-                      // On very narrow screens, reduce dot size count to avoid overflow.
+                      // Responsive sizing: cap dot size on very wide screens
+                      // while letting each chip expand evenly to fill the row.
                       final width = constraints.maxWidth;
-                      final dotSize = width < 300 ? 32.0 : 36.0;
-                      return Wrap(
-                        spacing: width < 300 ? 8 : 12,
-                        runSpacing: width < 300 ? 8 : 12,
-                        alignment: WrapAlignment.spaceEvenly,
-                        children: [
-                          _AccentColorDot(
-                            color: AppColors.primary,
-                            label: 'Purple',
-                            isSelected: themeState.accentSeedColor ==
-                                AppColors.primary,
-                            size: dotSize,
-                            onTap: () => ref
-                                .read(themeNotifierProvider.notifier)
-                                .setAccentColor(AppColors.primary),
-                          ),
-                          _AccentColorDot(
-                            color: AppColors.secondary,
-                            label: 'Coral',
-                            isSelected: themeState.accentSeedColor ==
-                                AppColors.secondary,
-                            size: dotSize,
-                            onTap: () => ref
-                                .read(themeNotifierProvider.notifier)
-                                .setAccentColor(AppColors.secondary),
-                          ),
-                          _AccentColorDot(
-                            color: AppColors.tertiary,
-                            label: 'Mint',
-                            isSelected: themeState.accentSeedColor ==
-                                AppColors.tertiary,
-                            size: dotSize,
-                            onTap: () => ref
-                                .read(themeNotifierProvider.notifier)
-                                .setAccentColor(AppColors.tertiary),
-                          ),
-                          _AccentColorDot(
-                            color: AppColors.info,
-                            label: 'Blue',
-                            isSelected: themeState.accentSeedColor ==
-                                AppColors.info,
-                            size: dotSize,
-                            onTap: () => ref
-                                .read(themeNotifierProvider.notifier)
-                                .setAccentColor(AppColors.info),
-                          ),
-                          _AccentColorDot(
-                            color: AppColors.danger,
-                            label: 'Red',
-                            isSelected: themeState.accentSeedColor ==
-                                AppColors.danger,
-                            size: dotSize,
-                            onTap: () => ref
-                                .read(themeNotifierProvider.notifier)
-                                .setAccentColor(AppColors.danger),
-                          ),
-                          _AccentColorDot(
-                            color: AppColors.positive,
-                            label: 'Green',
-                            isSelected: themeState.accentSeedColor ==
-                                AppColors.positive,
-                            size: dotSize,
-                            onTap: () => ref
-                                .read(themeNotifierProvider.notifier)
-                                .setAccentColor(AppColors.positive),
-                          ),
-                        ],
+                      final dotSize = width < 300
+                          ? 28.0
+                          : width > 600
+                              ? 44.0
+                              : 36.0;
+                      final colorOptions = [
+                        (AppColors.primary, 'Purple'),
+                        (AppColors.secondary, 'Coral'),
+                        (AppColors.tertiary, 'Mint'),
+                        (AppColors.info, 'Blue'),
+                        (AppColors.danger, 'Red'),
+                        (AppColors.positive, 'Green'),
+                      ];
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: colorOptions.map((option) {
+                          final (color, label) = option;
+                          return Expanded(
+                            child: _AccentColorDot(
+                              color: color,
+                              label: label,
+                              isSelected: themeState.accentSeedColor == color,
+                              size: dotSize,
+                              onTap: () => ref
+                                  .read(themeNotifierProvider.notifier)
+                                  .setAccentColor(color),
+                            ),
+                          );
+                        }).toList(),
                       );
                     },
                   ),
@@ -162,41 +128,11 @@ class SettingsPage extends ConsumerWidget {
               const _SectionTitle(title: 'Preferences'),
               const SizedBox(height: 12),
               ModernCard(
-                child: Column(
-                  children: [
-                    _SettingsActionTile(
-                      icon: Icons.currency_rupee_rounded,
-                      title: 'Currency',
-                      subtitle: 'Indian Rupee (₹)',
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Currency picker coming soon'),
-                          ),
-                        );
-                      },
-                    ),
-                    const Divider(height: 1),
-                    _SettingsActionTile(
-                      icon: Icons.star_rate_rounded,
-                      title: 'Rate the App',
-                      subtitle: 'Love the app? Leave a rating',
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Rate app action coming soon'),
-                          ),
-                        );
-                      },
-                    ),
-                    const Divider(height: 1),
-                    _SettingsActionTile(
-                      icon: Icons.privacy_tip_outlined,
-                      title: 'Privacy Policy',
-                      subtitle: 'Read our privacy policy online',
-                      onTap: () => _openPrivacyPolicy(context),
-                    ),
-                  ],
+                child: _SettingsActionTile(
+                  icon: Icons.currency_rupee_rounded,
+                  title: 'Currency',
+                  subtitle: ref.watch(currencyNotifierProvider).displayLabel,
+                  onTap: () => _showCurrencyPicker(context, ref),
                 ),
               ),
               const SizedBox(height: 28),
@@ -212,30 +148,32 @@ class SettingsPage extends ConsumerWidget {
                     children: [
                       // ── App Identity ──────────────────────
                       ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.asset(
-                            'assets/images/app_icon.png',
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                          'assets/images/app_icon.png',
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
+                          cacheWidth: 160,
+                          cacheHeight: 160,
+                          errorBuilder: (_, __, ___) => Container(
                             width: 80,
                             height: 80,
-                            fit: BoxFit.cover,
-                            cacheWidth: 160,
-                            cacheHeight: 160,
-                            errorBuilder: (_, __, ___) => Container(
-                              color: theme.colorScheme.primaryContainer,
-                              child: Icon(
-                                Icons.calculate_rounded,
-                                color: theme.colorScheme.primary,
-                              ),
+                            color: theme.colorScheme.primaryContainer,
+                            child: Icon(
+                              Icons.calculate_rounded,
+                              color: theme.colorScheme.primary,
                             ),
                           ),
+                        ),
                       ),
                       const SizedBox(height: 16),
                       Text(
-        AppInfo.appName,
-        style: theme.textTheme.headlineSmall?.copyWith(
-          fontWeight: FontWeight.w700,
-          letterSpacing: -0.3,
-        ),
+                        AppInfo.appName,
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -0.3,
+                        ),
                       ),
                       const SizedBox(height: 4),
                       Text(
@@ -244,10 +182,23 @@ class SettingsPage extends ConsumerWidget {
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Developed by',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        AppInfo.companyName,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                       const SizedBox(height: 16),
                       Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
                           AppInfo.companyDescription,
                           textAlign: TextAlign.center,
@@ -259,24 +210,41 @@ class SettingsPage extends ConsumerWidget {
                       ),
                       const SizedBox(height: 20),
                       const Divider(height: 1),
-                      const _SettingsInfoTile(
-                        icon: Icons.apartment_rounded,
-                        title: 'Developer',
-                        subtitle: AppInfo.companyName,
+                      _SettingsActionTile(
+                        icon: Icons.privacy_tip_outlined,
+                        title: 'Privacy Policy',
+                        subtitle: 'Read our privacy policy online',
+                        onTap: () => _openPrivacyPolicy(context),
                       ),
                       const Divider(height: 1),
                       _SettingsActionTile(
-                        icon: Icons.email_outlined,
-                        title: 'Email',
-                        subtitle: AppInfo.contactEmail,
-                        onTap: () => _openContactEmail(context),
+                        icon: Icons.code_rounded,
+                        title: 'Open Source Licenses',
+                        subtitle: 'Licenses for the open source libraries we use',
+                        onTap: () => _showLicensePage(context),
                       ),
                       const Divider(height: 1),
-                      const _SettingsInfoTile(
-                        icon: Icons.copyright_outlined,
-                        title: 'Copyright',
-                        subtitle:
-                            '${AppInfo.copyright}\nAll Rights Reserved.',
+                      _SettingsActionTile(
+                        icon: Icons.star_rate_rounded,
+                        title: 'Rate App',
+                        subtitle: 'Disabled until Play Store release',
+                        onTap: () => NotificationService.show(
+                          'Rate App will be enabled once the app is on the Play Store.',
+                        ),
+                      ),
+                      const Divider(height: 1),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 16,
+                        ),
+                        child: Text(
+                          '${AppInfo.copyright}\nAll Rights Reserved.',
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -292,44 +260,165 @@ class SettingsPage extends ConsumerWidget {
 
   /// Opens the privacy policy URL in the user's default browser.
   ///
-  /// If the URL cannot be launched, a Material snackbar is shown so the
-  /// failure is never silent.
+  /// If the URL cannot be launched, a Material dialog is shown with the policy
+  /// text, a retry option, and the contact email so the policy is always
+  /// accessible.
   Future<void> _openPrivacyPolicy(BuildContext context) async {
     final uri = Uri.parse(AppInfo.privacyPolicyUrl);
     try {
       final canLaunch = await canLaunchUrl(uri);
       if (!context.mounted) return;
       if (!canLaunch) {
-        _showLaunchError(context, 'Could not open the privacy policy link.');
+        _showPrivacyPolicyDialog(context);
         return;
       }
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
+      final launched = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+      if (!launched && context.mounted) {
+        _showPrivacyPolicyDialog(context);
+      }
     } catch (e) {
       if (!context.mounted) return;
-      _showLaunchError(context, 'Could not open the privacy policy link: $e');
+      _showPrivacyPolicyDialog(context);
     }
   }
 
-  /// Opens the contact email client.
-  Future<void> _openContactEmail(BuildContext context) async {
-    final uri = Uri.parse('mailto:${AppInfo.contactEmail}');
-    try {
-      final canLaunch = await canLaunchUrl(uri);
-      if (!context.mounted) return;
-      if (!canLaunch) {
-        _showLaunchError(context, 'Could not open an email app.');
-        return;
-      }
-      await launchUrl(uri);
-    } catch (e) {
-      if (!context.mounted) return;
-      _showLaunchError(context, 'Could not open an email app: $e');
-    }
+  /// Shows a fallback dialog containing the full privacy policy text.
+  ///
+  /// The dialog includes the contact email (only here, never on the About
+  /// screen) and a retry button to attempt opening the external URL again.
+  void _showPrivacyPolicyDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Privacy Policy'),
+        content: const SingleChildScrollView(
+          child: SelectableText(
+            'Dzynova Technologies respects your privacy.\n\n'
+            'All loan data and calculations are stored locally on your device. '
+            'We do not collect, transmit, or share any personal or financial '
+            'information.\n\n'
+            'For questions about this policy, contact us at:\n'
+            '${AppInfo.contactEmail}',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Close'),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              _openPrivacyPolicy(context);
+            },
+            child: const Text('Retry'),
+          ),
+        ],
+      ),
+    );
   }
 
-  void _showLaunchError(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
+  /// Opens the Flutter license page for open source libraries used by the app.
+  void _showLicensePage(BuildContext context) {
+    showLicensePage(
+      context: context,
+      applicationName: AppInfo.appName,
+      applicationVersion: AppInfo.version,
+      applicationLegalese: '${AppInfo.copyright}\nAll Rights Reserved.',
+    );
+  }
+
+  /// Opens a bottom sheet with the supported currencies.
+  ///
+  /// The selected currency is persisted to Hive and the UI rebuilds
+  /// immediately.
+  void _showCurrencyPicker(BuildContext context, WidgetRef ref) {
+    final current = ref.read(currencyNotifierProvider).currency;
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.65,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      'Select Currency',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: ListView.builder(
+                      key: const Key('currencyPickerListView'),
+                      itemCount: SupportedCurrencies.all.length,
+                      itemBuilder: (context, index) {
+                        final option = SupportedCurrencies.all[index];
+                        final isSelected = option.code == current.code;
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: isSelected
+                                ? Theme.of(context).colorScheme.primaryContainer
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .surfaceContainerHighest,
+                            child: Text(
+                              option.symbol,
+                              style: TextStyle(
+                                color: isSelected
+                                    ? Theme.of(context)
+                                        .colorScheme
+                                        .onPrimaryContainer
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .onSurface,
+                              ),
+                            ),
+                          ),
+                          title: Text(option.name),
+                          subtitle: Text('${option.code} - ${option.symbol}'),
+                          trailing: isSelected
+                              ? Icon(
+                                  Icons.check_circle_rounded,
+                                  color: Theme.of(context).colorScheme.primary,
+                                )
+                              : null,
+                          onTap: () {
+                            ref
+                                .read(currencyNotifierProvider.notifier)
+                                .setCurrency(option)
+                                .then((_) {
+                              NotificationService.show(
+                                'Currency updated to ${option.name}',
+                              );
+                            });
+                            Navigator.of(sheetContext).pop();
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -397,41 +486,6 @@ class _SettingsTile extends StatelessWidget {
             )
           : const Icon(Icons.radio_button_unchecked),
       onTap: onTap,
-    );
-  }
-}
-
-/// A non-interactive information tile.
-class _SettingsInfoTile extends StatelessWidget {
-  const _SettingsInfoTile({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-  });
-
-  final IconData icon;
-  final String title;
-  final String subtitle;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return ListTile(
-      leading: Icon(
-        icon,
-        color: theme.colorScheme.onSurfaceVariant,
-      ),
-      title: Text(
-        title,
-        style: theme.textTheme.bodyLarge?.copyWith(
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      subtitle: Text(
-        subtitle,
-        style: theme.textTheme.bodySmall,
-      ),
     );
   }
 }

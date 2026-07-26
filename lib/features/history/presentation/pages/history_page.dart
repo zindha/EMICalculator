@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/providers/currency_provider.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 
@@ -21,6 +22,8 @@ class HistoryPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final asyncEntries = ref.watch(historyNotifierProvider);
+    // Watch currency so the page rebuilds when the selected currency changes.
+    final currency = ref.watch(currencyNotifierProvider).currency;
 
     return Scaffold(
       appBar: AppBar(
@@ -41,14 +44,15 @@ class HistoryPage extends ConsumerWidget {
         data: (entries) {
           if (entries.isEmpty) {
             return _buildEmptyState(context);
-          }
-          return ListView.builder(
+          }            return ListView.builder(
             padding: const EdgeInsets.all(16),
             itemCount: entries.length,
             itemBuilder: (context, index) {
               final entry = entries[index];
               return _HistoryListTile(
                 entry: entry,
+                currencySymbol: currency.symbol,
+                currencyLocale: currency.locale,
                 onToggleFavorite: () {
                   ref.read(historyNotifierProvider.notifier).toggleFavorite(entry.id);
                 },
@@ -119,11 +123,15 @@ class HistoryPage extends ConsumerWidget {
 class _HistoryListTile extends StatelessWidget {
   const _HistoryListTile({
     required this.entry,
+    required this.currencySymbol,
+    required this.currencyLocale,
     required this.onToggleFavorite,
     required this.onDelete,
   });
 
   final CalculationHistoryEntry entry;
+  final String currencySymbol;
+  final String currencyLocale;
   final VoidCallback onToggleFavorite;
   final VoidCallback onDelete;
 
@@ -131,8 +139,8 @@ class _HistoryListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final formatter = NumberFormat.currency(
-      locale: 'en_IN',
-      symbol: '₹ ',
+      locale: currencyLocale,
+      symbol: '$currencySymbol ',
       decimalDigits: 0,
     );
     final calculation = entry.calculation;

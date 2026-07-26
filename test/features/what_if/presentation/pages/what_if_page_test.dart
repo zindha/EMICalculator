@@ -1,11 +1,28 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+import 'package:emi_calculator/core/constants/hive_constants.dart';
 import 'package:emi_calculator/features/what_if/presentation/pages/what_if_page.dart';
 
 void main() {
   group('WhatIfPage', () {
+    late Directory tempDir;
+
+    setUpAll(() async {
+      tempDir = Directory.systemTemp.createTempSync('what_if_test_');
+      Hive.init(tempDir.path);
+      await Hive.openBox(HiveConstants.themeBox);
+    });
+
+    tearDownAll(() async {
+      await Hive.close();
+      tempDir.deleteSync(recursive: true);
+    });
+
     testWidgets('renders all main sections', (tester) async {
       await tester.pumpWidget(
         const ProviderScope(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_info.dart';
+import '../../../../core/providers/currency_provider.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/widgets/modern_card.dart';
@@ -17,6 +18,8 @@ class DashboardPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    // Watch currency so the page rebuilds when the selected currency changes.
+    ref.watch(currencyNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(

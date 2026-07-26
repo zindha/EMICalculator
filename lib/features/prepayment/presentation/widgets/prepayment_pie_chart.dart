@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/models/prepayment_result.dart';
+import '../../../../shared/widgets/number_formatter.dart';
 
 /// A pie chart that visualizes the total cost breakdown of a prepayment plan.
 ///
@@ -99,7 +100,7 @@ class PrepaymentPieChart extends StatelessWidget {
                             style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
                           ),
                           Text(
-                            '₹${_formatCompact(item.value)}',
+                            '${NumberFormatter.currencySymbol}${_formatCompact(item.value)}',
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 11, color: theme.colorScheme.onSurfaceVariant),
                           ),
                         ],

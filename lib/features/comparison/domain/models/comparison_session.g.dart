@@ -23,7 +23,7 @@ Map<String, dynamic> _$$ComparisonSessionImplToJson(
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
-      'offers': instance.offers.map((e) => e.toJson()).toList(),
+      'offers': instance.offers,
       'createdAt': instance.createdAt.toIso8601String(),
       'isFavorite': instance.isFavorite,
     };

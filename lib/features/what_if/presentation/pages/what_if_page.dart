@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/providers/currency_provider.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,6 +12,8 @@ import '../../../../shared/widgets/synced_slider_input.dart';
 import '../../domain/models/what_if_result.dart';
 import '../providers/what_if_provider.dart';
 import '../widgets/what_if_pie_chart.dart';
+
+import 'package:emi_calculator/core/services/notification_service.dart';
 
 /// A real-time What-If Simulator that lets users compare a baseline loan
 /// scenario with a modified one.
@@ -33,6 +36,8 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
   Widget build(BuildContext context) {
     final inputState = ref.watch(whatIfInputNotifierProvider);
     final result = ref.watch(whatIfResultProvider);
+    // Watch currency so the page rebuilds when the selected currency changes.
+    ref.watch(currencyNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -53,9 +58,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
               ref
                   .read(whatIfInputNotifierProvider.notifier)
                   .setBaseline(inputState.current);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Baseline updated')),
-              );
+              NotificationService.show('Baseline updated');
             },
           ),
           IconButton(
@@ -281,7 +284,6 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
           min: AppConstants.minLoanAmount,
           max: AppConstants.maxLoanAmount,
           step: AppConstants.loanAmountStep,
-          prefixSymbol: '₹ ',
           onChanged: notifier.setLoanAmount,
           helperText: 'Principal loan amount',
           semanticLabel: 'Loan amount slider',
@@ -365,9 +367,7 @@ class _WhatIfPageState extends ConsumerState<WhatIfPage>
       );
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Image export failed: $e')),
-        );
+        NotificationService.show('Image export failed: $e');
       }
     }
   }

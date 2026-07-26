@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/providers/currency_provider.dart';
 import '../../../../shared/widgets/modern_card.dart';
 import '../../../../shared/widgets/image_export_service.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -15,6 +16,8 @@ import '../widgets/prepayment_strategy_toggle.dart';
 import '../widgets/prepayment_summary_card.dart';
 import '../widgets/prepayment_timeline_chart.dart';
 import '../widgets/prepayment_what_if_sliders.dart';
+
+import 'package:emi_calculator/core/services/notification_service.dart';
 
 /// The main Loan Prepayment Planner screen.
 ///
@@ -35,6 +38,8 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final result = ref.watch(prepaymentResultProvider);
+    // Watch currency so the page rebuilds when the selected currency changes.
+    ref.watch(currencyNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -262,9 +267,7 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
       await exportService.sharePdf(filePath);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('PDF export failed: $e')),
-        );
+        NotificationService.show('PDF export failed: $e');
       }
     }
   }
@@ -278,9 +281,7 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
       );
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Image export failed: $e')),
-        );
+        NotificationService.show('Image export failed: $e');
       }
     }
   }
@@ -394,8 +395,8 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
     );
   }
 
-  Widget _buildRulesList(BuildContext context) {
-    final input = ref.watch(prepaymentInputNotifierProvider);
+  Widget _buildRulesList(BuildContext context) {        final input = ref.watch(prepaymentInputNotifierProvider);
+    final currencySymbol = ref.watch(currencyNotifierProvider).currency.symbol;
 
     if (input.rules.isEmpty) {
       return ModernCard(
@@ -423,7 +424,7 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
             style: const TextStyle(fontWeight: FontWeight.w600),
           ),
           subtitle: Text(
-            '₹${rule.amount.toStringAsFixed(0)} starting month ${rule.startMonth}',
+            '$currencySymbol${rule.amount.toStringAsFixed(0)} starting month ${rule.startMonth}',
             style: Theme.of(context).textTheme.bodySmall,
           ),
           trailing: IconButton(
@@ -478,9 +479,7 @@ class _PrepaymentPageState extends ConsumerState<PrepaymentPage> {
     if (title != null && title.isNotEmpty) {
       await ref.read(savedPrepaymentPlansNotifierProvider.notifier).saveCurrent(title);
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Plan saved')),
-        );
+        NotificationService.show('Plan saved');
       }
     }
   }

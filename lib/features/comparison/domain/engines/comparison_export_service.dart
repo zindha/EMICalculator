@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -8,6 +7,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../models/comparison_result.dart';
 import '../models/comparison_session.dart';
+import '../../../../shared/widgets/number_formatter.dart';
 
 /// Service that handles exporting a comparison session to CSV and PDF and
 /// sharing it.
@@ -62,11 +62,7 @@ class ComparisonExportService {
     required ComparisonResult result,
   }) async {
     final pdf = pw.Document();
-    final formatter = NumberFormat.currency(
-      locale: 'en_IN',
-      symbol: ' ',
-      decimalDigits: 0,
-    );
+    final formatter = NumberFormatter.createCurrencyFormatter();
 
     pdf.addPage(
       pw.MultiPage(

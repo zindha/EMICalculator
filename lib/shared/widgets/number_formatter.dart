@@ -2,32 +2,68 @@ import 'package:intl/intl.dart';
 
 /// Mixin providing locale-aware number formatting methods.
 ///
-/// Uses Indian numbering system (lakhs, crores) by default, with support
-/// for international formatting and customization.
+/// Uses the active app currency by default.  The active currency can be set
+/// globally through [configureCurrency] so every UI layer that mixes in
+/// [NumberFormatter] formats amounts consistently.
 mixin NumberFormatter {
+  // ──────────────────────────────────────────────
+  // Global Currency Configuration
+  // ──────────────────────────────────────────────
+
+  static String _currencySymbol = '₹';
+  static String _currencyLocale = 'en_IN';
+
+  /// The currently configured currency symbol used for formatting.
+  static String get currencySymbol => _currencySymbol;
+
+  /// Creates a [NumberFormat] instance using the globally configured currency
+  /// symbol and locale.
+  ///
+  /// This is the preferred way to obtain a currency formatter from domain-layer
+  /// services and static utility code that cannot mix in [NumberFormatter].
+  static NumberFormat createCurrencyFormatter({int decimalDigits = 0}) {
+    return NumberFormat.currency(
+      locale: _currencyLocale,
+      symbol: '$_currencySymbol ',
+      decimalDigits: decimalDigits,
+    );
+  }
+
+  /// Configures the formatting currency used by all [NumberFormatter] users.
+  static void configureCurrency(String symbol, String locale) {
+    _currencySymbol = symbol;
+    _currencyLocale = locale;
+  }
+
   // ──────────────────────────────────────────────
   // Currency Formatting
   // ──────────────────────────────────────────────
 
-  /// Formats [amount] as Indian Rupees with comma separators.
+  /// Formats [amount] in the active currency with comma separators.
   ///
   /// Example: ₹ 12,34,567
-  String formatInr(double amount) {
+  String formatInr(double amount) => formatCurrency(amount);
+
+  /// Alias for [formatInr] with a clearer name.
+  String formatCurrency(double amount) {
     final formatter = NumberFormat.currency(
-      locale: 'en_IN',
-      symbol: '₹ ',
+      locale: _currencyLocale,
+      symbol: '$_currencySymbol ',
       decimalDigits: 0,
     );
     return formatter.format(amount);
   }
 
-  /// Formats [amount] as Indian Rupees with 2 decimal places.
+  /// Formats [amount] in the active currency with 2 decimal places.
   ///
   /// Example: ₹ 12,34,567.89
-  String formatInrDecimal(double amount) {
+  String formatInrDecimal(double amount) => formatCurrencyDecimal(amount);
+
+  /// Alias for [formatInrDecimal] with a clearer name.
+  String formatCurrencyDecimal(double amount) {
     final formatter = NumberFormat.currency(
-      locale: 'en_IN',
-      symbol: '₹ ',
+      locale: _currencyLocale,
+      symbol: '$_currencySymbol ',
       decimalDigits: 2,
     );
     return formatter.format(amount);

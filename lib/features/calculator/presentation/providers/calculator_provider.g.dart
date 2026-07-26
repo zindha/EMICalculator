@@ -7,7 +7,7 @@ part of 'calculator_provider.dart';
 // **************************************************************************
 
 String _$emiCalculatorServiceHash() =>
-    r'030ae33b49e925f091d7df87e508b80c403578ee';
+    r'1bc9a7c842b384d620dd1d44850d4dcbec6e9f81';
 
 /// Riverpod provider that always exposes the current [EmiCalculation] state.
 ///
@@ -29,12 +29,13 @@ final emiCalculatorServiceProvider = Provider<EmiCalculatorService>.internal(
 
 typedef EmiCalculatorServiceRef = ProviderRef<EmiCalculatorService>;
 String _$calculatorInputNotifierHash() =>
-    r'dabcadf1181f31c2edb58738739a5957d44264e4';
+    r'4f411145da32a067d0a1e1cf0f2a615a79928ead';
 
 /// Notifier that manages the user's current loan input state.
 ///
 /// Provides mutation methods for each input field and auto-recalculates
-/// the result whenever any input changes.
+/// the result whenever any input changes. Also supports in-session undo,
+/// redo and reset operations.
 ///
 /// Copied from [CalculatorInputNotifier].
 @ProviderFor(CalculatorInputNotifier)
@@ -50,7 +51,7 @@ final calculatorInputNotifierProvider =
 );
 
 typedef _$CalculatorInputNotifier = Notifier<EmiCalculation>;
-String _$emiResultNotifierHash() => r'f8b4e8a7e0383fee9e0ba3df17bf0b36e0dc5e71';
+String _$emiResultNotifierHash() => r'fe7f5eb5222b6b26bf17ed7803bf0450cd4b9bf7';
 
 /// Riverpod provider that computes the full [EmiCalculationResult] based on
 /// the current [EmiCalculation] input state.

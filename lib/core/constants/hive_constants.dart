@@ -37,6 +37,12 @@ class HiveConstants {
   /// Key for the stored AMOLED mode flag.
   static const String isAmoledKey = 'isAmoled';
 
+  /// Key for the stored currency symbol (e.g. '₹', '\$').
+  static const String currencySymbolKey = 'currencySymbol';
+
+  /// Key for the stored currency code (e.g. 'INR', 'USD').
+  static const String currencyCodeKey = 'currencyCode';
+
   // ──────────────────────────────────────────────
   // Type Adapter IDs
   // ──────────────────────────────────────────────

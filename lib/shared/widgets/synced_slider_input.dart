@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/providers/currency_provider.dart';
 import '../../core/theme/app_typography.dart';
 
 /// A custom input widget that combines a [Slider] and a [TextField] that
@@ -24,7 +25,7 @@ class SyncedSliderInput extends ConsumerStatefulWidget {
     required this.onChanged,
     this.step,
     this.suffixText,
-    this.prefixSymbol = '₹ ',
+    this.prefixSymbol,
     this.decimalPlaces = 0,
     this.divisions,
     this.showSlider = true,
@@ -54,7 +55,8 @@ class SyncedSliderInput extends ConsumerStatefulWidget {
   final String? suffixText;
 
   /// Symbol displayed before the text field value (e.g., "₹ ", "$ ").
-  final String prefixSymbol;
+  /// When null, the currently selected currency symbol is used.
+  final String? prefixSymbol;
 
   /// Number of decimal places to display in the text field.
   final int decimalPlaces;
@@ -216,7 +218,8 @@ class _SyncedSliderInputState extends ConsumerState<SyncedSliderInput> {
                 fontWeight: FontWeight.w500,
               ),
               decoration: InputDecoration(
-                prefixText: widget.prefixSymbol,
+                prefixText: widget.prefixSymbol ??
+                    '${ref.watch(currencyNotifierProvider).currency.symbol} ',
                 prefixStyle: theme.textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.w500,
                   color: theme.colorScheme.onSurfaceVariant,

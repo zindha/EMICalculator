@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/providers/currency_provider.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../shared/widgets/modern_card.dart';
@@ -12,6 +13,8 @@ import '../widgets/calculator_actions.dart';
 import '../widgets/hero_card.dart';
 import '../widgets/result_charts.dart';
 import '../widgets/tenure_toggle.dart';
+
+import 'package:emi_calculator/core/services/notification_service.dart';
 
 /// The main EMI Calculator screen.
 ///
@@ -37,6 +40,8 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
     final theme = Theme.of(context);
     final input = ref.watch(calculatorInputNotifierProvider);
     final result = ref.watch(emiResultNotifierProvider);
+    // Watch currency so the page rebuilds when the selected currency changes.
+    ref.watch(currencyNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -64,9 +69,7 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
             tooltip: 'Reset',
             onPressed: () {
               ref.read(calculatorInputNotifierProvider.notifier).reset();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Calculator reset')),
-              );
+              NotificationService.show('Calculator reset');
             },
           ),
           if (result != null) ...[
@@ -126,12 +129,11 @@ class _CalculatorPageState extends ConsumerState<CalculatorPage> {
               min: AppConstants.minLoanAmount,
               max: AppConstants.maxLoanAmount,
               step: AppConstants.loanAmountStep,
-              prefixSymbol: '₹ ',
               onChanged: (value) {
                 ref.read(calculatorInputNotifierProvider.notifier)
                     .setLoanAmount(value);
               },
-              helperText: '₹1,000 – ₹10,00,00,000',
+              helperText: 'Min – Max loan amount',
               semanticLabel: 'Loan amount slider',
             ),
             const SizedBox(height: 16),
@@ -428,7 +430,6 @@ class _AdvancedFieldsState extends ConsumerState<_AdvancedFields> {
                   min: 0,
                   max: input.loanAmount,
                   step: 10000,
-                  prefixSymbol: '₹ ',
                   onChanged: (value) {
                     ref.read(calculatorInputNotifierProvider.notifier)
                         .setDownPayment(value);

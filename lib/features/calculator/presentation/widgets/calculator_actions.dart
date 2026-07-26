@@ -5,9 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../export/services/export_service.dart';
 import '../../../history/presentation/providers/history_provider.dart';
 import '../../../../shared/widgets/image_export_service.dart';
+import '../../../../shared/widgets/number_formatter.dart';
 import '../../domain/models/amortization_month.dart';
 import '../../domain/models/emi_calculation.dart';
 import '../providers/calculator_provider.dart';
+
+import 'package:emi_calculator/core/services/notification_service.dart';
 
 /// Saves the current calculation to history.
 Future<void> saveCalculationToHistory(
@@ -15,13 +18,12 @@ Future<void> saveCalculationToHistory(
   WidgetRef ref,
   EmiCalculation input,
 ) async {
+  final formatted = NumberFormatter.createCurrencyFormatter().format(input.loanAmount);
   final title =
-      '₹${input.loanAmount.toStringAsFixed(0)} · ${input.interestRate}% · ${input.tenureMonths}M';
+      '$formatted · ${input.interestRate}% · ${input.tenureMonths}M';
   await ref.read(historyNotifierProvider.notifier).save(input, title: title);
   if (context.mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Calculation saved to history')),
-    );
+    NotificationService.show('Calculation saved to history');
   }
 }
 
@@ -130,8 +132,6 @@ Future<void> _shareScreenshot(BuildContext context, GlobalKey captureKey) async 
 
 void _showError(BuildContext context, String message) {
   if (context.mounted) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    NotificationService.show(message);
   }
 }

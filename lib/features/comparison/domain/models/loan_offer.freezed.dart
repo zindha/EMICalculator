@@ -33,11 +33,13 @@ mixin _$LoanOffer {
 
 /// @nodoc
 abstract class $LoanOfferCopyWith<$Res> {
-  factory $LoanOfferCopyWith(
-          LoanOffer value, $Res Function(LoanOffer) then) =
+  factory $LoanOfferCopyWith(LoanOffer value, $Res Function(LoanOffer) then) =
       _$LoanOfferCopyWithImpl<$Res, LoanOffer>;
   @useResult
-  $Res call({String id, String name, EmiCalculation calculation, String? color});
+  $Res call(
+      {String id, String name, EmiCalculation calculation, String? color});
+
+  $EmiCalculationCopyWith<$Res> get calculation;
 }
 
 /// @nodoc
@@ -77,6 +79,14 @@ class _$LoanOfferCopyWithImpl<$Res, $Val extends LoanOffer>
               as String?,
     ) as $Val);
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $EmiCalculationCopyWith<$Res> get calculation {
+    return $EmiCalculationCopyWith<$Res>(_value.calculation, (value) {
+      return _then(_value.copyWith(calculation: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -87,7 +97,11 @@ abstract class _$$LoanOfferImplCopyWith<$Res>
       __$$LoanOfferImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, EmiCalculation calculation, String? color});
+  $Res call(
+      {String id, String name, EmiCalculation calculation, String? color});
+
+  @override
+  $EmiCalculationCopyWith<$Res> get calculation;
 }
 
 /// @nodoc
@@ -185,10 +199,10 @@ class _$LoanOfferImpl implements _LoanOffer {
 
 abstract class _LoanOffer implements LoanOffer {
   const factory _LoanOffer(
-          {required final String id,
-          required final String name,
-          required final EmiCalculation calculation,
-          final String? color}) = _$LoanOfferImpl;
+      {required final String id,
+      required final String name,
+      required final EmiCalculation calculation,
+      final String? color}) = _$LoanOfferImpl;
 
   factory _LoanOffer.fromJson(Map<String, dynamic> json) =
       _$LoanOfferImpl.fromJson;
