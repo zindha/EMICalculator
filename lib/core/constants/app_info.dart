@@ -1,8 +1,8 @@
 /// Centralized application branding and company information.
 ///
-/// All user-facing strings related to the app name, company, contact and
-/// legal information should be sourced from here so the app presents a
-/// consistent, professional identity.
+/// All user-facing strings related to the app name, company, and legal
+/// information should be sourced from here so the app presents a consistent,
+/// professional identity.
 class AppInfo {
   const AppInfo._();
 
@@ -18,13 +18,13 @@ class AppInfo {
   /// Company / developer name.
   static const String companyName = 'Dzynova Technologies';
 
-  /// Contact email address.
+  /// Contact email address — shown only inside the Privacy Policy.
   static const String contactEmail = 'zindhak@gmail.com';
 
   /// Short company description for the About screen.
   static const String companyDescription =
-      'Dzynova Technologies builds modern, reliable and user-friendly mobile '
-      'applications focused on productivity and everyday financial tools.';
+      'Modern finance tools designed to help users '
+      'calculate, compare and optimize loans with confidence.';
 
   /// Copyright notice.
   static const String copyright = '© 2026 Dzynova Technologies';

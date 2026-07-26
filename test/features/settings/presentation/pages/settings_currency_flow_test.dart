@@ -94,11 +94,8 @@ void main() {
   });
 }
 
-/// Separate file tests USD persistence via Hive, since Hive writes
-/// (box.put) hang inside testWidgets/FakeAsync and must run in
-/// setUpAll which isn't test-scoped.
-//
-// USD persistence is covered by:
-//   test('setCurrency updates state and persists to Hive')
-//   test('previously persisted currency is loaded on startup')
-// in test/core/providers/currency_provider_test.dart
+// NOTE: Hive writes (box.put) hang inside testWidgets due to FakeAsync
+// not processing real file I/O. The USD persistence scenario is covered
+// at the provider level in test/core/providers/currency_provider_test.dart:
+//   - 'setCurrency updates state and persists to Hive'
+//   - 'previously persisted currency is loaded on startup'

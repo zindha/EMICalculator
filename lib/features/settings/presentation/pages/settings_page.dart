@@ -147,113 +147,114 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               const _SectionTitle(title: 'About'),
               const SizedBox(height: 12),
               ModernCard(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // ── App Identity ──────────────────────
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.asset(
-                          'assets/images/app_icon.png',
-                          width: 80,
-                          height: 80,
-                          fit: BoxFit.cover,
-                          cacheWidth: 160,
-                          cacheHeight: 160,
-                          errorBuilder: (_, __, ___) => Container(
-                            width: 80,
-                            height: 80,
-                            color: theme.colorScheme.primaryContainer,
-                            child: Icon(
-                              Icons.calculate_rounded,
-                              color: theme.colorScheme.primary,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // ── App Identity ──────────────────────
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 24, 16, 20),
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              'assets/images/app_icon.png',
+                              width: 80,
+                              height: 80,
+                              fit: BoxFit.cover,
+                              cacheWidth: 160,
+                              cacheHeight: 160,
+                              errorBuilder: (_, __, ___) => Container(
+                                width: 80,
+                                height: 80,
+                                color: theme.colorScheme.primaryContainer,
+                                child: Icon(
+                                  Icons.calculate_rounded,
+                                  color: theme.colorScheme.primary,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          const SizedBox(height: 16),
+                          Text(
+                            AppInfo.appName,
+                            style: theme.textTheme.headlineSmall?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: -0.3,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Version ${AppInfo.version}',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            'Built by',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            AppInfo.companyName,
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            AppInfo.companyDescription,
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              height: 1.5,
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 16),
-                      Text(
-                        AppInfo.appName,
-                        style: theme.textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: -0.3,
-                        ),
+                    ),
+                    const Divider(height: 1),
+                    _SettingsActionTile(
+                      icon: Icons.privacy_tip_outlined,
+                      title: 'Privacy Policy',
+                      subtitle: 'Read our privacy policy online',
+                      onTap: () => _openPrivacyPolicy(context),
+                    ),
+                    const Divider(height: 1),
+                    _SettingsActionTile(
+                      icon: Icons.code_rounded,
+                      title: 'Open Source Licenses',
+                      subtitle: 'Licenses for the open source libraries we use',
+                      onTap: () => _showLicensePage(context),
+                    ),
+                    const Divider(height: 1),
+                    _SettingsActionTile(
+                      icon: Icons.star_rate_rounded,
+                      title: 'Rate App',
+                      subtitle: 'Disabled until Play Store release',
+                      onTap: () => NotificationService.show(
+                        'Rate App will be enabled once the app is on the Play Store.',
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Version ${AppInfo.version}',
-                        style: theme.textTheme.bodyMedium?.copyWith(
+                    ),
+                    const Divider(height: 1),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 16,
+                      ),
+                      child: Text(
+                        '${AppInfo.copyright}\nAll Rights Reserved.',
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Developed by',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        AppInfo.companyName,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(
-                          AppInfo.companyDescription,
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            height: 1.5,
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      const Divider(height: 1),
-                      _SettingsActionTile(
-                        icon: Icons.privacy_tip_outlined,
-                        title: 'Privacy Policy',
-                        subtitle: 'Read our privacy policy online',
-                        onTap: () => _openPrivacyPolicy(context),
-                      ),
-                      const Divider(height: 1),
-                      _SettingsActionTile(
-                        icon: Icons.code_rounded,
-                        title: 'Open Source Licenses',
-                        subtitle: 'Licenses for the open source libraries we use',
-                        onTap: () => _showLicensePage(context),
-                      ),
-                      const Divider(height: 1),
-                      _SettingsActionTile(
-                        icon: Icons.star_rate_rounded,
-                        title: 'Rate App',
-                        subtitle: 'Disabled until Play Store release',
-                        onTap: () => NotificationService.show(
-                          'Rate App will be enabled once the app is on the Play Store.',
-                        ),
-                      ),
-                      const Divider(height: 1),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 16,
-                        ),
-                        child: Text(
-                          '${AppInfo.copyright}\nAll Rights Reserved.',
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 24),
@@ -301,9 +302,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   }
 
   /// Shows a fallback dialog containing the full privacy policy text.
-  ///
-  /// The dialog includes the contact email (only here, never on the About
-  /// screen) and a retry button to attempt opening the external URL again.
   void _showPrivacyPolicyDialog(BuildContext context) {
     showDialog<void>(
       context: context,
@@ -317,14 +315,37 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             const Text('Privacy Policy'),
           ],
         ),
-        content: const SingleChildScrollView(
-          child: SelectableText(
-            'Dzynova Technologies respects your privacy.\n\n'
-            'All loan data and calculations are stored locally on your device. '
-            'We do not collect, transmit, or share any personal or financial '
-            'information.\n\n'
-            'For questions about this policy, contact us at:\n'
-            '${AppInfo.contactEmail}',
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SelectableText(
+                'Dzynova Technologies respects your privacy.\n\n'
+                'All loan data and calculations are stored locally on your '
+                'device. We do not collect, transmit, or share any personal '
+                'or financial information.\n\n',
+              ),
+              Text(
+                'Company Name',
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5,
+                    ),
+              ),
+              const SelectableText(AppInfo.companyName),
+              const SizedBox(height: 12),
+              Text(
+                'Contact Email',
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5,
+                    ),
+              ),
+              const SelectableText(AppInfo.contactEmail),
+            ],
           ),
         ),
         actions: [
